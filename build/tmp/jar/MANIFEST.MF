@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Specification-Title: caliberlib
+Specification-Vendor: CaliberMC
+Specification-Version: 1
+Implementation-Title: CaliberLib
+Implementation-Version: 0.0.1
+Implementation-Vendor: CaliberMC
+Implementation-Timestamp: 2024-01-18T19:29:14-0800
+MixinConfigs: caliberlib.mixins.json
+
