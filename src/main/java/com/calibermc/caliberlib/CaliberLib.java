@@ -9,11 +9,10 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(CaliberLib.MOD_ID)
+@Mod("caliberlib")
 public class CaliberLib {
-    public static final String MOD_ID = "caliberlib";
 
-    public static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public CaliberLib() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);

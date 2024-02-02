@@ -1,6 +1,5 @@
 package com.calibermc.caliberlib.data.datagen;
 
-import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.custom.*;
 import com.calibermc.caliberlib.block.custom.terrain.*;
 import com.calibermc.caliberlib.block.management.BlockManager;

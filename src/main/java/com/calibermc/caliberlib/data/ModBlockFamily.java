@@ -2,10 +2,12 @@ package com.calibermc.caliberlib.data;
 
 import com.calibermc.caliberlib.block.management.BlockManager;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -389,6 +391,14 @@ public class ModBlockFamily {
 
         public ResourceLocation getRegistryName(ModBlockStateProvider block) {
             return new ResourceLocation("caliber", this.name);
+        }
+
+        private ImmutableList<Variant> vanillaVariants() {
+            return ImmutableList.of(BASE, BUTTON, FENCE, FENCE_GATE, SIGN, SLAB, STAIRS, PRESSURE_PLATE, TRAPDOOR, WALL, WALL_SIGN);
+        }
+
+        public boolean caliberTest() {
+            return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this);
         }
     }
 }

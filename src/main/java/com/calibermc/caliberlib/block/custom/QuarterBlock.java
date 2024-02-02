@@ -1,5 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
+import com.calibermc.caliberlib.block.custom.VerticalSlabBlock;
 import com.calibermc.caliberlib.block.shapes.QuarterShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;

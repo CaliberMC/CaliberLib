@@ -249,7 +249,7 @@ public class RoofPeakBlock extends HorizontalDirectionalBlock implements SimpleW
     }
 
     public static boolean isHip(BlockState pState) {
-        return pState.getBlock() instanceof Roof45Block && (pState.getValue(Roof45Block.TYPE) == RoofShape.OUTER_LEFT || pState.getValue(Roof45Block.TYPE) == RoofShape.OUTER_RIGHT);
+        return pState.getBlock() instanceof com.calibermc.caliberlib.block.custom.Roof45Block && (pState.getValue(com.calibermc.caliberlib.block.custom.Roof45Block.TYPE) == RoofShape.OUTER_LEFT || pState.getValue(Roof45Block.TYPE) == RoofShape.OUTER_RIGHT);
     }
 
     @Override
