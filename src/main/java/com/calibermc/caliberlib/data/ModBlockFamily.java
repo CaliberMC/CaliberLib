@@ -397,7 +397,7 @@ public class ModBlockFamily {
             return ImmutableList.of(BASE, BUTTON, FENCE, FENCE_GATE, SIGN, SLAB, STAIRS, PRESSURE_PLATE, TRAPDOOR, WALL, WALL_SIGN);
         }
 
-        public boolean caliberTest() {
+        public boolean caliberIsLoaded() {
             return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this);
         }
     }

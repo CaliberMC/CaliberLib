@@ -171,7 +171,7 @@ public class BlockManager {
                 blockManager.name.equals(builder.name)).findFirst().map(blockManager ->
                 blockManager.baseBlock().defaultBlockState()).orElseThrow();
         for (ModBlockFamily.Variant variant : variants) {
-            if (variant != ModBlockFamily.Variant.BASE) {
+            if (variant != ModBlockFamily.Variant.BASE && variant.caliberIsLoaded()) {
                 switch (variant) {
                     case ARCH ->
                             builder.addVariant(variant, () -> new ArchBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARCH.apply(blockSupplier)));
