@@ -174,19 +174,19 @@ public class BlockManager {
             if (variant != ModBlockFamily.Variant.BASE && variant.caliberIsLoaded()) {
                 switch (variant) {
                     case ARCH ->
-                            builder.addVariant(variant, () -> new ArchBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARCH.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new ArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH.apply(blockSupplier)));
                     case ARCH_HALF ->
-                            builder.addVariant(variant, () -> new HalfArchBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARCH_HALF.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new HalfArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_HALF.apply(blockSupplier)));
                     case ARCH_LARGE ->
-                            builder.addVariant(variant, () -> new LargeArchBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARCH_LARGE.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new LargeArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE.apply(blockSupplier)));
                     case ARCH_LARGE_HALF ->
-                            builder.addVariant(variant, () -> new LargeHalfArchBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARCH_LARGE_HALF.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new LargeHalfArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE_HALF.apply(blockSupplier)));
                     case ARROWSLIT ->
-                            builder.addVariant(variant, () -> new ArrowSlitBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ARROWSLIT.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new ArrowSlitBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARROWSLIT.apply(blockSupplier)));
                     case BALUSTRADE ->
-                            builder.addVariant(variant, () -> new BalustradeBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BALUSTRADE.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new BalustradeBlock(properties), (b) -> b.stateGen(ModBlockHelper.BALUSTRADE.apply(blockSupplier)));
                     case BUTTON ->
-                            builder.addVariant(variant, () -> new ButtonBlock(properties, builder.blockSetType, 20, false), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BUTTON.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new ButtonBlock(properties, builder.blockSetType, 20, false), (b) -> b.stateGen(ModBlockHelper.BUTTON.apply(blockSupplier)));
 //                    case BUTTON -> builder.addVariant(variant, () -> {
 //                        if (block.getMaterial() == Material.STONE) {
 //                            return new StoneButtonBlock(properties);
@@ -195,66 +195,66 @@ public class BlockManager {
 //                        } else {
 //                            throw new IllegalArgumentException("Unsupported block material: " + blockInstance.getMaterial());
 //                        }
-//                    }, (b) -> b.stateGen(CaliberBlockHelper.BUTTON.apply(blockSupplier)));
+//                    }, (b) -> b.stateGen(ModBlockHelper.BUTTON.apply(blockSupplier)));
                     case BEAM_HORIZONTAL ->
-                            builder.addVariant(variant, () -> new HorizontalBeamBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BEAM_HORIZONTAL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new HorizontalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_HORIZONTAL.apply(blockSupplier)));
                     case BEAM_LINTEL ->
-                            builder.addVariant(variant, () -> new BeamLintelBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BEAM_LINTEL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new BeamLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_LINTEL.apply(blockSupplier)));
                     case BEAM_POSTS ->
-                            builder.addVariant(variant, () -> new BeamPostsBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BEAM_POSTS.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new BeamPostsBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_POSTS.apply(blockSupplier)));
                     case BEAM_VERTICAL ->
-                            builder.addVariant(variant, () -> new VerticalBeamBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.BEAM_VERTICAL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new VerticalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_VERTICAL.apply(blockSupplier)));
                     case CAPITAL ->
-                            builder.addVariant(variant, () -> new CapitalBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.CAPITAL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new CapitalBlock(properties), (b) -> b.stateGen(ModBlockHelper.CAPITAL.apply(blockSupplier)));
                     case CORNER ->
-                            builder.addVariant(variant, () -> new CornerLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.CORNER.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new CornerLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER.apply(blockSupplier)));
                     case CORNER_SLAB ->
-                            builder.addVariant(variant, () -> new CornerSlabBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.CORNER_SLAB.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new CornerSlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB.apply(blockSupplier)));
                     case CORNER_SLAB_VERTICAL ->
-                            builder.addVariant(variant, () -> new VerticalCornerSlabBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.CORNER_SLAB_VERTICAL.apply(blockSupplier)));
-//                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties), (b) -> b.stateGen(CaliberBlockHelper.DOOR.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new VerticalCornerSlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB_VERTICAL.apply(blockSupplier)));
+//                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
                     case DOOR_FRAME ->
-                            builder.addVariant(variant, () -> new DoorFrameBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.DOOR_FRAME.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new DoorFrameBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME.apply(blockSupplier)));
                     case DOOR_FRAME_LINTEL ->
-                            builder.addVariant(variant, () -> new DoorFrameLintelBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.DOOR_FRAME_LINTEL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new DoorFrameLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME_LINTEL.apply(blockSupplier)));
                     case EIGHTH ->
-                            builder.addVariant(variant, () -> new EighthBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.EIGHTH.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new EighthBlock(properties), (b) -> b.stateGen(ModBlockHelper.EIGHTH.apply(blockSupplier)));
                     case FENCE ->
-                            builder.addVariant(variant, () -> new FenceBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.FENCE.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new FenceBlock(properties), (b) -> b.stateGen(ModBlockHelper.FENCE.apply(blockSupplier)));
                     case FENCE_GATE ->
                             builder.addVariant(variant, () -> new FenceGateBlock(properties, WoodType.values().filter(p ->
-                                    p.name().equals(builder.blockSetType.name())).findFirst().get()), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.FENCE_GATE.apply(blockSupplier)));
+                                    p.name().equals(builder.blockSetType.name())).findFirst().get()), (b) -> b.stateGen(ModBlockHelper.FENCE_GATE.apply(blockSupplier)));
                     case PILLAR ->
-                            builder.addVariant(variant, () -> new PillarLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.PILLAR.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new PillarLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.PILLAR.apply(blockSupplier)));
                     case PRESSURE_PLATE ->
-                            builder.addVariant(variant, () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties, builder.blockSetType), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.PRESSURE_PLATE.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.PRESSURE_PLATE.apply(blockSupplier)));
                     case QUARTER ->
-                            builder.addVariant(variant, () -> new QuarterLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.QUARTER.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new QuarterLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.QUARTER.apply(blockSupplier)));
                     case QUARTER_VERTICAL ->
-                            builder.addVariant(variant, () -> new VerticalQuarterLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.VERTICAL_QUARTER.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new VerticalQuarterLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.VERTICAL_QUARTER.apply(blockSupplier)));
                     case ROOF_22 ->
-                            builder.addVariant(variant, () -> new Roof22Block(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ROOF_22.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new Roof22Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_22.apply(blockSupplier)));
                     case ROOF_45 ->
-                            builder.addVariant(variant, () -> new Roof45Block(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ROOF_45.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new Roof45Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_45.apply(blockSupplier)));
                     case ROOF_67 ->
-                            builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ROOF_67.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
                     case ROOF_PEAK ->
-                            builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.ROOF_PEAK.apply(blockSupplier)));
-//                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, WoodType.OAK), new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(CaliberBlockHelper.SIGN.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
+//                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, WoodType.OAK), new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
                     case SLAB ->
-                            builder.addVariant(variant, () -> new SlabLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.SLAB.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new SlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
                     case SLAB_VERTICAL ->
-                            builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
                     case STAIRS ->
-                            builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.STAIRS.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
 //                    case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties), (b) -> b.stateGen(TRAP_DOOR.apply(blockSupplier)));
                     case WALL ->
-                            builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.WALL.apply(blockSupplier)));
-//                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(CaliberBlockHelper.SIGN.apply(blockSupplier)));
+                            builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
+//                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
                     case WINDOW ->
-                            builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.WINDOW.apply("window", blockSupplier)));
+                            builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));
                     case WINDOW_HALF ->
-                            builder.addVariant(variant, () -> new HalfWindowBlock(properties), (b) -> b.stateGen(com.calibermc.caliberlib.block.management.CaliberBlockHelper.WINDOW_HALF.apply("window_half", blockSupplier)));
+                            builder.addVariant(variant, () -> new HalfWindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW_HALF.apply("window_half", blockSupplier)));
                 }
             }
         }
@@ -308,7 +308,7 @@ public class BlockManager {
         public boolean skipRegister; // used to register in manager, but don't register it in minecraft (basically when block already registered in mc)
         public BiConsumer<ModBlockLootTables, Block> lootGen = ModBlockLootTables::dropSelf;
         public BiConsumer<Supplier<Block>, ModBlockStateProvider> stateGenerator = (b, provider) ->
-                CaliberBlockHelper.fixBlockTex(b, b, provider, (block, side, bottom, top, tex) ->
+                ModBlockHelper.fixBlockTex(b, b, provider, (block, side, bottom, top, tex) ->
                         provider.simpleBlock(b.get(), provider.models().cubeBottomTop(provider.name(b.get()), side, bottom, top)), (block, tex) ->
                         provider.simpleBlock(b.get(), provider.models().cubeAll(provider.name(b.get()), tex)));
 

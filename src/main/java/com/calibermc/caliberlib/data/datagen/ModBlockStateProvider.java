@@ -1,6 +1,5 @@
 package com.calibermc.caliberlib.data.datagen;
 
-import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.custom.*;
 import com.calibermc.caliberlib.block.management.BlockManager;
 import com.calibermc.caliberlib.block.shapes.*;
@@ -63,6 +62,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
         }
         return super.modLoc(name);
     }
+
+
 
     public void archBlock(ArchBlock block) {
         archBlock(block, blockTexture(block));
@@ -1218,6 +1219,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .partialState().with(EighthBlock.FACING, Direction.WEST).with(EighthBlock.TYPE, EighthShape.TOP_LEFT)
                 .modelForState().modelFile(eighth_top_left).rotationY(270).addModel();
 
+    }
+
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ResourceLocation texture) {
+        ModelFile sign = models().sign(name(signBlock), texture);
+        hangingSignBlock(signBlock, wallSignBlock, sign);
+    }
+
+    public void hangingSignBlock(Block signBlock, Block wallSignBlock, ModelFile sign) {
+        simpleBlock(signBlock, sign);
+        simpleBlock(wallSignBlock, sign);
     }
 
     public void pillarLayerBlock(PillarLayerBlock block) {
