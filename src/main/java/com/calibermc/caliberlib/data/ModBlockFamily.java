@@ -398,7 +398,8 @@ public class ModBlockFamily {
         }
 
         public boolean caliberIsLoaded() {
-            return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this);
+            boolean isDataGen = "true".equals(System.getProperty("mod.dataGen", "false"));
+            return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this)|| isDataGen;
         }
     }
 }

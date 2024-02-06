@@ -332,8 +332,5 @@ public class BlockManager {
             return this;
         }
 
-//        public BlockAdditional getResourceLocation(String name) {
-//            return this.variant == ModBlockFamily.Variant.BASE ? this : new BlockAdditional(this.variant, () -> this.blockSupplier.get().setRegistryName(name));
-//        }
     }
 }
