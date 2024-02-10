@@ -18,6 +18,7 @@ import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -1231,6 +1232,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(wallSignBlock, sign);
     }
 
+    public void leavesBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlockWithItem(blockRegistryObject.get(),
+                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                        "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
+    }
+
     public void pillarLayerBlock(PillarLayerBlock block) {
         pillarLayerBlock(block, blockTexture(block));
     }
@@ -1505,6 +1512,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(quarter_vertical_layer_4).rotationY(180).addModel()
                 .partialState().with(VerticalQuarterLayerBlock.FACING, Direction.WEST).with(VerticalQuarterLayerBlock.TYPE, LeftRightShape.LEFT).with(VerticalQuarterLayerBlock.LAYERS, 5)
                 .modelForState().modelFile(full_block).addModel();
+    }
+
+    public void saplingBlock(RegistryObject<Block> blockRegistryObject) {
+        simpleBlock(blockRegistryObject.get(),
+                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     public void slabLayerBlock(SlabLayerBlock block) {
