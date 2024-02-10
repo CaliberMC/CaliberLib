@@ -15,7 +15,7 @@ plugins {
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'com.calibermc'
-version = mod_version
+version = mod_version-minecraft_version
 
 base {
     archivesName = mod_id
@@ -168,7 +168,7 @@ tasks.named('processResources', ProcessResources).configure {
             minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
             forge_version: forge_version, forge_version_range: forge_version_range,
             loader_version_range: forge_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_version: mod_version,
+            mod_id: mod_id, mod_name: mod_name, mod_version: mod_version, pub_version: pub_version,
             mod_authors: mod_authors,
     ]
 
@@ -211,7 +211,7 @@ publishing {
             artifact sourcesJar
             groupId = 'com.calibermc.caliberlib'
             artifactId = mod_id
-            version = mod_version
+            version = pub_version
         }
     }
     repositories {
