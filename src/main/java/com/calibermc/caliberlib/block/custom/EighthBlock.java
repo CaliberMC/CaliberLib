@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.EighthShape;
+import com.calibermc.caliberlib.block.shapes.QuadShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -34,7 +34,7 @@ import static net.minecraft.core.Direction.*;
 public class EighthBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final EnumProperty<EighthShape> TYPE = ModBlockStateProperties.EIGHTH_SHAPE;
+    public static final EnumProperty<QuadShape> TYPE = ModBlockStateProperties.QUAD_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
@@ -66,7 +66,7 @@ public class EighthBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, NORTH)
-                .setValue(TYPE, EighthShape.RIGHT)
+                .setValue(TYPE, QuadShape.RIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -82,7 +82,7 @@ public class EighthBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        EighthShape eighthShape = pState.getValue(TYPE);
+        QuadShape eighthShape = pState.getValue(TYPE);
         switch (eighthShape) {
             case TOP_RIGHT -> {
                 return TOP_RIGHT_SHAPE.get(pState.getValue(FACING));
@@ -113,25 +113,25 @@ public class EighthBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.TOP_RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.LEFT);
         } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.TOP_LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
 
         } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.TOP_RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.LEFT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, EighthShape.TOP_LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
 
         } else {
-            return blockstate1.setValue(TYPE, EighthShape.TOP_RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         }
 
     }

@@ -12,23 +12,15 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 public class ModBlockStateProperties {
     public static final EnumProperty<ArchShape> ARCH_SHAPE = EnumProperty.create("type", ArchShape.class);
     public static final EnumProperty<BalustradeShape> BALUSTRADE_SHAPE = EnumProperty.create("type", BalustradeShape.class);
-    public static final EnumProperty<CapitalShape> CAPITAL_SHAPE = EnumProperty.create("type", CapitalShape.class);
-    public static final EnumProperty<CornerShape> CORNER_SHAPE = EnumProperty.create("type", CornerShape.class);
-    public static final EnumProperty<CornerSlabShape> CORNER_SLAB_SHAPE = EnumProperty.create("type", CornerSlabShape.class);
-    public static final EnumProperty<EighthShape> EIGHTH_SHAPE = EnumProperty.create("type", EighthShape.class);
-    public static final EnumProperty<HalfArchShape> HALF_ARCH_SHAPE = EnumProperty.create("type", HalfArchShape.class);
-    public static final EnumProperty<RoofPeakShape> INTERSECTION_SHAPE = EnumProperty.create("type", RoofPeakShape.class);
     public static final EnumProperty<LargeArchShape> LARGE_ARCH_SHAPE = EnumProperty.create("type", LargeArchShape.class);
     public static final EnumProperty<LeftRightShape> LEFT_RIGHT_SHAPE = EnumProperty.create("type", LeftRightShape.class);
-    public static final EnumProperty<QuarterShape> QUARTER_SHAPE = EnumProperty.create("type", QuarterShape.class);
-    public static final EnumProperty<QuarterLayerShape> QUARTER_LAYER_SHAPE = EnumProperty.create("type", QuarterLayerShape.class);
+    public static final EnumProperty<LeftRightDoubleShape> LEFT_RIGHT_DOUBLE_SHAPE = EnumProperty.create("type", LeftRightDoubleShape.class);
+    public static final EnumProperty<QuadShape> QUAD_SHAPE = EnumProperty.create("type", QuadShape.class);
     public static final EnumProperty<RoofShape> ROOF_SHAPE = EnumProperty.create("type", RoofShape.class);
-    public static final EnumProperty<SlabLayerShape> SLAB_LAYER_SHAPE = EnumProperty.create("type", SlabLayerShape.class);
+    public static final EnumProperty<RoofPeakShape> ROOF_PEAK_SHAPE = EnumProperty.create("type", RoofPeakShape.class);
+    public static final EnumProperty<SingleDoubleShape> SINGLE_DOUBLE_SHAPE = EnumProperty.create("type", SingleDoubleShape.class);
     public static final EnumProperty<TopBottomShape> TOP_BOTTOM_SHAPE = EnumProperty.create("type", TopBottomShape.class);
-    public static final EnumProperty<VerticalCornerSlabShape> VERTICAL_CORNER_SLAB_SHAPE = EnumProperty.create("type", VerticalCornerSlabShape.class);
-    public static final EnumProperty<VerticalQuarterShape> VERTICAL_QUARTER_SHAPE = EnumProperty.create("type", VerticalQuarterShape.class);
-    public static final EnumProperty<VerticalQuarterLayerShape> VERTICAL_QUARTER_LAYER_SHAPE = EnumProperty.create("type", VerticalQuarterLayerShape.class);
-    public static final EnumProperty<VerticalSlabShape> VERTICAL_SLAB_SHAPE = EnumProperty.create("type", VerticalSlabShape.class);
+    public static final EnumProperty<TopBottomDoubleShape> TOP_BOTTOM_DOUBLE_SHAPE = EnumProperty.create("type", TopBottomDoubleShape.class);
     public static final EnumProperty<WindowShape> WINDOW_SHAPE = EnumProperty.create("type", WindowShape.class);
 
     public static final IntegerProperty FIVE_LAYERS = IntegerProperty.create("layers", 1, 5);

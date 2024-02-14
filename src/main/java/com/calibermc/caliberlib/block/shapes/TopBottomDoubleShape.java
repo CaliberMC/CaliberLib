@@ -3,14 +3,14 @@ package com.calibermc.caliberlib.block.shapes;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
-public enum QuarterShape implements StringRepresentable {
+public enum TopBottomDoubleShape implements StringRepresentable {
     TOP("top"),
     BOTTOM("bottom"),
     DOUBLE("double");
 
     private final String name;
 
-    QuarterShape(String pName) {
+    TopBottomDoubleShape(String pName) {
         this.name = pName;
     }
 

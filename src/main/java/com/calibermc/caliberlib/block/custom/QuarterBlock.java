@@ -1,7 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.custom.VerticalSlabBlock;
-import com.calibermc.caliberlib.block.shapes.QuarterShape;
+import com.calibermc.caliberlib.block.shapes.TopBottomDoubleShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -34,7 +33,7 @@ import java.util.Map;
 public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final EnumProperty<QuarterShape> TYPE = ModBlockStateProperties.QUARTER_SHAPE;
+    public static final EnumProperty<TopBottomDoubleShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_DOUBLE_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Maps.newEnumMap(ImmutableMap.of(
@@ -53,7 +52,7 @@ public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any() // ? this.defaultBlockState()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, QuarterShape.BOTTOM)
+                .setValue(TYPE, TopBottomDoubleShape.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -69,7 +68,7 @@ public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        QuarterShape quarterShape = pState.getValue(TYPE);
+        TopBottomDoubleShape quarterShape = pState.getValue(TYPE);
         switch (quarterShape) {
             case DOUBLE -> {
                 return VerticalSlabBlock.SHAPE.get(pState.getValue(FACING));
@@ -89,27 +88,27 @@ public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
         BlockPos blockpos = pContext.getClickedPos();
         BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
         if (blockstate.is(this)) {
-            return blockstate.setValue(TYPE, QuarterShape.DOUBLE).setValue(WATERLOGGED, Boolean.FALSE);
+            return blockstate.setValue(TYPE, TopBottomDoubleShape.DOUBLE).setValue(WATERLOGGED, Boolean.FALSE);
         } else {
             FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
-                    .setValue(TYPE, QuarterShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+                    .setValue(TYPE, TopBottomDoubleShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
             Direction direction = pContext.getClickedFace();
             return direction != Direction.DOWN && (direction == Direction.UP ||
                     !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 :
-                    blockstate1.setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(TYPE, QuarterShape.TOP);
+                    blockstate1.setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(TYPE, TopBottomDoubleShape.TOP);
         }
     }
 
     @Override
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
         ItemStack itemstack = pUseContext.getItemInHand();
-        QuarterShape quarterShape = pState.getValue(TYPE);
-        if (quarterShape != QuarterShape.DOUBLE && itemstack.is(this.asItem())) {
+        TopBottomDoubleShape quarterShape = pState.getValue(TYPE);
+        if (quarterShape != TopBottomDoubleShape.DOUBLE && itemstack.is(this.asItem())) {
             if (pUseContext.replacingClickedOnBlock()) {
                 boolean flag = pUseContext.getClickLocation().y - (double) pUseContext.getClickedPos().getY() > 0.5D;
                 Direction direction = pUseContext.getClickedFace();
-                if (quarterShape == QuarterShape.BOTTOM) {
+                if (quarterShape == TopBottomDoubleShape.BOTTOM) {
                     return direction == Direction.UP || flag && direction.getAxis().isHorizontal();
                 } else {
                     return direction == Direction.DOWN || !flag && direction.getAxis().isHorizontal();

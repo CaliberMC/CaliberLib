@@ -3,15 +3,14 @@ package com.calibermc.caliberlib.block.shapes;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
-public enum VerticalQuarterLayerShape implements StringRepresentable {
-
-    LEFT("left"),
-    RIGHT("right");
+public enum SingleDoubleShape implements StringRepresentable {
+    SINGLE("single"),
+    DOUBLE("double");
 
 
     private final String name;
 
-    VerticalQuarterLayerShape(String pName) {
+    SingleDoubleShape(String pName) {
         this.name = pName;
     }
 

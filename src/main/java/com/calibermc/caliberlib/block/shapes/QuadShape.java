@@ -3,7 +3,7 @@ package com.calibermc.caliberlib.block.shapes;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
-public enum CornerSlabShape implements StringRepresentable {
+public enum QuadShape implements StringRepresentable {
     LEFT("left"),
     RIGHT("right"),
     TOP_LEFT("top_left"),
@@ -12,7 +12,7 @@ public enum CornerSlabShape implements StringRepresentable {
 
     private final String name;
 
-    CornerSlabShape(String pName) {
+    QuadShape(String pName) {
         this.name = pName;
     }
 

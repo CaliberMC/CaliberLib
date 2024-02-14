@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.SlabLayerShape;
+import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
 
-    public static final EnumProperty<SlabLayerShape> TYPE = ModBlockStateProperties.SLAB_LAYER_SHAPE;
+    public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     public final int layerCount = 8;
@@ -57,7 +57,7 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(LAYERS, 4)
-                .setValue(TYPE, SlabLayerShape.BOTTOM)
+                .setValue(TYPE, TopBottomShape.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -73,7 +73,7 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        SlabLayerShape slabLayerShape = pState.getValue(TYPE);
+        TopBottomShape slabLayerShape = pState.getValue(TYPE);
         switch (slabLayerShape) {
             case TOP:
                 return SHAPE_BY_LAYER_TOP[pState.getValue(LAYERS)];
@@ -107,9 +107,9 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
             return blockstate.setValue(LAYERS, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
-            BlockState blockstate1 = this.defaultBlockState().setValue(LAYERS, 1).setValue(TYPE, SlabLayerShape.BOTTOM).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+            BlockState blockstate1 = this.defaultBlockState().setValue(LAYERS, 1).setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
             return clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ?
-                    blockstate1 : blockstate1.setValue(TYPE, SlabLayerShape.TOP);
+                    blockstate1 : blockstate1.setValue(TYPE, TopBottomShape.TOP);
         }
     }
 

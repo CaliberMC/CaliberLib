@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.CornerShape;
+import com.calibermc.caliberlib.block.shapes.LeftRightShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +32,7 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final EnumProperty<CornerShape> TYPE = ModBlockStateProperties.CORNER_SHAPE;
+    public static final EnumProperty<LeftRightShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_SHAPE;
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;
 
@@ -66,7 +66,7 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(LAYERS, 3)
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, CornerShape.RIGHT)
+                .setValue(TYPE, LeftRightShape.RIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -82,7 +82,7 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CornerShape cornerShape = pState.getValue(TYPE);
+        LeftRightShape cornerShape = pState.getValue(TYPE);
         Direction direction = pState.getValue(FACING);
 
         switch (cornerShape) {
@@ -124,18 +124,18 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
-                    .setValue(TYPE, CornerShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+                    .setValue(TYPE, LeftRightShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
             if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
-                return blockstate1.setValue(TYPE, CornerShape.RIGHT).setValue(LAYERS, 1);
+                return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
             } else if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
-                return blockstate1.setValue(TYPE, CornerShape.LEFT).setValue(LAYERS, 1);
+                return blockstate1.setValue(TYPE, LeftRightShape.LEFT).setValue(LAYERS, 1);
             } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
-                return blockstate1.setValue(TYPE, CornerShape.RIGHT).setValue(LAYERS, 1);
+                return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
             } else if (direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) {
-                return blockstate1.setValue(TYPE, CornerShape.LEFT).setValue(LAYERS, 1);
+                return blockstate1.setValue(TYPE, LeftRightShape.LEFT).setValue(LAYERS, 1);
             } else {
-                return blockstate1.setValue(TYPE, CornerShape.RIGHT);
+                return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
             }
         }
     }

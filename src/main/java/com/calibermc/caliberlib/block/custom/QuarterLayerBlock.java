@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.QuarterLayerShape;
+import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +29,7 @@ import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
 public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final EnumProperty<QuarterLayerShape> TYPE = ModBlockStateProperties.QUARTER_LAYER_SHAPE;
+    public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;
@@ -91,7 +91,7 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(LAYERS, 3)
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, QuarterLayerShape.BOTTOM)
+                .setValue(TYPE, TopBottomShape.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -102,7 +102,7 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        QuarterLayerShape quarterLayerShape = pState.getValue(TYPE);
+        TopBottomShape quarterLayerShape = pState.getValue(TYPE);
         Direction direction = pState.getValue(FACING);
 
         switch (quarterLayerShape) {
@@ -140,9 +140,9 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
-                    .setValue(LAYERS, 1).setValue(TYPE, QuarterLayerShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+                    .setValue(LAYERS, 1).setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
             return clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ?
-                    blockstate1 : blockstate1.setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(TYPE, QuarterLayerShape.TOP);
+                    blockstate1 : blockstate1.setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(TYPE, TopBottomShape.TOP);
         }
     }
 

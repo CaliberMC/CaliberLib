@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.CornerSlabShape;
+import com.calibermc.caliberlib.block.shapes.QuadShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -37,7 +37,7 @@ public class CornerSlabBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final EnumProperty<CornerSlabShape> TYPE = ModBlockStateProperties.CORNER_SLAB_SHAPE;
+    public static final EnumProperty<QuadShape> TYPE = ModBlockStateProperties.QUAD_SHAPE;
 
 
     public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
@@ -68,7 +68,7 @@ public class CornerSlabBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, CornerSlabShape.RIGHT)
+                .setValue(TYPE, QuadShape.RIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -84,7 +84,7 @@ public class CornerSlabBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CornerSlabShape cornerSlabShape = pState.getValue(TYPE);
+        QuadShape cornerSlabShape = pState.getValue(TYPE);
         switch (cornerSlabShape) {
             case TOP_LEFT -> {
                 return TOP_LEFT_SHAPE.get(pState.getValue(FACING));
@@ -115,23 +115,23 @@ public class CornerSlabBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.LEFT);
         } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.LEFT);
         } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.TOP_RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.TOP_LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
         } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.TOP_RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, CornerSlabShape.TOP_LEFT);
+            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
         } else {
-            return blockstate1.setValue(TYPE, CornerSlabShape.RIGHT);
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         }
     }
 

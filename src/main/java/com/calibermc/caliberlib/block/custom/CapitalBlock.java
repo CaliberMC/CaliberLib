@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.CapitalShape;
+import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +27,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 
 public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
-    public static final EnumProperty<CapitalShape> TYPE = ModBlockStateProperties.CAPITAL_SHAPE;
+    public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape BOTTOM_SHAPE = Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(4, 8, 4, 12, 16, 12), BooleanOp.OR);
     protected static final VoxelShape TOP_SHAPE = Shapes.join(Block.box(0, 8, 0, 16, 16, 16), Block.box(4, 0, 4, 12, 8, 12), BooleanOp.OR);
@@ -35,7 +35,7 @@ public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
     public CapitalBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(TYPE, CapitalShape.BOTTOM)
+                .setValue(TYPE, TopBottomShape.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -51,7 +51,7 @@ public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CapitalShape capitalShape = pState.getValue(TYPE);
+        TopBottomShape capitalShape = pState.getValue(TYPE);
         switch (capitalShape) {
             case TOP -> {
                 return TOP_SHAPE;
@@ -67,9 +67,9 @@ public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(TYPE, CapitalShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+        BlockState blockstate1 = this.defaultBlockState().setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
         Direction direction = pContext.getClickedFace();
-        return direction != Direction.DOWN && (direction == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.setValue(TYPE, CapitalShape.TOP);
+        return direction != Direction.DOWN && (direction == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.setValue(TYPE, TopBottomShape.TOP);
     }
 
     @Override

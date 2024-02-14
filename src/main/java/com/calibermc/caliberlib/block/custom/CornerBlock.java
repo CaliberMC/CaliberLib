@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.block.shapes.CornerShape;
+import com.calibermc.caliberlib.block.shapes.LeftRightShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -37,7 +37,7 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final EnumProperty<CornerShape> TYPE = ModBlockStateProperties.CORNER_SHAPE;
+    public static final EnumProperty<LeftRightShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_SHAPE;
 
     public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 16, 16, 16), Block.box(8, 0, 0, 16, 16, 8), BooleanOp.OR),
@@ -55,7 +55,7 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
-                .setValue(TYPE, CornerShape.RIGHT)
+                .setValue(TYPE, LeftRightShape.RIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -71,7 +71,7 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        CornerShape cornerShape = pState.getValue(TYPE);
+        LeftRightShape cornerShape = pState.getValue(TYPE);
         switch (cornerShape) {
             case LEFT -> {
                 return LEFT_SHAPE.get(pState.getValue(FACING));
@@ -91,18 +91,18 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
         Direction direction = pContext.getHorizontalDirection().getOpposite();
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
         BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
-                .setValue(TYPE, CornerShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+                .setValue(TYPE, LeftRightShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
-            return blockstate1.setValue(TYPE, CornerShape.RIGHT);
+            return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
         } else if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
-            return blockstate1.setValue(TYPE, CornerShape.LEFT);
+            return blockstate1.setValue(TYPE, LeftRightShape.LEFT);
         } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
-            return blockstate1.setValue(TYPE, CornerShape.RIGHT);
+            return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
         } else if (direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) {
-            return blockstate1.setValue(TYPE, CornerShape.LEFT);
+            return blockstate1.setValue(TYPE, LeftRightShape.LEFT);
         } else {
-            return blockstate1.setValue(TYPE, CornerShape.RIGHT);
+            return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
         }
 
     }

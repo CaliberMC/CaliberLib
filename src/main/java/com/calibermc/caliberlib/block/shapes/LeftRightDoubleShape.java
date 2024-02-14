@@ -3,16 +3,16 @@ package com.calibermc.caliberlib.block.shapes;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 
-public enum EighthShape implements StringRepresentable {
+public enum LeftRightDoubleShape implements StringRepresentable {
+
     LEFT("left"),
     RIGHT("right"),
-    TOP_LEFT("top_left"),
-    TOP_RIGHT("top_right");
+    DOUBLE("double");
 
 
     private final String name;
 
-    EighthShape(String pName) {
+    LeftRightDoubleShape(String pName) {
         this.name = pName;
     }
 
