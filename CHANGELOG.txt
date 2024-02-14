@@ -1,0 +1,23 @@
+0.1.0
+- Initial Release
+- This mod is in the early development phase
+- All classes moved from CaliberMod for use in other mods
+- Added BlockState/Model DataGen for Hanging Signs
+- Added Missing layer_block model
+
+0.1.1
+- Added BlockProps to ensure block property consistency across mods
+- Added README.md
+
+0.1.2 (in progress)
+- Added Buttons, Signs, Hanging Signs, Doors, Tall Doors, and Trapdoors to BlockManager
+
+
+
+
+
+
+
+
+
+
