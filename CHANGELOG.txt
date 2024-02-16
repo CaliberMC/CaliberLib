@@ -11,7 +11,8 @@
 
 0.1.2 (in progress)
 - Added Buttons, Signs, Hanging Signs, Doors, Tall Doors, and Trapdoors to BlockManager
-
+- Removed Pressure Plate Variant from Planks variants as it exists in Vanilla Minecraft
+- Added Mud Brick to BlockProps
 
 
 

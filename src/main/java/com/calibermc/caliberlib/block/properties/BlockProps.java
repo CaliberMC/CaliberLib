@@ -36,6 +36,7 @@ public enum BlockProps {
     LIMESTONE(BlockBehaviour.Properties.of().strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()),
     LIMESTONE_BRICK(BlockBehaviour.Properties.of().strength(1.5F, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()),
     MARBLE(BlockBehaviour.Properties.of().strength(2.0f, 6.0F).sound(SoundType.STONE).requiresCorrectToolForDrops()),
+    MUD_BRICK(BlockBehaviour.Properties.copy(Blocks.MUD_BRICKS)),
     MYCELIUM(BlockBehaviour.Properties.copy(Blocks.MYCELIUM)),
     CRIMSON_NYLIUM(BlockBehaviour.Properties.copy(Blocks.CRIMSON_NYLIUM)),
     NETHERITE(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)),
