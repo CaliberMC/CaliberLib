@@ -298,6 +298,9 @@ public class ModBlockHelper {
             String newTexture = tex.getPath().contains("_wood") ? "_log" : "_stem";
             tex = new ResourceLocation(tex.getNamespace(), tex.getPath().replace(replacement, newTexture));
             genWithSides.data((T) b.get(), tex, tex, tex, tex);
+        } else if (tex.getPath().contains("bamboo_block") && !tex.getPath().contains("stained")) {
+            tex = new ResourceLocation(tex.getNamespace(), "block/stripped_bamboo_block");
+            genWithSides.data((T) b.get(), tex, tex, tex, tex);
         } else if (tex.getPath().contains("tudor")) {
             String woodType = extractWoodType(tex);
             String prefix = tex.getPath().contains("stained") ? "stained_" : "";
@@ -345,12 +348,18 @@ public class ModBlockHelper {
     private static String extractWoodType(ResourceLocation resourceLocation) {
         if (resourceLocation.getPath().contains("acacia")) {
             return "acacia";
+        } else if (resourceLocation.getPath().contains("bamboo")) {
+            return "bamboo";
         } else if (resourceLocation.getPath().contains("birch")) {
             return "birch";
+        } else if (resourceLocation.getPath().contains("cherry")) {
+            return "cherry";
         } else if (resourceLocation.getPath().contains("dark_oak")) {
             return "dark_oak";
         } else if (resourceLocation.getPath().contains("jungle")) {
             return "jungle";
+        } else if (resourceLocation.getPath().contains("mangrove")) {
+            return "mangrove";
         } else if (resourceLocation.getPath().contains("oak") && !resourceLocation.getPath().contains("dark")) {
             return "oak";
         } else if (resourceLocation.getPath().contains("spruce")) {
