@@ -19,10 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 /**
  * Created to reduce the code in ModBlocks, for optimization and easier register of complex blocks
@@ -49,10 +46,10 @@ public class BlockManager {
                 modifiedName = name.replace("_planks", "");
             } else if (name.contains("wood")) {
                 modifiedName = name.replace("_wood", "");
-            } else if (name.contains("bamboo_block")) {
-                modifiedName = name.replace("_block", "");
             } else if (name.contains("boards")) {
                 modifiedName = name.replace("boards", "board");
+            } else if (name.contains("bamboo_block")) {
+                modifiedName = name.replace("_block", "");
 //            } else if (name.contains("shingles")) {
 //                modifiedName = name.replace("_shingles", "_shingle");
             } else {
@@ -169,9 +166,10 @@ public class BlockManager {
     }
 
     public static void addDefaultVariants(Builder builder, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
-        Supplier<BlockState> baseBlockState = () -> BlockManager.BLOCK_MANAGERS.get(((DeferredRegisterAccessor) builder.registry).modid()).stream().filter(blockManager ->
-                blockManager.name.equals(builder.name)).findFirst().map(blockManager ->
-                blockManager.baseBlock().defaultBlockState()).orElseThrow();
+        String modId = ((DeferredRegisterAccessor) builder.registry).modid();
+        Supplier<BlockManager> blockManagerSupplier = () -> BlockManager.BLOCK_MANAGERS.get(modId).stream().filter(blockManager ->
+                blockManager.name.equals(builder.name)).findFirst().orElseThrow();
+        Supplier<BlockState> baseBlockState = () -> blockManagerSupplier.get().baseBlock().defaultBlockState();
         for (ModBlockFamily.Variant variant : variants) {
             if (variant != ModBlockFamily.Variant.BASE && variant.caliberIsLoaded()) {
                 switch (variant) {
@@ -214,7 +212,7 @@ public class BlockManager {
                             builder.addVariant(variant, () -> new CornerSlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB.apply(blockSupplier)));
                     case CORNER_SLAB_VERTICAL ->
                             builder.addVariant(variant, () -> new VerticalCornerSlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB_VERTICAL.apply(blockSupplier)));
-//                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
+                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
                     case DOOR_FRAME ->
                             builder.addVariant(variant, () -> new DoorFrameBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME.apply(blockSupplier)));
                     case DOOR_FRAME_LINTEL ->
@@ -242,17 +240,17 @@ public class BlockManager {
                             builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
                     case ROOF_PEAK ->
                             builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
-//                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, WoodType.OAK), new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
+                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier, () -> blockManagerSupplier.get().get(ModBlockFamily.Variant.WALL_SIGN))));
                     case SLAB ->
                             builder.addVariant(variant, () -> new SlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
                     case SLAB_VERTICAL ->
                             builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
                     case STAIRS ->
                             builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
-//                    case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties), (b) -> b.stateGen(TRAP_DOOR.apply(blockSupplier)));
+                    case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));
                     case WALL ->
                             builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
-//                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
+                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, WoodType.OAK), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(() -> blockManagerSupplier.get().get(ModBlockFamily.Variant.SIGN), blockSupplier)));
                     case WINDOW ->
                             builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));
                     case WINDOW_HALF ->
