@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.data;
 
 import com.calibermc.caliberlib.block.management.BlockManager;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
+import com.calibermc.caliberlib.util.DataGenUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
@@ -211,6 +212,16 @@ public class ModBlockFamily {
             return this;
         }
 
+        public Builder pressurePlate(Block pPressurePlateBlock) {
+            this.family.variants.put(Variant.PRESSURE_PLATE, pPressurePlateBlock);
+            return this;
+        }
+
+        public Builder polished(Block pPolishedBlock) {
+            this.family.variants.put(Variant.POLISHED, pPolishedBlock);
+            return this;
+        }
+
         public Builder quarter(Block pQuarterBlock) {
             this.family.variants.put(Variant.QUARTER, pQuarterBlock);
             return this;
@@ -264,16 +275,6 @@ public class ModBlockFamily {
 
         public Builder tallDoor(Block pTallDoorBlock) {
             this.family.variants.put(Variant.TALL_DOOR, pTallDoorBlock);
-            return this;
-        }
-
-        public Builder pressurePlate(Block pPressurePlateBlock) {
-            this.family.variants.put(Variant.PRESSURE_PLATE, pPressurePlateBlock);
-            return this;
-        }
-
-        public Builder polished(Block pPolishedBlock) {
-            this.family.variants.put(Variant.POLISHED, pPolishedBlock);
             return this;
         }
 
@@ -398,8 +399,8 @@ public class ModBlockFamily {
         }
 
         public boolean caliberIsLoaded() {
-            boolean isDataGen = "true".equals(System.getProperty("mod.dataGen", "false"));
-            return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this)|| isDataGen;
+//            boolean isDataGen = "true".equals(System.getProperty("mod.dataGen", "false"));
+            return ModList.get().isLoaded("caliber") || vanillaVariants().contains(this)|| DataGenUtil.isDataGen;
         }
     }
 }

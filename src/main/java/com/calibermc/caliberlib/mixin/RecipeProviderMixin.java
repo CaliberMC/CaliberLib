@@ -1,5 +1,6 @@
 package com.calibermc.caliberlib.mixin;
 
+import com.calibermc.caliberlib.util.DataGenUtil;
 import net.minecraft.data.recipes.RecipeProvider;
 import org.joml.Random;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +13,8 @@ public class RecipeProviderMixin {
 
     @Inject(at = @At("TAIL"), method = "getName", cancellable = true)
     private void patch$getName(CallbackInfoReturnable<String> cir) {
-        cir.setReturnValue(cir.getReturnValue() + " " + Random.newSeed());
+        if (DataGenUtil.isDataGen) {
+            cir.setReturnValue(cir.getReturnValue() + " " + Random.newSeed());
+        }
     }
-
 }
