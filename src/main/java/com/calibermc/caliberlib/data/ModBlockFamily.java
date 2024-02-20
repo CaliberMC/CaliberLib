@@ -357,6 +357,8 @@ public class ModBlockFamily {
         ROOF_67("roof_67"),
         ROOF_PEAK("roof_peak"),
         SIGN("sign"),
+        CEILING_HANGING_SIGN("ceiling_hanging_sign"),
+        WALL_HANGING_SIGN("wall_hanging_sign"),
         SLAB("slab"),
         SLAB_VERTICAL("slab_vertical"),
         STAIRS("stairs"),

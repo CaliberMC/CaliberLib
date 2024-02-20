@@ -38,11 +38,6 @@ public class ModBlockHelper {
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
 
-    public static final List<Variant> PLANKS_PLUS_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.DOOR, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SIGN, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.TRAPDOOR,
-            Variant.WALL, Variant.WALL_SIGN, Variant.WINDOW, Variant.WINDOW_HALF);
-
     public static final List<Variant> BOARD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.PRESSURE_PLATE,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
@@ -190,6 +185,10 @@ public class ModBlockHelper {
             ModBlockHelper.<DoorBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.doorBlock(block, provider.name(block), bottom, top), (block, texture) -> provider.doorBlock(block, provider.name(block), texture, texture));
 
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> TALL_DOOR = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<TallDoorBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
+                    provider.tallDoorBlock(block, bottom, side, top), provider::tallDoorBlock);
+
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR_FRAME = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<DoorFrameBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.doorFrameBlock(block, tex), provider::doorFrameBlock);
@@ -225,6 +224,9 @@ public class ModBlockHelper {
 
     public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SIGN = (sign, wall) -> (b, provider) ->
             provider.signBlock((StandingSignBlock) sign.get(), (WallSignBlock) wall.get(), provider.blockTexture(BlockManager.getMainBy(b, sign)));
+
+    public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> HANGING_SIGN = (sign, wall) -> (b, provider) ->
+            provider.hangingSignBlock(sign.get(), wall.get(), provider.blockTexture(BlockManager.getMainBy(b, sign)));
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> TRAP_DOOR = (textureFrom) -> (b, provider) ->
             provider.trapdoorBlock((TrapDoorBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)), true);

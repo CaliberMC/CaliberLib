@@ -53,10 +53,10 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
             Block.box(0, 2, 0, 16, 16, 16),
             Block.box(0, 0.1, 0, 16, 16, 16)};
 
-    public SlabLayerBlock(Properties properties) {
+    public SlabLayerBlock(Properties properties, int layerCount) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(LAYERS, 4)
+                .setValue(LAYERS, layerCount)
                 .setValue(TYPE, TopBottomShape.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
