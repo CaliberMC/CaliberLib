@@ -84,7 +84,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                     ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
                     return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
                             && registryName != null && registryName.getNamespace().equals(this.modid)
-                            && !(block instanceof WallSignBlock);
+                            && !(block instanceof WallSignBlock) && !(block instanceof WallHangingSignBlock);
                 }) // Exclude WallSignBlock instances
                 .forEach(block -> {
                     String blockName = ForgeRegistries.BLOCKS.getKey(block).getPath();

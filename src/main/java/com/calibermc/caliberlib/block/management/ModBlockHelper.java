@@ -38,6 +38,11 @@ public class ModBlockHelper {
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
 
+    public static final List<Variant> PLANKS_PLUS_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
+            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.DOOR, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
+            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SIGN, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.TRAPDOOR,
+            Variant.WALL, Variant.WALL_SIGN, Variant.WINDOW, Variant.WINDOW_HALF);
+
     public static final List<Variant> BOARD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.PRESSURE_PLATE,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.SLAB, Variant.SLAB_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
