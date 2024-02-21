@@ -56,14 +56,18 @@ public class BlockManager {
                 modifiedName = name;
             }
 
-            if (e.variant != ModBlockFamily.Variant.BASE) {
-                String name1 = "%s_%s".formatted(modifiedName, e.variant.name().toLowerCase());
-                builder.put(e, Pair.of(new ResourceLocation(modid, name1), registerBlockFunc.apply(name1, e.blockSupplier)));
+            if (registerBlockFunc == null) {
+                builder.put(e, Pair.of(new ResourceLocation(name), e.blockSupplier));
             } else {
-                if (!e.skipRegister) {
-                    builder.put(e, Pair.of(new ResourceLocation(modid, name), registerBlockFunc.apply(name, e.blockSupplier)));
+                if (e.variant != ModBlockFamily.Variant.BASE) {
+                    String name1 = "%s_%s".formatted(modifiedName, e.variant.name().toLowerCase());
+                    builder.put(e, Pair.of(new ResourceLocation(modid, name1), registerBlockFunc.apply(name1, e.blockSupplier)));
                 } else {
-                    builder.put(e, Pair.of(new ResourceLocation(name), e.blockSupplier));
+                    if (!e.skipRegister) {
+                        builder.put(e, Pair.of(new ResourceLocation(modid, name), registerBlockFunc.apply(name, e.blockSupplier)));
+                    } else {
+                        builder.put(e, Pair.of(new ResourceLocation(name), e.blockSupplier));
+                    }
                 }
             }
         }
@@ -166,7 +170,7 @@ public class BlockManager {
     }
 
     public static void addDefaultVariants(Builder builder, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
-        String modId = ((DeferredRegisterAccessor) builder.registry).modid();
+        String modId = builder.modid;
         Supplier<BlockManager> blockManagerSupplier = () -> BlockManager.BLOCK_MANAGERS.get(modId).stream().filter(blockManager ->
                 blockManager.name.equals(builder.name)).findFirst().orElseThrow();
         Supplier<BlockState> baseBlockState = () -> blockManagerSupplier.get().baseBlock().defaultBlockState();
@@ -267,15 +271,19 @@ public class BlockManager {
     public static class Builder {
 
         private final String name;
-        private final DeferredRegister<Block> registry;
+        private final String modid;
         private BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc;
         private BlockSetType blockSetType = BlockSetType.STONE;
         private final List<BlockAdditional> blocks = new ArrayList<>();
 
         public Builder(String name, DeferredRegister<Block> registry) {
-            this.name = name;
-            this.registry = registry;
+            this(name, ((DeferredRegisterAccessor) registry).modid());
             this.registerBlockFunc = registry::register;
+        }
+
+        public Builder(String name, String modid) {
+            this.name = name;
+            this.modid = modid;
         }
 
         public Builder type(BlockSetType type) {
@@ -302,7 +310,7 @@ public class BlockManager {
         }
 
         public BlockManager build() {
-            return new BlockManager(this.name, this.blocks, this.blockSetType, ((DeferredRegisterAccessor) this.registry).modid(), this.registerBlockFunc);
+            return new BlockManager(this.name, this.blocks, this.blockSetType, this.modid, this.registerBlockFunc);
         }
     }
 
