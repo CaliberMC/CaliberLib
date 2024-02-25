@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod("caliberlib")
 public class CaliberLib {
+    public static final String MOD_ID = "caliberlib";
 
     private static final Logger LOGGER = LogManager.getLogger();
 
