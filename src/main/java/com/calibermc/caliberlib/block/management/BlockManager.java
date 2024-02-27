@@ -173,12 +173,21 @@ public class BlockManager {
 //    }
 
     public static Builder register(String name, DeferredRegister<Block> register, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
-        Builder builder = new Builder(name, register);
-        BlockSetType.values().forEach(b -> {
-            if (name.contains(b.name())) {
-                builder.type(b);
+        return register(name, (b) -> BlockSetType.values().forEach(type -> {
+            if (name.contains(type.name())) {
+                b.type(type);
             }
-        });
+        }), register, properties, blockSupplier, variants);
+    }
+
+    // example of registering with own type of block
+    /*public static Builder registerCedarOrSmth(String name, DeferredRegister<Block> register, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
+        return register(name, (b) -> b.type(ModBlockSetType.CEDAR), register, properties, blockSupplier, variants);
+    }*/
+
+    public static Builder register(String name, Consumer<Builder> consumer, DeferredRegister<Block> register, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
+        Builder builder = new Builder(name, register);
+        consumer.accept(builder);
 //        ModBlockSetType.values().forEach(mb -> {
 //            if (name.contains(mb.name())) {
 //                builder.type(mb);
@@ -275,7 +284,7 @@ public class BlockManager {
                             builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
                     case ROOF_PEAK ->
                             builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
-                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier, () -> blockManagerSupplier.get().get(ModBlockFamily.Variant.WALL_SIGN))));
+                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(() -> blockManagerSupplier.get().get(ModBlockFamily.Variant.SIGN), () -> blockManagerSupplier.get().get(ModBlockFamily.Variant.WALL_SIGN))));
                     case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.HANGING_SIGN.apply(blockSupplier, () -> blockManagerSupplier.get().get(ModBlockFamily.Variant.WALL_HANGING_SIGN))));
                     case SLAB ->
                             builder.addVariant(variant, () -> new SlabLayerBlock(properties, 4), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
@@ -288,7 +297,7 @@ public class BlockManager {
                     case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));
                     case WALL ->
                             builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
-                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(() -> blockManagerSupplier.get().get(ModBlockFamily.Variant.SIGN), blockSupplier)));
+                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(() -> blockManagerSupplier.get().get(ModBlockFamily.Variant.SIGN), () -> blockManagerSupplier.get().get(ModBlockFamily.Variant.WALL_SIGN))));
                     case WALL_HANGING_SIGN -> builder.addVariant(variant, () -> new WallHangingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.HANGING_SIGN.apply(() -> blockManagerSupplier.get().get(ModBlockFamily.Variant.SIGN), blockSupplier)));
                     case WINDOW ->
                             builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));

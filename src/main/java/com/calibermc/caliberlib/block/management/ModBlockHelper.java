@@ -188,19 +188,31 @@ public class ModBlockHelper {
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<DoorBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.doorBlock(block, provider.name(block), bottom, top), (block, texture) -> provider.doorBlock(block, provider.name(block), texture, texture));
+                    provider.doorBlock(block, bottom, top), (block, texture) -> {
+                ResourceLocation loc = provider.blockTexture(block);
+                provider.doorBlock(block, loc.withPath(loc.getPath() + "_bottom"), loc.withPath(loc.getPath() + "_top"));
+            });
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> TALL_DOOR = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<TallDoorBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.tallDoorBlock(block, bottom, side, top), provider::tallDoorBlock);
+                    provider.tallDoorBlock(block, bottom, side, top), (block, texture) -> {
+                ResourceLocation loc = provider.blockTexture(block);
+                provider.tallDoorBlock(block, loc.withPath(loc.getPath() + "_bottom"), loc.withPath(loc.getPath() + "_middle"), loc.withPath(loc.getPath() + "_top"));
+            });
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR_FRAME = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<DoorFrameBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.doorFrameBlock(block, tex), provider::doorFrameBlock);
+                    provider.doorFrameBlock(block, side, bottom, top), (block, texture) -> {
+                ResourceLocation loc = provider.blockTexture(block);
+                provider.doorFrameBlock(block, loc.withPath(loc.getPath() + "_side"), loc.withPath(loc.getPath() + "_bottom"), loc.withPath(loc.getPath() + "_top"));
+            });
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR_FRAME_LINTEL = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<DoorFrameLintelBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.doorFrameLintelBlock(block, tex), provider::doorFrameLintelBlock);
+                    provider.doorFrameLintelBlock(block, side, bottom, top), (block, texture) -> {
+                ResourceLocation loc = provider.blockTexture(block);
+                provider.doorFrameLintelBlock(block, loc.withPath(loc.getPath() + "_side"), loc.withPath(loc.getPath() + "_bottom"), loc.withPath(loc.getPath() + "_top"));
+            });
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> EIGHTH = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<EighthBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
@@ -227,8 +239,12 @@ public class ModBlockHelper {
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> PRESSURE_PLATE = (textureFrom) -> (b, provider) ->
             provider.pressurePlateBlock((PressurePlateBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)));
 
-    public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SIGN = (sign, wall) -> (b, provider) ->
+    public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SIGN = (sign, wall) -> (b, provider) -> {
+        try {
             provider.signBlock((StandingSignBlock) sign.get(), (WallSignBlock) wall.get(), provider.blockTexture(BlockManager.getMainBy(b, sign)));
+        } catch (Exception ignored) {
+        }
+    };
 
     public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> HANGING_SIGN = (sign, wall) -> (b, provider) ->
             provider.hangingSignBlock(sign.get(), wall.get(), provider.blockTexture(BlockManager.getMainBy(b, sign)));
