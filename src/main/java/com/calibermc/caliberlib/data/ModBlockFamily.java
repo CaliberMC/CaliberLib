@@ -207,6 +207,11 @@ public class ModBlockFamily {
             return this;
         }
 
+        public Builder layer_vertical(Block pVerticalLayerBlock) {
+            this.family.variants.put(Variant.LAYER_VERTICAL, pVerticalLayerBlock);
+            return this;
+        }
+
         public Builder pillar(Block pPillarBlock) {
             this.family.variants.put(Variant.PILLAR, pPillarBlock);
             return this;
@@ -349,6 +354,7 @@ public class ModBlockFamily {
         FENCE("fence"),
         FENCE_GATE("fence_gate"),
         LAYER("layer"),
+        LAYER_VERTICAL("layer_vertical"),
         PILLAR("pillar"),
         QUARTER("quarter"),
         QUARTER_VERTICAL("quarter_vertical"),

@@ -14,7 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -956,6 +958,215 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(corner_slab_top).rotationY(180).addModel();
     }
 
+    public void cornerSlabLayerBlock(CornerSlabLayerBlock block) {
+        cornerSlabLayerBlock(block, blockTexture(block));
+    }
+
+    public void cornerSlabLayerBlock(CornerSlabLayerBlock block, ResourceLocation texture) {
+        cornerSlabLayerBlock(block, texture, texture, texture, texture);
+    }
+
+    public void cornerSlabLayerBlock(CornerSlabLayerBlock block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation baseBlock) {
+        ModelFile corner_slab_layer_1 = models().withExistingParent(name(block) + "_layer_1", modLoc("block/templates/corner_slab_layer_1"))
+                .texture("side", side)
+                .texture("top", top)
+                .texture("bottom", bottom),
+                corner_slab_layer_2 = models().withExistingParent(name(block) + "_layer_2", modLoc("block/templates/corner_slab_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_layer_3 = models().withExistingParent(name(block) + "_layer_3", modLoc("block/templates/corner_slab_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_layer_4 = models().withExistingParent(name(block) + "_layer_4", modLoc("block/templates/corner_slab_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_top_layer_1 = models().withExistingParent(name(block) + "_top_layer_1", modLoc("block/templates/corner_slab_top_layer_1"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_top_layer_2 = models().withExistingParent(name(block) + "_top_layer_2", modLoc("block/templates/corner_slab_top_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_top_layer_3 = models().withExistingParent(name(block) + "_top_layer_3", modLoc("block/templates/corner_slab_top_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_top_layer_4 = models().withExistingParent(name(block) + "_top_layer_4", modLoc("block/templates/corner_slab_top_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                full_block = models().getExistingFile(baseBlock);
+
+        getVariantBuilder(block)
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(90).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_layer_1).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_layer_2).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_layer_3).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_layer_4).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(270).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_top_layer_1).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_top_layer_2).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_top_layer_3).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_top_layer_4).rotationY(180).uvLock(true).addModel()
+                .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel();
+    }
+
     public void cornerSlabVerticalBlock(VerticalCornerSlabBlock block) {
         cornerSlabVerticalBlock(block, blockTexture(block));
     }
@@ -1015,6 +1226,247 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(corner_slab_vertical_top).rotationY(270).addModel()
                 .partialState().with(VerticalCornerSlabBlock.FACING, Direction.WEST).with(VerticalCornerSlabBlock.TYPE, QuadShape.TOP_LEFT)
                 .modelForState().modelFile(corner_slab_vertical_top_left).rotationY(270).addModel();
+    }
+
+    public void cornerSlabLayerVerticalBlock(VerticalCornerSlabLayerBlock block) {
+        cornerSlabLayerVerticalBlock(block, blockTexture(block));
+    }
+
+    public void cornerSlabLayerVerticalBlock(VerticalCornerSlabLayerBlock block, ResourceLocation texture) {
+        cornerSlabLayerVerticalBlock(block, texture, texture, texture, texture);
+    }
+
+    public void cornerSlabLayerVerticalBlock(VerticalCornerSlabLayerBlock block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation baseBlock) {
+        ModelFile corner_slab_vertical_layer_1 = models().withExistingParent(name(block) + "_layer_1", modLoc("block/templates/corner_slab_vertical_layer_1"))
+                .texture("side", side)
+                .texture("top", top)
+                .texture("bottom", bottom),
+                corner_slab_vertical_layer_2 = models().withExistingParent(name(block) + "_layer_2", modLoc("block/templates/corner_slab_vertical_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_layer_3 = models().withExistingParent(name(block) + "_layer_3", modLoc("block/templates/corner_slab_vertical_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_layer_4 = models().withExistingParent(name(block) + "_layer_4", modLoc("block/templates/corner_slab_vertical_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_left_layer_1 = models().withExistingParent(name(block) + "_left_layer_1", modLoc("block/templates/corner_slab_vertical_left_layer_1"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_left_layer_2 = models().withExistingParent(name(block) + "_left_layer_2", modLoc("block/templates/corner_slab_vertical_left_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_left_layer_3 = models().withExistingParent(name(block) + "_left_layer_3", modLoc("block/templates/corner_slab_vertical_left_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_left_layer_4 = models().withExistingParent(name(block) + "_left_layer_4", modLoc("block/templates/corner_slab_vertical_left_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_layer_1 = models().withExistingParent(name(block) + "_top_layer_1", modLoc("block/templates/corner_slab_vertical_top_layer_1"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_layer_2 = models().withExistingParent(name(block) + "_top_layer_2", modLoc("block/templates/corner_slab_vertical_top_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_layer_3 = models().withExistingParent(name(block) + "_top_layer_3", modLoc("block/templates/corner_slab_vertical_top_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_layer_4 = models().withExistingParent(name(block) + "_top_layer_4", modLoc("block/templates/corner_slab_vertical_top_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_left_layer_1 = models().withExistingParent(name(block) + "_top_left_layer_1", modLoc("block/templates/corner_slab_vertical_top_left_layer_1"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_left_layer_2 = models().withExistingParent(name(block) + "_top_left_layer_2", modLoc("block/templates/corner_slab_vertical_top_left_layer_2"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_left_layer_3 = models().withExistingParent(name(block) + "_top_left_layer_3", modLoc("block/templates/corner_slab_vertical_top_left_layer_3"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                corner_slab_vertical_top_left_layer_4 = models().withExistingParent(name(block) + "_top_left_layer_4", modLoc("block/templates/corner_slab_vertical_top_left_layer_4"))
+                        .texture("side", side)
+                        .texture("top", top)
+                        .texture("bottom", bottom),
+                full_block = models().getExistingFile(baseBlock);
+
+        getVariantBuilder(block)
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_layer_1).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_layer_2).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_layer_3).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_layer_4).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_1).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_2).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_3).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_4).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_1).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_2).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_3).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_4).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_1).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_2).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_3).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_4).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.NORTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_layer_1).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_layer_2).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_layer_3).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_layer_4).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_1).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_2).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_3).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_4).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_1).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_2).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_3).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_4).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_1).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_2).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_3).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_4).rotationY(90).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.EAST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_layer_1).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_layer_2).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_layer_3).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_layer_4).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_1).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_2).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_3).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_4).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_1).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_2).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_3).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_4).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_1).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_2).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_3).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_4).rotationY(180).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.SOUTH).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_layer_1).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_layer_2).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_layer_3).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_layer_4).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_1).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_2).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_3).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_left_layer_4).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_1).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_2).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_3).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_layer_4).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_RIGHT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 1)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_1).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 2)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_2).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 3)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_3).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 4)
+                .modelForState().modelFile(corner_slab_vertical_top_left_layer_4).rotationY(270).addModel()
+                .partialState().with(VerticalCornerSlabLayerBlock.FACING, Direction.WEST).with(VerticalCornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(VerticalCornerSlabLayerBlock.LAYERS, 5)
+                .modelForState().modelFile(full_block).addModel();
     }
 
     public void doorFrameBlock(DoorFrameBlock block) {
@@ -1528,31 +1980,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     public void slabLayerBlock(SlabLayerBlock block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation baseBlock) {
-        ModelFile slab_layer_1 = models().withExistingParent(name(block) + "_layer_1", modLoc("block/templates/slab_layer_1"))
+        ModelFile slab_layer_1 = models().withExistingParent(name(block) + "_1", modLoc("block/templates/slab_layer_1"))
                 .texture("side", side)
                 .texture("top", top)
                 .texture("bottom", bottom),
-                slab_layer_2 = models().withExistingParent(name(block) + "_layer_2", modLoc("block/templates/slab_layer_2"))
+                slab_layer_2 = models().withExistingParent(name(block) + "_2", modLoc("block/templates/slab_layer_2"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_layer_3 = models().withExistingParent(name(block) + "_layer_3", modLoc("block/templates/slab_layer_3"))
+                slab_layer_3 = models().withExistingParent(name(block) + "_3", modLoc("block/templates/slab_layer_3"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_layer_4 = models().withExistingParent(name(block) + "_layer_4", modLoc("block/templates/slab_layer_4"))
+                slab_layer_4 = models().withExistingParent(name(block) + "_4", modLoc("block/templates/slab_layer_4"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_layer_5 = models().withExistingParent(name(block) + "_layer_5", modLoc("block/templates/slab_layer_5"))
+                slab_layer_5 = models().withExistingParent(name(block) + "_5", modLoc("block/templates/slab_layer_5"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_layer_6 = models().withExistingParent(name(block) + "_layer_6", modLoc("block/templates/slab_layer_6"))
+                slab_layer_6 = models().withExistingParent(name(block) + "_6", modLoc("block/templates/slab_layer_6"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_layer_7 = models().withExistingParent(name(block) + "_layer_7", modLoc("block/templates/slab_layer_7"))
+                slab_layer_7 = models().withExistingParent(name(block) + "_7", modLoc("block/templates/slab_layer_7"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
@@ -1603,31 +2055,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     public void slabVerticalLayerBlock(VerticalSlabLayerBlock block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation baseBlock) {
-        ModelFile slab_vertical_layer_1 = models().withExistingParent(name(block) + "_layer_1", modLoc("block/templates/slab_vertical_layer_1"))
+        ModelFile slab_vertical_layer_1 = models().withExistingParent(name(block) + "_1", modLoc("block/templates/slab_vertical_layer_1"))
                 .texture("side", side)
                 .texture("top", top)
                 .texture("bottom", bottom),
-                slab_vertical_layer_2 = models().withExistingParent(name(block) + "_layer_2", modLoc("block/templates/slab_vertical_layer_2"))
+                slab_vertical_layer_2 = models().withExistingParent(name(block) + "_2", modLoc("block/templates/slab_vertical_layer_2"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_vertical_layer_3 = models().withExistingParent(name(block) + "_layer_3", modLoc("block/templates/slab_vertical_layer_3"))
+                slab_vertical_layer_3 = models().withExistingParent(name(block) + "_3", modLoc("block/templates/slab_vertical_layer_3"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_vertical_layer_4 = models().withExistingParent(name(block) + "_layer_4", modLoc("block/templates/slab_vertical_layer_4"))
+                slab_vertical_layer_4 = models().withExistingParent(name(block) + "_4", modLoc("block/templates/slab_vertical_layer_4"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_vertical_layer_5 = models().withExistingParent(name(block) + "_layer_5", modLoc("block/templates/slab_vertical_layer_5"))
+                slab_vertical_layer_5 = models().withExistingParent(name(block) + "_5", modLoc("block/templates/slab_vertical_layer_5"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_vertical_layer_6 = models().withExistingParent(name(block) + "_layer_6", modLoc("block/templates/slab_vertical_layer_6"))
+                slab_vertical_layer_6 = models().withExistingParent(name(block) + "_6", modLoc("block/templates/slab_vertical_layer_6"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
-                slab_vertical_layer_7 = models().withExistingParent(name(block) + "_layer_7", modLoc("block/templates/slab_vertical_layer_7"))
+                slab_vertical_layer_7 = models().withExistingParent(name(block) + "_7", modLoc("block/templates/slab_vertical_layer_7"))
                         .texture("side", side)
                         .texture("top", top)
                         .texture("bottom", bottom),
@@ -2460,25 +2912,22 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(roof_peak_end_top).rotationY(90).addModel();
     }
 
-    /* no need anymore, because BlockManager right now stateGenerator field
-    private void tudorBlocks() {
-        ImmutableMap.Builder<List<BlockManager>, Block> map = ImmutableMap.builder();
-        // Beige, Brown, Ochre, Tan, White Plasters - Half-Timbered
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_ACACIA_BEIGE_PLASTER, ModBlocks.TUDOR_ACACIA_BROWN_PLASTER, ModBlocks.TUDOR_ACACIA_OCHRE_PLASTER, ModBlocks.TUDOR_ACACIA_TAN_PLASTER, ModBlocks.TUDOR_ACACIA_WHITE_PLASTER), Blocks.ACACIA_PLANKS);
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_BIRCH_BEIGE_PLASTER, ModBlocks.TUDOR_BIRCH_BROWN_PLASTER, ModBlocks.TUDOR_BIRCH_OCHRE_PLASTER, ModBlocks.TUDOR_BIRCH_TAN_PLASTER, ModBlocks.TUDOR_BIRCH_WHITE_PLASTER), Blocks.BIRCH_PLANKS);
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_DARK_OAK_BEIGE_PLASTER, ModBlocks.TUDOR_DARK_OAK_BROWN_PLASTER, ModBlocks.TUDOR_DARK_OAK_OCHRE_PLASTER, ModBlocks.TUDOR_DARK_OAK_TAN_PLASTER, ModBlocks.TUDOR_DARK_OAK_WHITE_PLASTER), Blocks.DARK_OAK_PLANKS);
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_JUNGLE_BEIGE_PLASTER, ModBlocks.TUDOR_JUNGLE_BROWN_PLASTER, ModBlocks.TUDOR_JUNGLE_OCHRE_PLASTER, ModBlocks.TUDOR_JUNGLE_TAN_PLASTER, ModBlocks.TUDOR_JUNGLE_WHITE_PLASTER), Blocks.JUNGLE_PLANKS);
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_OAK_BEIGE_PLASTER, ModBlocks.TUDOR_OAK_BROWN_PLASTER, ModBlocks.TUDOR_OAK_OCHRE_PLASTER, ModBlocks.TUDOR_OAK_TAN_PLASTER, ModBlocks.TUDOR_OAK_WHITE_PLASTER), Blocks.OAK_PLANKS);
-        map.put(Lists.newArrayList(ModBlocks.TUDOR_SPRUCE_BEIGE_PLASTER, ModBlocks.TUDOR_SPRUCE_BROWN_PLASTER, ModBlocks.TUDOR_SPRUCE_OCHRE_PLASTER, ModBlocks.TUDOR_SPRUCE_TAN_PLASTER, ModBlocks.TUDOR_SPRUCE_WHITE_PLASTER), Blocks.SPRUCE_PLANKS);
-
-
-        //Creates a simple block using the above data, can be replaced with a similar option like in ModItemModelProvider
-        map.build().forEach((l, b) -> {
-            for (BlockManager blockManager : l) {
-                for (RegistryObject<Block> e : blockManager.getBlocks().values()) {
-                    simpleBlock(e.get(), models().cubeBottomTop(e.getId().getPath(), modLoc("block/%s".formatted(e.getId().getPath())), blockTexture(b), blockTexture(b)));
-                }
-            }
-        });
-    }*/
+//    public void slabBlock(SlabBlock block, ResourceLocation texture) {
+//        slabBlock(block,  texture);
+//    }
+//
+//    public void slabBlock(SlabBlock block, ResourceLocation doubleslab, ResourceLocation texture) {
+//        slabBlock(block, doubleslab, texture, texture, texture);
+//    }
+//
+//    public void slabBlock(SlabBlock block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ResourceLocation doubleslab) {
+//        slabBlock(block, models().slab(name(block), side, bottom, top), models().slabTop(name(block) + "_top", side, bottom, top), models().getExistingFile(doubleslab));
+//    }
+//
+//    public void slabBlock(SlabBlock block, ModelFile bottom, ModelFile top, ModelFile doubleslab) {
+//        getVariantBuilder(block)
+//                .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(bottom))
+//                .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(top))
+//                .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubleslab));
+//    }
 }

@@ -1,12 +1,16 @@
 package com.calibermc.caliberlib.data.datagen.loot;
 
+import com.calibermc.caliberlib.block.custom.TallDoorBlock;
 import com.calibermc.caliberlib.block.management.BlockManager;
+import com.calibermc.caliberlib.block.shapes.doors.TallDoorPart;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootTable;
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +53,10 @@ public class ModBlockLootTables extends BlockLootSubProvider {
     @Override
     public void dropSelf(Block pBlock) {
         super.dropSelf(pBlock);
+    }
+
+    public void dropDoor(Block pBlock) {
+        this.add(pBlock, this.createDoorTable(pBlock));
     }
 
     @NotNull

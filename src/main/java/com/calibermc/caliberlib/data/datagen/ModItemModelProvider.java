@@ -40,17 +40,20 @@ public class ModItemModelProvider extends ItemModelProvider {
                 }
 
                 if (variant.equals(ModBlockFamily.Variant.CORNER)
+                        || variant.equals(ModBlockFamily.Variant.CORNER_SLAB)
+                        || variant.equals(ModBlockFamily.Variant.CORNER_SLAB_VERTICAL)
                         || variant.equals(ModBlockFamily.Variant.PILLAR)
                         || variant.equals(ModBlockFamily.Variant.QUARTER)
                         || variant.equals(ModBlockFamily.Variant.QUARTER_VERTICAL)) {
                     parentName += "_layer_3";
                 }
 
-                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
-                    parentName += "_layer_4";
-                }
+//                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
+//                    parentName += "_layer_4";
+//                }
 
                 if (variant.equals(ModBlockFamily.Variant.LAYER)
+                        || variant.equals(ModBlockFamily.Variant.LAYER_VERTICAL)
                         || variant.equals(ModBlockFamily.Variant.BEAM_LINTEL)
                         || variant.equals(ModBlockFamily.Variant.DOOR_FRAME_LINTEL)
                         || variant.equals(ModBlockFamily.Variant.BEAM_POSTS)
@@ -74,7 +77,14 @@ public class ModItemModelProvider extends ItemModelProvider {
                     parentName += "_bottom";
                 }
 
-                withExistingParent(blockName, modLoc("block/" + parentName));
+                if (variant.equals(ModBlockFamily.Variant.DOOR)
+                        || variant.equals(ModBlockFamily.Variant.TALL_DOOR)) {
+                    withExistingParent(blockName, new ResourceLocation("item/generated"))
+                            .texture("layer0", new ResourceLocation(this.modid, "item/" + parentName));
+                } else {
+
+                    withExistingParent(blockName, modLoc("block/" + parentName));
+                }
             }
         }
 
@@ -147,6 +157,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
+
                 });
     }
 }
