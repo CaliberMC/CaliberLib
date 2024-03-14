@@ -59,6 +59,11 @@ public class ModBlockLootTables extends BlockLootSubProvider {
         this.add(pBlock, this.createDoorTable(pBlock));
     }
 
+    public void dropTallDoor(Block pBlock) {
+        LootTable.Builder lootTableBuilder = createSinglePropConditionTable(pBlock, TallDoorBlock.THIRD, TallDoorPart.BOTTOM);
+        this.add(pBlock, lootTableBuilder);
+    }
+
     @NotNull
     public LootTable.Builder createSingleItemTableWithSilkTouch(Block pBlock, ItemLike pItem) {
         return super.createSingleItemTableWithSilkTouch(pBlock, pItem);
