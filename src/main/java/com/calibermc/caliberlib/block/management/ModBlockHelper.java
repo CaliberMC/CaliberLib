@@ -201,9 +201,12 @@ public class ModBlockHelper {
             ModBlockHelper.<DoorFrameLintelBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.doorFrameLintelBlock(block, tex), provider::doorFrameLintelBlock);
 
+//    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> EIGHTH = (textureFrom) -> (b, provider) ->
+//            ModBlockHelper.<EighthBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
+//                    provider.eighthBlock(block, side, bottom, top), provider::eighthBlock);
+
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> EIGHTH = (textureFrom) -> (b, provider) ->
-            ModBlockHelper.<EighthBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.eighthBlock(block, side, bottom, top), provider::eighthBlock);
+            ModBlockHelper.<EighthLayerBlock>fixBlockTex(textureFrom, b, provider, provider::eighthLayerBlock, provider::eighthLayerBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> FENCE = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<FenceBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) -> {

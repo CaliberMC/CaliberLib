@@ -1,0 +1,32 @@
+{
+	"credit": "Made by Charm8er for CaliberMC",
+	"parent": "caliberlib:block/templates/caliber_block",
+	"textures": {
+		"particle": "#side"
+	},
+	"elements": [
+		{
+			"from": [12, 0, 12],
+			"to": [16, 4, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"color": 0,
+			"faces": {
+				"north": {"uv": [0, 12, 4, 16], "texture": "#side"},
+				"east": {"uv": [0, 12, 4, 16], "texture": "#side", "cullface": "east"},
+				"south": {"uv": [12, 12, 16, 16], "texture": "#side", "cullface": "south"},
+				"west": {"uv": [12, 12, 16, 16], "texture": "#side"},
+				"up": {"uv": [12, 12, 16, 16], "texture": "#top"},
+				"down": {"uv": [12, 0, 16, 4], "texture": "#bottom", "cullface": "down"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "VoxelShapes",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0]
+		}
+	]
+}

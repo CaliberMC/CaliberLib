@@ -42,6 +42,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                 if (variant.equals(ModBlockFamily.Variant.CORNER)
                         || variant.equals(ModBlockFamily.Variant.CORNER_SLAB)
                         || variant.equals(ModBlockFamily.Variant.CORNER_SLAB_VERTICAL)
+                        || variant.equals(ModBlockFamily.Variant.EIGHTH)
                         || variant.equals(ModBlockFamily.Variant.PILLAR)
                         || variant.equals(ModBlockFamily.Variant.QUARTER)
                         || variant.equals(ModBlockFamily.Variant.QUARTER_VERTICAL)) {

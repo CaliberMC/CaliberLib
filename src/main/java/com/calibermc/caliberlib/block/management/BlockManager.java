@@ -218,7 +218,7 @@ public class BlockManager {
                     case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties, builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropDoor).stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
                     case DOOR_FRAME -> builder.addVariant(variant, () -> new DoorFrameBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME.apply(blockSupplier)));
                     case DOOR_FRAME_LINTEL -> builder.addVariant(variant, () -> new DoorFrameLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME_LINTEL.apply(blockSupplier)));
-                    case EIGHTH -> builder.addVariant(variant, () -> new EighthBlock(properties), (b) -> b.stateGen(ModBlockHelper.EIGHTH.apply(blockSupplier)));
+                    case EIGHTH -> builder.addVariant(variant, () -> new EighthLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.EIGHTH.apply(blockSupplier)));
                     case FENCE -> builder.addVariant(variant, () -> new FenceBlock(properties), (b) -> b.stateGen(ModBlockHelper.FENCE.apply(blockSupplier)));
                     case FENCE_GATE -> builder.addVariant(variant, () -> new FenceGateBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.FENCE_GATE.apply(blockSupplier)));
                     case LAYER -> builder.addVariant(variant, () -> new SlabLayerBlock(properties, 1), (b) -> b.stateGen(ModBlockHelper.LAYER.apply(blockSupplier)));
