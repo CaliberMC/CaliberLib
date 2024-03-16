@@ -1,12 +1,12 @@
 package com.calibermc.caliberlib.block.management;
 
 import com.calibermc.caliberlib.block.custom.*;
-import com.calibermc.caliberlib.block.properties.ModBlockSetType;
 import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
 import com.calibermc.caliberlib.data.datagen.loot.ModBlockLootTables;
 import com.calibermc.caliberlib.mixin.DeferredRegisterAccessor;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
@@ -15,14 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.registries.DeferredRegister;
-import com.google.common.collect.Lists;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.*;
-import java.util.stream.Stream;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Created to reduce the code in ModBlocks, for optimization and easier register of complex blocks
@@ -36,7 +36,7 @@ public class BlockManager {
     private final BlockSetType blockSetType;
     private final ImmutableMap<BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> blocks;
 
-    public BlockManager(String name, List<BlockAdditional> directions, BlockSetType blockSetType, String modid, BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc) {
+    BlockManager(String name, List<BlockAdditional> directions, BlockSetType blockSetType, String modid) {
         this.blockSetType = blockSetType;
         ImmutableMap.Builder<BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> builder = ImmutableMap.builder();
         for (BlockAdditional e : directions) {
@@ -59,15 +59,15 @@ public class BlockManager {
                 modifiedName = name;
             }
 
-            if (registerBlockFunc == null) {
+            if (e.registerBlockFunc == null) {
                 builder.put(e, Pair.of(new ResourceLocation(name), e.blockSupplier));
             } else {
                 if (e.variant != ModBlockFamily.Variant.BASE) {
                     String name1 = "%s_%s".formatted(modifiedName, e.variant.name().toLowerCase());
-                    builder.put(e, Pair.of(new ResourceLocation(modid, name1), registerBlockFunc.apply(name1, e.blockSupplier)));
+                    builder.put(e, Pair.of(new ResourceLocation(modid, name1), e.registerBlockFunc.apply(name1, e.blockSupplier)));
                 } else {
                     if (!e.skipRegister) {
-                        builder.put(e, Pair.of(new ResourceLocation(modid, name), registerBlockFunc.apply(name, e.blockSupplier)));
+                        builder.put(e, Pair.of(new ResourceLocation(modid, name), e.registerBlockFunc.apply(name, e.blockSupplier)));
                     } else {
                         builder.put(e, Pair.of(new ResourceLocation(name), e.blockSupplier));
                     }
@@ -76,6 +76,9 @@ public class BlockManager {
         }
 
         this.blocks = builder.build();
+        for (Map.Entry<BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : this.blocks.entrySet()) {
+            e.getKey().blockConsumer.accept(this, e.getValue());
+        }
         this.name = name;
         ALL_BLOCKS.addAll(this.blocks.values().stream().map(Pair::getSecond).toList());
         if (!BLOCK_MANAGERS.containsKey(modid)) {
@@ -187,16 +190,12 @@ public class BlockManager {
         return builder;
     }
 
-
-
-
     public static void addDefaultVariants(Builder builder, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
         String modId = builder.modid;
-        Supplier<BlockManager> blockManagerSupplier = () -> BlockManager.BLOCK_MANAGERS.get(modId).stream().filter(blockManager ->
-                blockManager.name.equals(builder.name)).findFirst().orElseThrow();
         WoodType woodType = WoodType.values().filter(p ->
                 p.name().equals(builder.blockSetType.name())).findFirst().orElse(WoodType.OAK);
-        Supplier<BlockState> baseBlockState = () -> blockManagerSupplier.get().baseBlock().defaultBlockState();
+        Supplier<BlockState> baseBlockState = () -> BlockManager.BLOCK_MANAGERS.get(modId).stream().filter(blockManager ->
+                blockManager.name.equals(builder.name)).findFirst().orElseThrow().baseBlock().defaultBlockState();
         for (ModBlockFamily.Variant variant : variants) {
             if (variant != ModBlockFamily.Variant.BASE && variant.caliberIsLoaded()) {
                 switch (variant) {
@@ -231,16 +230,16 @@ public class BlockManager {
                     case ROOF_45 -> builder.addVariant(variant, () -> new Roof45Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_45.apply(blockSupplier)));
                     case ROOF_67 -> builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
                     case ROOF_PEAK -> builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
-                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
-                    case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
+                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, woodType), (b) -> b.stateGenBase(ModBlockHelper.SIGN));
+                    case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties, woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
                     case SLAB -> builder.addVariant(variant, () -> new SlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
 //                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
                     case TALL_DOOR -> builder.addVariant(variant, () -> new TallDoorBlock(properties, builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropTallDoor).stateGen(ModBlockHelper.TALL_DOOR.apply(blockSupplier)));
                     case STAIRS -> builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
                     case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));
                     case WALL -> builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
-                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
-                    case WALL_HANGING_SIGN -> builder.addVariant(variant, () -> new WallHangingSignBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.SIGN.apply(blockSupplier)));
+                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, woodType));
+                    case WALL_HANGING_SIGN -> builder.addVariant(variant, () -> new WallHangingSignBlock(properties, woodType));
                     case WINDOW -> builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));
                     case WINDOW_HALF -> builder.addVariant(variant, () -> new HalfWindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW_HALF.apply("window_half", blockSupplier)));
                 }
@@ -250,11 +249,11 @@ public class BlockManager {
 
     public static class Builder {
 
-        private final String name;
-        private final String modid;
-        private BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc;
-        private BlockSetType blockSetType = BlockSetType.STONE;
-        private final List<BlockAdditional> blocks = new ArrayList<>();
+        public final String name;
+        public final String modid;
+        public BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc;
+        public BlockSetType blockSetType = BlockSetType.STONE;
+        public final List<BlockAdditional> blocks = new ArrayList<>();
 
         public Builder(String name, DeferredRegister<Block> registry) {
             this(name, ((DeferredRegisterAccessor) registry).modid());
@@ -283,14 +282,25 @@ public class BlockManager {
         }
 
         public Builder addVariant(ModBlockFamily.Variant variant, Supplier<Block> block, Consumer<BlockAdditional> consumer) {
-            BlockAdditional additional = new BlockAdditional(variant, block);
+            this.addVariant(variant, block, null, consumer);
+            return this;
+        }
+
+        public Builder addVariant(ModBlockFamily.Variant variant, Supplier<Block> block, BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc, Consumer<BlockAdditional> consumer) {
+            BlockAdditional additional = new BlockAdditional(variant, block, registerBlockFunc);
             consumer.accept(additional);
             this.blocks.add(additional);
             return this;
         }
 
         public BlockManager build() {
-            return new BlockManager(this.name, this.blocks, this.blockSetType, this.modid, this.registerBlockFunc);
+            for (BlockAdditional block : this.blocks) {
+                if (block.registerBlockFunc == null) {
+                    block.registerBlockFunc = this.registerBlockFunc;
+                }
+            }
+
+            return new BlockManager(this.name, this.blocks, this.blockSetType, this.modid);
         }
     }
 
@@ -299,14 +309,24 @@ public class BlockManager {
         public final Supplier<Block> blockSupplier;
         public boolean skipRegister; // used to register in manager, but don't register it in minecraft (basically when block already registered in mc)
         public BiConsumer<ModBlockLootTables, Block> lootGen = ModBlockLootTables::dropSelf;
-        public BiConsumer<Supplier<Block>, ModBlockStateProvider> stateGenerator = (b, provider) ->
-                ModBlockHelper.fixBlockTex(b, b, provider, (block, side, bottom, top, tex) ->
-                        provider.simpleBlock(b.get(), provider.models().cubeBottomTop(provider.name(b.get()), side, bottom, top)), (block, tex) ->
-                        provider.simpleBlock(b.get(), provider.models().cubeAll(provider.name(b.get()), tex)));
+        public BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> stateGenerator = (b, pair) -> {
+            ModBlockStateProvider provider = pair.getSecond();
+            ModBlockHelper.fixBlockTex(b, b, provider, (block, side, bottom, top, tex) ->
+                    provider.simpleBlock(b.get(), provider.models().cubeBottomTop(provider.name(b.get()), side, bottom, top)), (block, tex) ->
+                    provider.simpleBlock(b.get(), provider.models().cubeAll(provider.name(b.get()), tex)));
+        };
+        public BiConsumer<BlockManager, Pair<ResourceLocation, Supplier<Block>>> blockConsumer = (manager, b) -> {};
+        public BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc;
 
-        public BlockAdditional(ModBlockFamily.Variant variant, Supplier<Block> blockSupplier) {
+        public BlockAdditional(ModBlockFamily.Variant variant, Supplier<Block> blockSupplier, BiFunction<String, Supplier<Block>, RegistryObject<Block>> registerBlockFunc) {
             this.variant = variant;
             this.blockSupplier = blockSupplier;
+            this.registerBlockFunc = registerBlockFunc;
+        }
+
+        public BlockAdditional afterRegister(BiConsumer<BlockManager, Pair<ResourceLocation, Supplier<Block>>> blockConsumer) {
+            this.blockConsumer = blockConsumer;
+            return this;
         }
 
         public BlockAdditional lootGen(BiConsumer<ModBlockLootTables, Block> lootGen) {
@@ -314,9 +334,13 @@ public class BlockManager {
             return this;
         }
 
-        public BlockAdditional stateGen(BiConsumer<Supplier<Block>, ModBlockStateProvider> stateGenerator) {
+        public BlockAdditional stateGenBase(BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> stateGenerator) {
             this.stateGenerator = stateGenerator;
             return this;
+        }
+
+        public BlockAdditional stateGen(BiConsumer<Supplier<Block>, ModBlockStateProvider> stateGenerator) {
+            return this.stateGenBase((s, p) -> stateGenerator.accept(s, p.getSecond()));
         }
 
         public BlockAdditional skipRegister() {

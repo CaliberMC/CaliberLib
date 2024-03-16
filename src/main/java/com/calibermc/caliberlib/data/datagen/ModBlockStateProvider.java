@@ -14,9 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -43,12 +41,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
         for (BlockManager blockManager : BlockManager.BLOCK_MANAGERS.get(this.modid)) {
             BlockManager.BlockAdditional base = blockManager.getByVariant(ModBlockFamily.Variant.BASE);
             if (base != null && !base.skipRegister) {
-                base.stateGenerator.accept(blockManager::baseBlock, this);
+                base.stateGenerator.accept(blockManager::baseBlock, Pair.of(blockManager, this));
             }
             for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : blockManager.getBlocks().entrySet()) {
                 if (e.getKey().variant != ModBlockFamily.Variant.BASE) {
                     try {
-                        e.getKey().stateGenerator.accept(e.getValue().getSecond(), this);
+                        e.getKey().stateGenerator.accept(e.getValue().getSecond(), Pair.of(blockManager, this));
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -3154,7 +3152,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(roof_peak_end_top).rotationY(90).addModel();
     }
 
-//    public void slabBlock(SlabBlock block, ResourceLocation texture) {
+    //    public void slabBlock(SlabBlock block, ResourceLocation texture) {
 //        slabBlock(block,  texture);
 //    }
 //
@@ -3172,4 +3170,26 @@ public class ModBlockStateProvider extends BlockStateProvider {
 //                .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(top))
 //                .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(doubleslab));
 //    }
+
+    /* no need anymore, because BlockManager right now stateGenerator field
+    private void tudorBlocks() {
+        ImmutableMap.Builder<List<BlockManager>, Block> map = ImmutableMap.builder();
+        // Beige, Brown, Ochre, Tan, White Plasters - Half-Timbered
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_ACACIA_BEIGE_PLASTER, ModBlocks.TUDOR_ACACIA_BROWN_PLASTER, ModBlocks.TUDOR_ACACIA_OCHRE_PLASTER, ModBlocks.TUDOR_ACACIA_TAN_PLASTER, ModBlocks.TUDOR_ACACIA_WHITE_PLASTER), Blocks.ACACIA_PLANKS);
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_BIRCH_BEIGE_PLASTER, ModBlocks.TUDOR_BIRCH_BROWN_PLASTER, ModBlocks.TUDOR_BIRCH_OCHRE_PLASTER, ModBlocks.TUDOR_BIRCH_TAN_PLASTER, ModBlocks.TUDOR_BIRCH_WHITE_PLASTER), Blocks.BIRCH_PLANKS);
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_DARK_OAK_BEIGE_PLASTER, ModBlocks.TUDOR_DARK_OAK_BROWN_PLASTER, ModBlocks.TUDOR_DARK_OAK_OCHRE_PLASTER, ModBlocks.TUDOR_DARK_OAK_TAN_PLASTER, ModBlocks.TUDOR_DARK_OAK_WHITE_PLASTER), Blocks.DARK_OAK_PLANKS);
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_JUNGLE_BEIGE_PLASTER, ModBlocks.TUDOR_JUNGLE_BROWN_PLASTER, ModBlocks.TUDOR_JUNGLE_OCHRE_PLASTER, ModBlocks.TUDOR_JUNGLE_TAN_PLASTER, ModBlocks.TUDOR_JUNGLE_WHITE_PLASTER), Blocks.JUNGLE_PLANKS);
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_OAK_BEIGE_PLASTER, ModBlocks.TUDOR_OAK_BROWN_PLASTER, ModBlocks.TUDOR_OAK_OCHRE_PLASTER, ModBlocks.TUDOR_OAK_TAN_PLASTER, ModBlocks.TUDOR_OAK_WHITE_PLASTER), Blocks.OAK_PLANKS);
+        map.put(Lists.newArrayList(ModBlocks.TUDOR_SPRUCE_BEIGE_PLASTER, ModBlocks.TUDOR_SPRUCE_BROWN_PLASTER, ModBlocks.TUDOR_SPRUCE_OCHRE_PLASTER, ModBlocks.TUDOR_SPRUCE_TAN_PLASTER, ModBlocks.TUDOR_SPRUCE_WHITE_PLASTER), Blocks.SPRUCE_PLANKS);
+
+
+        //Creates a simple block using the above data, can be replaced with a similar option like in ModItemModelProvider
+        map.build().forEach((l, b) -> {
+            for (BlockManager blockManager : l) {
+                for (RegistryObject<Block> e : blockManager.getBlocks().values()) {
+                    simpleBlock(e.get(), models().cubeBottomTop(e.getId().getPath(), modLoc("block/%s".formatted(e.getId().getPath())), blockTexture(b), blockTexture(b)));
+                }
+            }
+        });
+    }*/
 }

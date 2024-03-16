@@ -21,6 +21,8 @@
 - Refactored Slabs and Vertical Slabs to Layers and Vertical Layers (this just makes sense to avoid complications with vanilla slabs)
 - Added CornerSlabLayers and VerticalCornerSlabLayers to add layers functionality to Corner Slab variants
 - Added EighthLayer blocks to add layers functionality to Eighth Blocks
+- Bugfix: fixed QuarterLayerBlock and VerticalQuarterLayerBlock textures
+
 
 
 

@@ -1,12 +1,13 @@
 package com.calibermc.caliberlib.block.management;
 
 import com.calibermc.caliberlib.block.custom.*;
+import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
 import com.google.common.collect.Lists;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -220,6 +221,16 @@ public class ModBlockHelper {
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> FENCE_GATE = (textureFrom) -> (b, provider) ->
             provider.fenceGateBlock((FenceGateBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)));
 
+//    public static final BiFunction<Supplier<Block>, Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> HANGING_SIGN = (sign, wall) -> (b, provider) ->
+//            provider.hangingSignBlock(sign.get(), wall.get(), provider.blockTexture(BlockManager.getMainBy(b, sign)));
+
+    public static final BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> HANGING_SIGN = (s, pair) -> {
+        ModBlockStateProvider provider = pair.getSecond();
+        Block sign = pair.getFirst().get(ModBlockFamily.Variant.CEILING_HANGING_SIGN);
+        Block wall = pair.getFirst().get(ModBlockFamily.Variant.WALL_HANGING_SIGN);
+        provider.hangingSignBlock(sign, wall, provider.blockTexture(BlockManager.getMainBy(s, () -> sign)));
+    };
+
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> LAYER = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<SlabLayerBlock>fixBlockTex(textureFrom, b, provider, provider::slabLayerBlock, provider::slabLayerBlock);
 
@@ -231,6 +242,15 @@ public class ModBlockHelper {
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> PRESSURE_PLATE = (textureFrom) -> (b, provider) ->
             provider.pressurePlateBlock((PressurePlateBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)));
+
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> TRAP_DOOR = (textureFrom) -> (b, provider) ->
+            provider.trapdoorBlock((TrapDoorBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)), true);
+
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> QUARTER = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<QuarterLayerBlock>fixBlockTex(textureFrom, b, provider, provider::quarterLayerBlock, provider::quarterLayerBlock);
+
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> VERTICAL_QUARTER = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<VerticalQuarterLayerBlock>fixBlockTex(textureFrom, b, provider, provider::quarterLayerVerticalBlock, provider::quarterLayerVerticalBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> ROOF_22 = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<Roof22Block>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
@@ -248,19 +268,12 @@ public class ModBlockHelper {
             ModBlockHelper.<RoofPeakBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.roofPeakBlock(block, tex), provider::roofPeakBlock);
 
-    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SIGN = (sign) -> (b, provider) -> {
-        ModelFile model = provider.models().sign(provider.name(b.get()), provider.blockTexture(BlockManager.getMainBy(b, sign)));
-        provider.simpleBlock(b.get(), model);
+    public static final BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> SIGN = (s, pair) -> {
+        ModBlockStateProvider provider = pair.getSecond();
+        StandingSignBlock sign = (StandingSignBlock) pair.getFirst().get(ModBlockFamily.Variant.SIGN);
+        WallSignBlock wall = (WallSignBlock) pair.getFirst().get(ModBlockFamily.Variant.WALL_SIGN);
+        provider.signBlock(sign, wall, provider.blockTexture(BlockManager.getMainBy(s, () -> sign)));
     };
-
-    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> TRAP_DOOR = (textureFrom) -> (b, provider) ->
-            provider.trapdoorBlock((TrapDoorBlock) b.get(), provider.blockTexture(BlockManager.getMainBy(b, textureFrom)), true);
-
-    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> QUARTER = (textureFrom) -> (b, provider) ->
-            ModBlockHelper.<QuarterLayerBlock>fixBlockTex(textureFrom, b, provider, provider::quarterLayerBlock, provider::quarterLayerBlock);
-
-    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> VERTICAL_QUARTER = (textureFrom) -> (b, provider) ->
-            ModBlockHelper.<VerticalQuarterLayerBlock>fixBlockTex(textureFrom, b, provider, provider::quarterLayerVerticalBlock, provider::quarterLayerVerticalBlock);
 
 //    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SLAB = (textureFrom) -> (b, provider) ->
 //            ModBlockHelper.<SlabBlock>fixBlockTex(textureFrom, b, provider, provider::slabBlock, provider::slabBlock);
@@ -278,12 +291,12 @@ public class ModBlockHelper {
                 provider.slabBlock(block, texture, texture, texture, texture);
             });
 
+//    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SLAB_VERTICAL = (textureFrom) -> (b, provider) ->
+//            ModBlockHelper.<VerticalSlabLayerBlock>fixBlockTex(textureFrom, b, provider, provider::slabVerticalBlock, provider::slabVerticalBlock);
+
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> STAIRS = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<StairBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.stairsBlock(block, side, bottom, top), provider::stairsBlock);
-
-//    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SLAB_VERTICAL = (textureFrom) -> (b, provider) ->
-//            ModBlockHelper.<VerticalSlabLayerBlock>fixBlockTex(textureFrom, b, provider, provider::slabVerticalBlock, provider::slabVerticalBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> WALL = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<WallBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) -> {
@@ -322,7 +335,6 @@ public class ModBlockHelper {
         ResourceLocation top = tex;
         ResourceLocation side = tex;
         ResourceLocation bottom = tex;
-        ResourceLocation fullBlock = tex;
         String originalPath = tex.getPath();
         String modifiedPath = tex.getPath();
         boolean isMinecraftNamespace = tex.getNamespace().equals("minecraft");
