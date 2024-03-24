@@ -92,6 +92,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     this.tag(ModTags.Blocks.BALUSTRADES).add(e.getValue().getSecond().get());
                 }
 
+                if (variant.equals(ModBlockFamily.Variant.BEAM_DIAGONAL)) {
+                    this.tag(ModTags.Blocks.DIAGONAL_BEAMS).add(e.getValue().getSecond().get());
+                }
+
                 if (variant.equals(ModBlockFamily.Variant.BEAM_HORIZONTAL)) {
                     this.tag(ModTags.Blocks.HORIZONTAL_BEAMS).add(e.getValue().getSecond().get());
                 }

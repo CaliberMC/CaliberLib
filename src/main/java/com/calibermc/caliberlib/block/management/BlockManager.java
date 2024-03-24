@@ -206,6 +206,7 @@ public class BlockManager {
                     case ARROWSLIT -> builder.addVariant(variant, () -> new ArrowSlitBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARROWSLIT.apply(blockSupplier)));
                     case BALUSTRADE -> builder.addVariant(variant, () -> new BalustradeBlock(properties), (b) -> b.stateGen(ModBlockHelper.BALUSTRADE.apply(blockSupplier)));
                     case BUTTON -> builder.addVariant(variant, () -> new ButtonBlock(properties, builder.blockSetType, 20, false), (b) -> b.stateGen(ModBlockHelper.BUTTON.apply(blockSupplier)));
+                    case BEAM_DIAGONAL -> builder.addVariant(variant, () -> new DiagonalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_DIAGONAL.apply(blockSupplier)));
                     case BEAM_HORIZONTAL -> builder.addVariant(variant, () -> new HorizontalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_HORIZONTAL.apply(blockSupplier)));
                     case BEAM_LINTEL -> builder.addVariant(variant, () -> new BeamLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_LINTEL.apply(blockSupplier)));
                     case BEAM_POSTS -> builder.addVariant(variant, () -> new BeamPostsBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_POSTS.apply(blockSupplier)));

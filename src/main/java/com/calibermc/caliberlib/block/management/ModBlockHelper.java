@@ -59,7 +59,7 @@ public class ModBlockHelper {
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.TALL_DOOR, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
 
-    public static final List<Variant> STRIPPED_WOOD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.BEAM_HORIZONTAL,
+    public static final List<Variant> STRIPPED_WOOD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.BEAM_DIAGONAL, Variant.BEAM_HORIZONTAL,
             Variant.BEAM_LINTEL, Variant.BEAM_POSTS, Variant.BEAM_VERTICAL, Variant.CAPITAL, Variant.CORNER, Variant.CORNER_SLAB,
             Variant.CORNER_SLAB_VERTICAL, Variant.DOOR_FRAME, Variant.DOOR_FRAME_LINTEL, Variant.EIGHTH, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL,
@@ -127,13 +127,17 @@ public class ModBlockHelper {
             ModBlockHelper.<BalustradeBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.balustradeBlock(block, side, bottom, top), provider::balustradeBlock);
 
-    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> BEAM_LINTEL = (textureFrom) -> (b, provider) ->
-            ModBlockHelper.<BeamLintelBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                    provider.beamLintelBlock(block, side, bottom, top), provider::beamLintelBlock);
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> BEAM_DIAGONAL = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<DiagonalBeamBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
+                    provider.beamDiagonalBlock(block, tex), provider::beamDiagonalBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> BEAM_HORIZONTAL = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<HorizontalBeamBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.beamHorizontalBlock(block, tex), provider::beamHorizontalBlock);
+
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> BEAM_LINTEL = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<BeamLintelBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
+                    provider.beamLintelBlock(block, side, bottom, top), provider::beamLintelBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> BEAM_POSTS = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<BeamPostsBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->

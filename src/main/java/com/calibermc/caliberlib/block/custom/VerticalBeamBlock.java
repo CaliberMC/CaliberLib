@@ -1,5 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
+import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +25,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -94,16 +96,12 @@ public class VerticalBeamBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
-        switch (direction) {
-            case EAST:
-                return SHAPE_EAST[pState.getValue(BEAM)];
-            case SOUTH:
-                return SHAPE_SOUTH[pState.getValue(BEAM)];
-            case WEST:
-                return SHAPE_WEST[pState.getValue(BEAM)];
-            default:
-                return SHAPE_NORTH[pState.getValue(BEAM)];
-        }
+        return switch (direction) {
+            case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
+            case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
+            case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
+            default -> SHAPE_NORTH[pState.getValue(BEAM)];
+        };
     }
 
     @Nullable
@@ -133,6 +131,16 @@ public class VerticalBeamBlock extends Block implements SimpleWaterloggedBlock {
             return isSide(clickedFace) && pContext.replacingClickedOnBlock();
         }
         return false;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+
+        return super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
     }
 
     @Override

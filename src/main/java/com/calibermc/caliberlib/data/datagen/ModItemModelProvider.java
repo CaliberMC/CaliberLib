@@ -59,7 +59,8 @@ public class ModItemModelProvider extends ItemModelProvider {
                         || variant.equals(ModBlockFamily.Variant.DOOR_FRAME_LINTEL)
                         || variant.equals(ModBlockFamily.Variant.BEAM_POSTS)
                         || variant.equals(ModBlockFamily.Variant.DOOR_FRAME)
-                        || variant.equals(ModBlockFamily.Variant.BEAM_HORIZONTAL)) {
+                        || variant.equals(ModBlockFamily.Variant.BEAM_HORIZONTAL)
+                        || variant.equals(ModBlockFamily.Variant.BEAM_DIAGONAL)) {
                     parentName += "_1";
                 }
 

@@ -16,6 +16,7 @@ public class ModTags {
         public static final TagKey<Block> ARCHES = tag("shapes/arches");
         public static final TagKey<Block> ARROWSLITS = tag("shapes/arrowslits");
         public static final TagKey<Block> BALUSTRADES = tag("shapes/balustrades");
+        public static final TagKey<Block> DIAGONAL_BEAMS = tag("shapes/diagonal_beams");
         public static final TagKey<Block> HORIZONTAL_BEAMS = tag("shapes/horizontal_beams");
         public static final TagKey<Block> BEAM_LINTELS = tag("shapes/beam_lintels");
         public static final TagKey<Block> BEAM_POSTS = tag("shapes/beam_posts");

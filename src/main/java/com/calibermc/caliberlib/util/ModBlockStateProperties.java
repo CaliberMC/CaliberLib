@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.util;
 
 import com.calibermc.caliberlib.block.shapes.*;
 import com.calibermc.caliberlib.block.shapes.doors.TallDoorPart;
+import com.calibermc.caliberlib.block.shapes.misc.BeamConnection;
 import com.calibermc.caliberlib.block.shapes.trim.ArchTrim;
 import com.calibermc.caliberlib.block.shapes.trim.LargeArchTrim;
 import net.minecraft.core.Direction;
@@ -26,12 +27,15 @@ public class ModBlockStateProperties {
     public static final IntegerProperty FIVE_LAYERS = IntegerProperty.create("layers", 1, 5);
     public static final IntegerProperty VERTICAL_BEAM_SHAPE = IntegerProperty.create("beam", 1, 7);
     public static final IntegerProperty HORIZONTAL_BEAM_SHAPE = IntegerProperty.create("beam", 1, 6);
+    public static final IntegerProperty DIAGONAL_BEAM_SHAPE = IntegerProperty.create("beam", 1, 2);
     public static final IntegerProperty LINTEL_SHAPE = IntegerProperty.create("beam", 1, 4);
     public static final IntegerProperty FRAME_SHAPE = IntegerProperty.create("beam", 1, 3);
     public static final EnumProperty<ArchTrim> ARCH_TRIM = EnumProperty.create("trim", ArchTrim.class);
     public static final EnumProperty<LargeArchTrim> LARGE_ARCH_TRIM = EnumProperty.create("trim", LargeArchTrim.class);
     public static final EnumProperty<RoofPitch> ROOF_PITCH = EnumProperty.create("pitch", RoofPitch.class);
     public static final EnumProperty<TallDoorPart> TALL_DOOR_PART = EnumProperty.create("part", TallDoorPart.class);
+    public static final EnumProperty<BeamConnection> BEAM_CONNECTION = EnumProperty.create("connect", BeamConnection.class);
+
 
     public static boolean isSide(Direction direction) {
         return direction == Direction.NORTH || direction == Direction.EAST || direction == Direction.SOUTH || direction == Direction.WEST;

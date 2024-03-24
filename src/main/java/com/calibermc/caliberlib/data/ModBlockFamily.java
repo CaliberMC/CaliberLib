@@ -334,6 +334,7 @@ public class ModBlockFamily {
         ARCH_LARGE_HALF("arch_large_half"),
         ARROWSLIT("arrowslit"),
         BALUSTRADE("balustrade"),
+        BEAM_DIAGONAL("beam_diagonal"),
         BEAM_HORIZONTAL("beam_horizontal"),
         BEAM_LINTEL("beam_lintel"),
         BEAM_POSTS("beam_posts"),
