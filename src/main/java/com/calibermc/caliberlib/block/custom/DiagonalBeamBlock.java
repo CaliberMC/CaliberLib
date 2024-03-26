@@ -11,6 +11,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -35,8 +36,6 @@ import javax.annotation.Nullable;
 import java.util.stream.Stream;
 
 import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
-import static net.minecraft.commands.arguments.coordinates.BlockPosArgument.getBlockPos;
-
 
 public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -208,6 +207,7 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     public BlockState getConnectionState(BlockState blockstate, BlockPos pCurrentPos, LevelAccessor pLevel, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// BlockState upState, BlockState downState, BlockState forwardState, BlockState backwardState, BlockState forwardUpState, BlockState backwardUpState, Direction placedBlockFacing, Direction placedBlockOppositeFacing
 
         BlockPos backwardPos = pCurrentPos.relative(placedBlockFacing);
+        BlockPos backward2Pos = backwardPos.relative(placedBlockFacing);
         BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
         BlockPos backwardUpPos = pCurrentPos.relative(placedBlockFacing).above();
         BlockPos forwardUpPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).above();
@@ -217,6 +217,7 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
         BlockPos downPos = pCurrentPos.below();
 
         BlockState backwardState = pLevel.getBlockState(backwardPos);
+        BlockState backward2State = pLevel.getBlockState(backward2Pos);
         BlockState forwardState = pLevel.getBlockState(forwardPos);
         BlockState backwardUpState = pLevel.getBlockState(backwardUpPos);
         BlockState forwardUpState = pLevel.getBlockState(forwardUpPos);
@@ -237,13 +238,16 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
         Direction forwardBlockDiagonal2 = forwardState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 2) ? forwardState.getValue(FACING) : null;
         Direction backwardUpDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock ? backwardUpState.getValue(FACING) : null;
         Direction forwardUpDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock ? forwardUpState.getValue(FACING) : null;
+        Direction upDiagonal = upState.getBlock() instanceof DiagonalBeamBlock ? upState.getValue(FACING) : null;
+        Direction downDiagonal = downState.getBlock() instanceof DiagonalBeamBlock ? downState.getValue(FACING) : null;
 
-//        Direction backwardUpBlockDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 1) ? backwardState.getValue(FACING) : null;
-//        Direction forwardUpBlockDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 1) ? forwardState.getValue(FACING) : null;
+        Direction backwardUpBlockDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock && (backwardUpState.getValue(BEAM) == 1) ? backwardUpState.getValue(FACING) : null;
+        Direction forwardDownBlockDiagonal = forwardDownState.getBlock() instanceof DiagonalBeamBlock && (forwardDownState.getValue(BEAM) == 1) ? forwardDownState.getValue(FACING) : null;
+//        Direction forwardUpBlockDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock && (forwardUpState.getValue(BEAM) == 1) ? forwardUpState.getValue(FACING) : null;
 
 
 
-        BeamConnection connect;
+        BeamConnection connect = BeamConnection.NONE;
         if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
                 && backwardHorizontal == TopBottomShape.TOP && upBlockVertical == placedBlockOppositeFacing) {
             connect = BeamConnection.AH_AV_CH_CV;
@@ -369,16 +373,28 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
 
 
         } else if ((backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)
-            && !((forwardUpDiagonal == placedBlockFacing || backwardUpDiagonal == placedBlockFacing))) {
+                && ((backwardUpDiagonal == placedBlockOppositeFacing) || (isAir(backwardUpState) && isAir(forwardUpState)))) { //forwardUpDiagonal == placedBlockFacing ||
             connect = BeamConnection.N;
 
-//        } else if (!(backwardUpState.getBlock() instanceof DiagonalBeamBlock || forwardUpState.getBlock() instanceof DiagonalBeamBlock)
-//                && (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)) {
-//            connect = BeamConnection.N;
 
         } else {
             connect = BeamConnection.NONE;
         }
+
+//        } else if (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST) {
+//            if ((upDiagonal == placedBlockFacing && backwardUpBlockDiagonal == placedBlockOppositeFacing)
+//                    || (isAir(backwardUpState) && isAir(upState))
+//                    || !(backwardUpDiagonal == placedBlockFacing)) {
+//                connect = BeamConnection.N;
+//            }
+
+            //OLD
+//        } else if ((backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)
+//                && !((forwardUpDiagonal == placedBlockFacing || backwardUpDiagonal == placedBlockFacing))) {
+//            connect = BeamConnection.N;
+
+
+
 
 //        LOGGER.info("Block: " + pCurrentPos.toString() + " State: " + pState.getValue(CONNECT) + " Facing: " + placedBlockFacing);
 //        LOGGER.info("Forward: " + forwardPos.toString() + " State: " + (forwardState.getBlock() instanceof DiagonalBeamBlock || forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(BEAM) + " Facing: " + forwardState.getValue(FACING) : null));
@@ -386,7 +402,7 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
 //        LOGGER.info("Up: " + upPos.toString() + " State: " + (upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(BEAM) + " Facing: " + upState.getValue(FACING) : null));
 //        LOGGER.info("Down: " + downPos.toString() + " State: " + (downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(BEAM) + " Facing: " + downState.getValue(FACING) : null));
 
-        LOGGER.info("Connect: " + connect);
+//        LOGGER.info("Connect: " + connect);
 
         return blockstate.setValue(CONNECT, connect);
     }
