@@ -46,7 +46,7 @@
 			}
 		},
 		{
-			"name": "av",
+			"name": "ahav",
 			"from": [5, 0, 12],
 			"to": [11, 4.00001, 16],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},

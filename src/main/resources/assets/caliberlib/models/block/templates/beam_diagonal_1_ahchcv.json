@@ -46,7 +46,7 @@
 			}
 		},
 		{
-			"name": "cv",
+			"name": "chcv",
 			"from": [5, 12.00001, 0],
 			"to": [11, 16, 4],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},

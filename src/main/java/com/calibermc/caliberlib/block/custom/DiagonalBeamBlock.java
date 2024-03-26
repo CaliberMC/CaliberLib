@@ -154,25 +154,12 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockPos = pContext.getClickedPos();
-        BlockPos pCurrentPos = blockPos;
-        BlockState blockstate = pContext.getLevel().getBlockState(blockPos);
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockPos);
-
+        BlockPos pCurrentPos = pContext.getClickedPos();
+        BlockState blockstate = pContext.getLevel().getBlockState(pCurrentPos);
+        FluidState fluidstate = pContext.getLevel().getFluidState(pCurrentPos);
         LevelAccessor pLevel = pContext.getLevel();
         Direction pFacing = pContext.getHorizontalDirection().getOpposite();
         Direction pOppositeFacing = pContext.getHorizontalDirection();
-
-        BlockState backwardState = pLevel.getBlockState(pCurrentPos.relative(pFacing));
-        BlockState forwardState = pLevel.getBlockState(pCurrentPos.relative(pFacing.getOpposite()));
-        BlockState upState = pLevel.getBlockState(pCurrentPos.above());
-        BlockState downState = pLevel.getBlockState(pCurrentPos.below());
-
-        TopBottomShape backwardHorizontal = backwardState.getBlock() instanceof HorizontalBeamBlock ? backwardState.getValue(HorizontalBeamBlock.TYPE) : null;
-        TopBottomShape forwardHorizontal = forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(HorizontalBeamBlock.TYPE) : null;
-
-        Direction upBlockVertical = upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(FACING) : null;
-        Direction downBlockVertical = downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(FACING) : null;
 
         if (blockstate.is(this)) {
             int newCount = blockstate.getValue(BEAM) + 1;
@@ -186,7 +173,7 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
             blockstate = this.defaultBlockState().setValue(BEAM, 1).setValue(FACING, pFacing).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         }
 
-        return getConnectionState(blockstate, backwardHorizontal, forwardHorizontal, upBlockVertical, downBlockVertical, pFacing, pOppositeFacing);
+        return getConnectionState(blockstate, pCurrentPos, pLevel, pFacing, pOppositeFacing);
     }
 
     @Override
@@ -207,68 +194,146 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
 
+        Direction placedBlockFacing = pState.getValue(FACING);
+        Direction placedBlockOppositeFacing = pState.getValue(FACING).getOpposite();
+
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
-        Direction placedBlockFacing = pState.getValue(FACING);
-        Direction placedBlockOppositeFacing = pState.getValue(FACING).getOpposite();
+        return getConnectionState(pState, pCurrentPos, pLevel, placedBlockFacing, placedBlockOppositeFacing);
+    }
 
-        BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
+    @NotNull
+    public BlockState getConnectionState(BlockState blockstate, BlockPos pCurrentPos, LevelAccessor pLevel, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// BlockState upState, BlockState downState, BlockState forwardState, BlockState backwardState, BlockState forwardUpState, BlockState backwardUpState, Direction placedBlockFacing, Direction placedBlockOppositeFacing
+
         BlockPos backwardPos = pCurrentPos.relative(placedBlockFacing);
+        BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
+        BlockPos backwardUpPos = pCurrentPos.relative(placedBlockFacing).above();
+        BlockPos forwardUpPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).above();
+        BlockPos backwardDownPos = pCurrentPos.relative(placedBlockFacing).below();
+        BlockPos forwardDownPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).below();
+        BlockPos upPos = pCurrentPos.above();
+        BlockPos downPos = pCurrentPos.below();
 
         BlockState backwardState = pLevel.getBlockState(backwardPos);
         BlockState forwardState = pLevel.getBlockState(forwardPos);
-        BlockState upState = pLevel.getBlockState(pCurrentPos.above());
-        BlockState downState = pLevel.getBlockState(pCurrentPos.below());
+        BlockState backwardUpState = pLevel.getBlockState(backwardUpPos);
+        BlockState forwardUpState = pLevel.getBlockState(forwardUpPos);
+        BlockState backwardDownState = pLevel.getBlockState(backwardDownPos);
+        BlockState forwardDownState = pLevel.getBlockState(forwardDownPos);
+        BlockState upState = pLevel.getBlockState(upPos);
+        BlockState downState = pLevel.getBlockState(downPos);
 
         TopBottomShape backwardHorizontal = backwardState.getBlock() instanceof HorizontalBeamBlock ? backwardState.getValue(HorizontalBeamBlock.TYPE) : null;
         TopBottomShape forwardHorizontal = forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(HorizontalBeamBlock.TYPE) : null;
 
         Direction upBlockVertical = upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(FACING) : null;
         Direction downBlockVertical = downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(FACING) : null;
+        Direction backwardDownVertical = backwardDownState.getBlock() instanceof VerticalBeamBlock ? backwardDownState.getValue(FACING) : null;
+        Direction backwardBlockDiagonal = backwardState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 1) ? backwardState.getValue(FACING) : null;
+        Direction forwardBlockDiagonal = forwardState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 1) ? forwardState.getValue(FACING) : null;
+        Direction backwardBlockDiagonal2 = backwardState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 2) ? backwardState.getValue(FACING) : null;
+        Direction forwardBlockDiagonal2 = forwardState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 2) ? forwardState.getValue(FACING) : null;
+        Direction backwardUpDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock ? backwardUpState.getValue(FACING) : null;
+        Direction forwardUpDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock ? forwardUpState.getValue(FACING) : null;
 
-        return getConnectionState(pState, backwardHorizontal, forwardHorizontal, upBlockVertical, downBlockVertical, placedBlockFacing, placedBlockOppositeFacing);
-    }
+//        Direction backwardUpBlockDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 1) ? backwardState.getValue(FACING) : null;
+//        Direction forwardUpBlockDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 1) ? forwardState.getValue(FACING) : null;
 
-    @NotNull
-    public BlockState getConnectionState(BlockState blockstate, TopBottomShape backwardHorizontal, TopBottomShape forwardHorizontal, Direction upBlockVertical, Direction downBlockVertical, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// Replace with your method to get BlockPos.
+
 
         BeamConnection connect;
-        if (((downBlockVertical == placedBlockOppositeFacing) && (upBlockVertical == placedBlockFacing)
-                && (forwardHorizontal == TopBottomShape.BOTTOM) && (backwardHorizontal == TopBottomShape.BOTTOM))) {
-            connect = BeamConnection.AH_AV_DH_DV;
+        if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
+                && backwardHorizontal == TopBottomShape.TOP && upBlockVertical == placedBlockOppositeFacing) {
+            connect = BeamConnection.AH_AV_CH_CV;
 
-        } else if ((downBlockVertical == placedBlockFacing)
-                && (forwardHorizontal == TopBottomShape.BOTTOM)) {
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
+                && backwardHorizontal == TopBottomShape.TOP) {
+            connect = BeamConnection.AH_AV_CH;
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
+                && upBlockVertical == placedBlockOppositeFacing) {
+            connect = BeamConnection.AH_AV_CV;
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && backwardHorizontal == TopBottomShape.TOP
+                && upBlockVertical == placedBlockOppositeFacing) {
+            connect = BeamConnection.AH_CH_CV;
+
+        } else if (downBlockVertical == placedBlockFacing && backwardHorizontal == TopBottomShape.TOP
+                && upBlockVertical == placedBlockOppositeFacing) {
+            connect = BeamConnection.AV_CH_CV;
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
+                && backwardBlockDiagonal == placedBlockOppositeFacing && (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)) {
+            connect = BeamConnection.AH_AV_N;
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && backwardBlockDiagonal == placedBlockOppositeFacing
+                && (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)) {
+            connect = BeamConnection.AH_N;
+
+        } else if (downBlockVertical == placedBlockFacing && backwardBlockDiagonal == placedBlockOppositeFacing
+                && (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)) {
+            connect = BeamConnection.AV_N;
+
+            //------------------- | BEAM 2 SPECIFIC CONDITIONS |------------------------------------------------------------
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
+                && (backwardBlockDiagonal2 == Direction.NORTH || backwardBlockDiagonal2 == Direction.EAST)) {
+            connect = BeamConnection.AH_AV_N;
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM
+                && (backwardBlockDiagonal2 == Direction.NORTH || backwardBlockDiagonal2 == Direction.EAST)) {
+            connect = BeamConnection.AH_N;
+
+        } else if (!(backwardDownVertical == placedBlockFacing) && (downBlockVertical == placedBlockFacing
+                && (backwardBlockDiagonal2 == Direction.NORTH || backwardBlockDiagonal2 == Direction.EAST))) {
+            connect = BeamConnection.AV_N;
+
+        } else if (backwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockOppositeFacing
+                && (forwardBlockDiagonal2 == Direction.NORTH || forwardBlockDiagonal2 == Direction.EAST)) {
+            connect = BeamConnection.DH_DV_M;
+
+        } else if (backwardHorizontal == TopBottomShape.BOTTOM
+                && (forwardBlockDiagonal2 == Direction.NORTH || forwardBlockDiagonal2 == Direction.EAST)) {
+            connect = BeamConnection.DH_M;
+
+        } else if (downBlockVertical == placedBlockOppositeFacing && forwardBlockDiagonal2 == placedBlockOppositeFacing
+                 && !((forwardState.getValue(CONNECT) == BeamConnection.DV_M) && (forwardBlockDiagonal2 == Direction.NORTH || forwardBlockDiagonal2 == Direction.EAST))) {
+            connect = BeamConnection.DV_M;
+
+            //--------------------------------------------------------------------------------------------------------------
+
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM
+                && downBlockVertical == placedBlockFacing) {
             connect = BeamConnection.AH_AV;
 
-        } else if ((downBlockVertical == placedBlockFacing)
-                && (backwardHorizontal == TopBottomShape.TOP)) {
+        } else if (downBlockVertical == placedBlockFacing
+                && backwardHorizontal == TopBottomShape.TOP) {
             connect = BeamConnection.AV_CH;
 
-        } else if ((downBlockVertical == placedBlockOppositeFacing)
-                && (upBlockVertical == placedBlockFacing)) {
+        } else if (downBlockVertical == placedBlockFacing
+                && upBlockVertical == placedBlockOppositeFacing) {
             connect = BeamConnection.AV_CV;
 
-        } else if ((forwardHorizontal == TopBottomShape.BOTTOM)
-                && (upBlockVertical == placedBlockOppositeFacing)) {
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM
+                && upBlockVertical == placedBlockOppositeFacing) {
             connect = BeamConnection.AH_CV;
 
-        } else if ((forwardHorizontal == TopBottomShape.BOTTOM)
-                && (backwardHorizontal == TopBottomShape.TOP)) {
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM
+                && backwardHorizontal == TopBottomShape.TOP) {
             connect = BeamConnection.AH_CH;
 
-        } else if ((forwardHorizontal == TopBottomShape.BOTTOM)
-                && (backwardHorizontal == TopBottomShape.BOTTOM)) {
+        } else if (forwardHorizontal == TopBottomShape.BOTTOM
+                && backwardHorizontal == TopBottomShape.BOTTOM) {
             connect = BeamConnection.AH_DH;
 
-        } else if ((downBlockVertical == placedBlockFacing)
-                && (backwardHorizontal == TopBottomShape.BOTTOM)) {
+        } else if (downBlockVertical == placedBlockFacing
+                && backwardHorizontal == TopBottomShape.BOTTOM) {
             connect = BeamConnection.AV_DH;
 
-        } else if ((backwardHorizontal == TopBottomShape.TOP)
-                && (upBlockVertical == placedBlockOppositeFacing)) {
+        } else if (backwardHorizontal == TopBottomShape.TOP
+                && upBlockVertical == placedBlockOppositeFacing) {
             connect = BeamConnection.CH_CV;
 
         } else if (forwardHorizontal == TopBottomShape.BOTTOM) {
@@ -289,9 +354,39 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
         } else if (backwardHorizontal == TopBottomShape.BOTTOM) {
             connect = BeamConnection.DH;
 
+            //------------------- | BEAM 2 SPECIFIC CONDITIONS |------------------------------------------------------------
+
+        } else if (backwardBlockDiagonal2 ==  Direction.NORTH || backwardBlockDiagonal2 == Direction.EAST) {
+            connect = BeamConnection.N;
+
+        } else if (forwardBlockDiagonal2 == placedBlockOppositeFacing && !(forwardDownState.getBlock() instanceof VerticalBeamBlock) && (forwardBlockDiagonal2 == Direction.SOUTH || forwardBlockDiagonal2 == Direction.WEST)) {
+            connect = BeamConnection.M;
+
+            //--------------------------------------------------------------------------------------------------------------
+
+        } else if (forwardBlockDiagonal == placedBlockOppositeFacing && !(forwardDownState.getBlock() instanceof VerticalBeamBlock) && (forwardBlockDiagonal == Direction.SOUTH || forwardBlockDiagonal == Direction.WEST)) {
+            connect = BeamConnection.M;
+
+
+        } else if ((backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)
+            && !((forwardUpDiagonal == placedBlockFacing || backwardUpDiagonal == placedBlockFacing))) {
+            connect = BeamConnection.N;
+
+//        } else if (!(backwardUpState.getBlock() instanceof DiagonalBeamBlock || forwardUpState.getBlock() instanceof DiagonalBeamBlock)
+//                && (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)) {
+//            connect = BeamConnection.N;
+
         } else {
             connect = BeamConnection.NONE;
         }
+
+//        LOGGER.info("Block: " + pCurrentPos.toString() + " State: " + pState.getValue(CONNECT) + " Facing: " + placedBlockFacing);
+//        LOGGER.info("Forward: " + forwardPos.toString() + " State: " + (forwardState.getBlock() instanceof DiagonalBeamBlock || forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(BEAM) + " Facing: " + forwardState.getValue(FACING) : null));
+//        LOGGER.info("Backward: " + backwardPos.toString() + " State: " + (backwardState.getBlock() instanceof DiagonalBeamBlock || backwardState.getBlock() instanceof HorizontalBeamBlock ? backwardState.getValue(BEAM) + " Facing: " + backwardState.getValue(FACING) : null));
+//        LOGGER.info("Up: " + upPos.toString() + " State: " + (upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(BEAM) + " Facing: " + upState.getValue(FACING) : null));
+//        LOGGER.info("Down: " + downPos.toString() + " State: " + (downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(BEAM) + " Facing: " + downState.getValue(FACING) : null));
+
+        LOGGER.info("Connect: " + connect);
 
         return blockstate.setValue(CONNECT, connect);
     }

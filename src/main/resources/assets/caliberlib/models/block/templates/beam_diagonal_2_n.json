@@ -1,0 +1,49 @@
+{
+	"credit": "Made by Charm8er for CaliberMC",
+	"parent": "caliberlib:block/templates/caliber_block_no_occlusion",
+	"ambientocclusion": false,
+	"elements": [
+		{
+			"name": "diagonal",
+			"from": [5.01, -5.3125, 6],
+			"to": [10.99, 6, 10],
+			"rotation": {"angle": -45, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 0, 10.98, 7.3125], "texture": "#side"},
+				"east": {"uv": [1, 1, 5, 8.3125], "texture": "#side"},
+				"south": {"uv": [5, 0, 10.98, 7.3125], "texture": "#side"},
+				"west": {"uv": [11, 0, 15, 7.3125], "texture": "#side"},
+				"up": {"uv": [1, 10, 5, 15.98], "rotation": 90, "texture": "#top"},
+				"down": {"uv": [11, 0, 15, 5.98], "rotation": 90, "texture": "#top"}
+			}
+		},
+		{
+			"name": "cap",
+			"from": [5.01, 6, 6],
+			"to": [10.99, 10, 10],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [10.98, 0, 5, 4], "texture": "#side"},
+				"east": {"uv": [5, 1, 1, 5], "texture": "#side"},
+				"south": {"uv": [10.98, 0, 5, 4], "texture": "#side"},
+				"west": {"uv": [15, 0, 11, 4], "texture": "#side"},
+				"up": {"uv": [5, 10, 1, 15.98], "rotation": 90, "texture": "#top"},
+				"down": {"uv": [15, 0, 11, 5.98], "rotation": 90, "texture": "#top"}
+			}
+		},
+		{
+			"name": "diagonal",
+			"from": [5.01, -1.3125, 6],
+			"to": [10.99, 6, 10],
+			"rotation": {"angle": 45, "axis": "x", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [5, 0, 10.98, 7.3125], "texture": "#side"},
+				"east": {"uv": [11, 0, 15, 7.3125], "texture": "#side"},
+				"south": {"uv": [5, 0, 10.98, 7.3125], "texture": "#side"},
+				"west": {"uv": [1, 1, 5, 8.3125], "texture": "#side"},
+				"up": {"uv": [1, 10, 5, 15.98], "rotation": 270, "texture": "#side"},
+				"down": {"uv": [11, 0, 15, 5.98], "rotation": 270, "texture": "#top"}
+			}
+		}
+	]
+}
