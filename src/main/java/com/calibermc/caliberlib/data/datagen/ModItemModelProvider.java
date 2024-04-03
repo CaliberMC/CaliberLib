@@ -114,9 +114,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                         parentName += "_layer_3";
                     }
 
-                    if (block instanceof SlabLayerBlock || block instanceof VerticalSlabLayerBlock) {
-                        parentName += "_layer_4";
-                    }
+//                    if (block instanceof SlabLayerBlock || block instanceof VerticalSlabLayerBlock) {
+//                        parentName += "_layer_4";
+//                    }
 
                     if (block instanceof FallingLayerBlock
                             || block instanceof FarmLayerBlock

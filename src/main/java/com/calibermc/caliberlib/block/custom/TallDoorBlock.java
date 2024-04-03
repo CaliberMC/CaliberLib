@@ -5,6 +5,7 @@ import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -57,7 +58,7 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
     private final BlockSetType type;
 
     public TallDoorBlock(Properties properties, BlockSetType type) {
-        super(properties);
+        super(properties.sound(type.soundType()).noOcclusion());
         this.type = type;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
@@ -118,14 +119,6 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
         super.playerWillDestroy(level, pos, state, player);
-    }
-
-    protected int getCloseSound(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getMapColor(level, pos) == MapColor.METAL ? 1011 : 1012;
-    }
-
-    protected int getOpenSound(Level level, BlockPos pos) {
-        return level.getBlockState(pos).getMapColor(level, pos) == MapColor.METAL ? 1005 : 1006;
     }
 
     @Nullable
@@ -189,7 +182,7 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
         openDoubleDoors(level, state, pos);
         state = state.cycle(OPEN);
         level.setBlock(pos, state, 10);
-        level.levelEvent(player, state.getValue(OPEN) ? this.getOpenSound(level, pos) : this.getCloseSound(level, pos), pos, 0);
+        this.playSound(player, level, pos, state.getValue(OPEN));
         level.gameEvent(player, state.getValue(OPEN) ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -203,7 +196,6 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
         if (!level.isClientSide) {
             state = state.cycle(OPEN);
             level.setBlock(pos, state, 10);
-            level.levelEvent(null, state.getValue(OPEN) ? this.getOpenSound(level, pos) : this.getCloseSound(level, pos), pos, 0);
         }
     }
 
@@ -221,7 +213,7 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
                     level.setBlock(pos.below(2), middle.setValue(OPEN, open), 10);
                 }
             }
-            this.playSound(level, pos, open);
+            this.playSound(null, level, pos, open);
         }
     }
 
@@ -232,7 +224,7 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
     public void setOpen(@Nullable Entity entity, Level level, @NotNull BlockState state, BlockPos pos, boolean open) {
         if (state.is(this) && state.getValue(OPEN) != open) {
             level.setBlock(pos, state.setValue(OPEN, Boolean.valueOf(open)), 10);
-            this.playSound(level, pos, open);
+            this.playSound(entity, level, pos, open);
             level.gameEvent(entity, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
             openDoubleDoors(level, state, pos);
         }
@@ -256,7 +248,7 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
         }
         if (blockIn != this && flag != state.getValue(POWERED)) {
             if (flag != state.getValue(OPEN)) {
-                this.playSound(level, pos, flag);
+                this.playSound(null, level, pos, flag);
             }
             openDoubleDoors(level, state, pos);
             level.setBlock(pos, state.setValue(POWERED, flag).setValue(OPEN, flag), 2);
@@ -282,8 +274,8 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
         }
     }
 
-    protected void playSound(@NotNull Level level, BlockPos pos, boolean isOpen) {
-        level.levelEvent(null, isOpen ? this.getOpenSound(level, pos) : this.getCloseSound(level, pos), pos, 0);
+    protected void playSound(@Nullable Entity entity, @NotNull Level level, BlockPos pos, boolean isOpen) {
+        level.playSound(entity, pos, isOpen ? this.type.doorOpen() : this.type.doorClose(), SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.1F + 0.9F);
     }
 
     @Override
