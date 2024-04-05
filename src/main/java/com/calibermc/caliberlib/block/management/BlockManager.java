@@ -171,6 +171,10 @@ public class BlockManager {
     }*/
 
     public static Builder register(String name, Consumer<Builder> consumer, DeferredRegister<Block> register, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
+        return BlockManager.register(name, consumer, register, () -> properties, blockSupplier, variants);
+    }
+
+    public static Builder register(String name, Consumer<Builder> consumer, DeferredRegister<Block> register, Supplier<BlockBehaviour.Properties> properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
         Builder builder = new Builder(name, register);
         consumer.accept(builder);
 //        ModBlockSetType.values().forEach(mb -> {
@@ -180,7 +184,7 @@ public class BlockManager {
 //        });
 
         if (variants.contains(ModBlockFamily.Variant.BASE)) {
-            Supplier<Block> baseBlock = () -> new Block(properties);
+            Supplier<Block> baseBlock = () -> new Block(properties.get());
             builder.addVariant(ModBlockFamily.Variant.BASE, baseBlock);
             BlockManager.addDefaultVariants(builder, properties, baseBlock, variants);
         } else {
@@ -191,58 +195,62 @@ public class BlockManager {
     }
 
     public static void addDefaultVariants(Builder builder, BlockBehaviour.Properties properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
+        BlockManager.addDefaultVariants(builder, () -> properties, blockSupplier, variants);
+    }
+
+    public static void addDefaultVariants(BlockManager.Builder builder, Supplier<BlockBehaviour.Properties> properties, Supplier<Block> blockSupplier, Collection<ModBlockFamily.Variant> variants) {
         String modId = builder.modid;
         WoodType woodType = WoodType.values().filter(p ->
                 p.name().equals(builder.blockSetType.name())).findFirst().orElse(WoodType.OAK);
         Supplier<BlockState> baseBlockState = () -> BlockManager.BLOCK_MANAGERS.get(modId).stream().filter(blockManager ->
-                blockManager.name.equals(builder.name)).findFirst().orElseThrow().baseBlock().defaultBlockState();
+                blockManager.getName().equals(builder.name)).findFirst().orElseThrow().baseBlock().defaultBlockState();
         for (ModBlockFamily.Variant variant : variants) {
             if (variant != ModBlockFamily.Variant.BASE && variant.caliberIsLoaded()) {
                 switch (variant) {
-                    case ARCH -> builder.addVariant(variant, () -> new ArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH.apply(blockSupplier)));
-                    case ARCH_HALF -> builder.addVariant(variant, () -> new HalfArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_HALF.apply(blockSupplier)));
-                    case ARCH_LARGE -> builder.addVariant(variant, () -> new LargeArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE.apply(blockSupplier)));
-                    case ARCH_LARGE_HALF -> builder.addVariant(variant, () -> new LargeHalfArchBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE_HALF.apply(blockSupplier)));
-                    case ARROWSLIT -> builder.addVariant(variant, () -> new ArrowSlitBlock(properties), (b) -> b.stateGen(ModBlockHelper.ARROWSLIT.apply(blockSupplier)));
-                    case BALUSTRADE -> builder.addVariant(variant, () -> new BalustradeBlock(properties), (b) -> b.stateGen(ModBlockHelper.BALUSTRADE.apply(blockSupplier)));
-                    case BUTTON -> builder.addVariant(variant, () -> new ButtonBlock(properties, builder.blockSetType, 20, false), (b) -> b.stateGen(ModBlockHelper.BUTTON.apply(blockSupplier)));
-                    case BEAM_DIAGONAL -> builder.addVariant(variant, () -> new DiagonalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_DIAGONAL.apply(blockSupplier)));
-                    case BEAM_HORIZONTAL -> builder.addVariant(variant, () -> new HorizontalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_HORIZONTAL.apply(blockSupplier)));
-                    case BEAM_LINTEL -> builder.addVariant(variant, () -> new BeamLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_LINTEL.apply(blockSupplier)));
-                    case BEAM_POSTS -> builder.addVariant(variant, () -> new BeamPostsBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_POSTS.apply(blockSupplier)));
-                    case BEAM_VERTICAL -> builder.addVariant(variant, () -> new VerticalBeamBlock(properties), (b) -> b.stateGen(ModBlockHelper.BEAM_VERTICAL.apply(blockSupplier)));
-                    case CAPITAL -> builder.addVariant(variant, () -> new CapitalBlock(properties), (b) -> b.stateGen(ModBlockHelper.CAPITAL.apply(blockSupplier)));
-                    case CORNER -> builder.addVariant(variant, () -> new CornerLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER.apply(blockSupplier)));
-                    case CORNER_SLAB -> builder.addVariant(variant, () -> new CornerSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB.apply(blockSupplier)));
-                    case CORNER_SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalCornerSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB_VERTICAL.apply(blockSupplier)));
-                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties, builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropDoor).stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
-                    case DOOR_FRAME -> builder.addVariant(variant, () -> new DoorFrameBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME.apply(blockSupplier)));
-                    case DOOR_FRAME_LINTEL -> builder.addVariant(variant, () -> new DoorFrameLintelBlock(properties), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME_LINTEL.apply(blockSupplier)));
-                    case EIGHTH -> builder.addVariant(variant, () -> new EighthLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.EIGHTH.apply(blockSupplier)));
-                    case FENCE -> builder.addVariant(variant, () -> new FenceBlock(properties), (b) -> b.stateGen(ModBlockHelper.FENCE.apply(blockSupplier)));
-                    case FENCE_GATE -> builder.addVariant(variant, () -> new FenceGateBlock(properties, woodType), (b) -> b.stateGen(ModBlockHelper.FENCE_GATE.apply(blockSupplier)));
-                    case LAYER -> builder.addVariant(variant, () -> new SlabLayerBlock(properties, 1), (b) -> b.stateGen(ModBlockHelper.LAYER.apply(blockSupplier)));
-                    case LAYER_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.LAYER_VERTICAL.apply(blockSupplier)));
-                    case PILLAR -> builder.addVariant(variant, () -> new PillarLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.PILLAR.apply(blockSupplier)));
-                    case PRESSURE_PLATE -> builder.addVariant(variant, () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.PRESSURE_PLATE.apply(blockSupplier)));
-                    case QUARTER -> builder.addVariant(variant, () -> new QuarterLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.QUARTER.apply(blockSupplier)));
-                    case QUARTER_VERTICAL -> builder.addVariant(variant, () -> new VerticalQuarterLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.VERTICAL_QUARTER.apply(blockSupplier)));
-                    case ROOF_22 -> builder.addVariant(variant, () -> new Roof22Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_22.apply(blockSupplier)));
-                    case ROOF_45 -> builder.addVariant(variant, () -> new Roof45Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_45.apply(blockSupplier)));
-                    case ROOF_67 -> builder.addVariant(variant, () -> new Roof67Block(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
-                    case ROOF_PEAK -> builder.addVariant(variant, () -> new RoofPeakBlock(properties), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
-                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties, woodType), (b) -> b.stateGenBase(ModBlockHelper.SIGN));
-                    case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties, woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
-                    case SLAB -> builder.addVariant(variant, () -> new SlabBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
-//                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
-                    case TALL_DOOR -> builder.addVariant(variant, () -> new TallDoorBlock(properties, builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropTallDoor).stateGen(ModBlockHelper.TALL_DOOR.apply(blockSupplier)));
-                    case STAIRS -> builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
-                    case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties, builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));
-                    case WALL -> builder.addVariant(variant, () -> new WallBlock(properties), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
-                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties, woodType));
-                    case WALL_HANGING_SIGN -> builder.addVariant(variant, () -> new WallHangingSignBlock(properties, woodType));
-                    case WINDOW -> builder.addVariant(variant, () -> new WindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));
-                    case WINDOW_HALF -> builder.addVariant(variant, () -> new HalfWindowBlock(properties), (b) -> b.stateGen(ModBlockHelper.WINDOW_HALF.apply("window_half", blockSupplier)));
+                    case ARCH -> builder.addVariant(variant, () -> new ArchBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ARCH.apply(blockSupplier)));
+                    case ARCH_HALF -> builder.addVariant(variant, () -> new HalfArchBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ARCH_HALF.apply(blockSupplier)));
+                    case ARCH_LARGE -> builder.addVariant(variant, () -> new LargeArchBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE.apply(blockSupplier)));
+                    case ARCH_LARGE_HALF -> builder.addVariant(variant, () -> new LargeHalfArchBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ARCH_LARGE_HALF.apply(blockSupplier)));
+                    case ARROWSLIT -> builder.addVariant(variant, () -> new ArrowSlitBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ARROWSLIT.apply(blockSupplier)));
+                    case BALUSTRADE -> builder.addVariant(variant, () -> new BalustradeBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BALUSTRADE.apply(blockSupplier)));
+                    case BUTTON -> builder.addVariant(variant, () -> new ButtonBlock(properties.get(), builder.blockSetType, 20, false), (b) -> b.stateGen(ModBlockHelper.BUTTON.apply(blockSupplier)));
+                    case BEAM_DIAGONAL -> builder.addVariant(variant, () -> new DiagonalBeamBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BEAM_DIAGONAL.apply(blockSupplier)));
+                    case BEAM_HORIZONTAL -> builder.addVariant(variant, () -> new HorizontalBeamBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BEAM_HORIZONTAL.apply(blockSupplier)));
+                    case BEAM_LINTEL -> builder.addVariant(variant, () -> new BeamLintelBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BEAM_LINTEL.apply(blockSupplier)));
+                    case BEAM_POSTS -> builder.addVariant(variant, () -> new BeamPostsBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BEAM_POSTS.apply(blockSupplier)));
+                    case BEAM_VERTICAL -> builder.addVariant(variant, () -> new VerticalBeamBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.BEAM_VERTICAL.apply(blockSupplier)));
+                    case CAPITAL -> builder.addVariant(variant, () -> new CapitalBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.CAPITAL.apply(blockSupplier)));
+                    case CORNER -> builder.addVariant(variant, () -> new CornerLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.CORNER.apply(blockSupplier)));
+                    case CORNER_SLAB -> builder.addVariant(variant, () -> new CornerSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB.apply(blockSupplier)));
+                    case CORNER_SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalCornerSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.CORNER_SLAB_VERTICAL.apply(blockSupplier)));
+                    case DOOR -> builder.addVariant(variant, () -> new DoorBlock(properties.get(), builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropDoor).stateGen(ModBlockHelper.DOOR.apply(blockSupplier)));
+                    case DOOR_FRAME -> builder.addVariant(variant, () -> new DoorFrameBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME.apply(blockSupplier)));
+                    case DOOR_FRAME_LINTEL -> builder.addVariant(variant, () -> new DoorFrameLintelBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.DOOR_FRAME_LINTEL.apply(blockSupplier)));
+                    case EIGHTH -> builder.addVariant(variant, () -> new EighthLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.EIGHTH.apply(blockSupplier)));
+                    case FENCE -> builder.addVariant(variant, () -> new FenceBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.FENCE.apply(blockSupplier)));
+                    case FENCE_GATE -> builder.addVariant(variant, () -> new FenceGateBlock(properties.get(), woodType), (b) -> b.stateGen(ModBlockHelper.FENCE_GATE.apply(blockSupplier)));
+                    case LAYER -> builder.addVariant(variant, () -> new SlabLayerBlock(properties.get(), 1), (b) -> b.stateGen(ModBlockHelper.LAYER.apply(blockSupplier)));
+                    case LAYER_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.LAYER_VERTICAL.apply(blockSupplier)));
+                    case PILLAR -> builder.addVariant(variant, () -> new PillarLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.PILLAR.apply(blockSupplier)));
+                    case PRESSURE_PLATE -> builder.addVariant(variant, () -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties.get(), builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.PRESSURE_PLATE.apply(blockSupplier)));
+                    case QUARTER -> builder.addVariant(variant, () -> new QuarterLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.QUARTER.apply(blockSupplier)));
+                    case QUARTER_VERTICAL -> builder.addVariant(variant, () -> new VerticalQuarterLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.VERTICAL_QUARTER.apply(blockSupplier)));
+                    case ROOF_22 -> builder.addVariant(variant, () -> new Roof22Block(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_22.apply(blockSupplier)));
+                    case ROOF_45 -> builder.addVariant(variant, () -> new Roof45Block(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_45.apply(blockSupplier)));
+                    case ROOF_67 -> builder.addVariant(variant, () -> new Roof67Block(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
+                    case ROOF_PEAK -> builder.addVariant(variant, () -> new RoofPeakBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
+                    case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.SIGN));
+                    case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
+                    case SLAB -> builder.addVariant(variant, () -> new SlabBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
+//                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
+                    case TALL_DOOR -> builder.addVariant(variant, () -> new TallDoorBlock(properties.get(), builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropTallDoor).stateGen(ModBlockHelper.TALL_DOOR.apply(blockSupplier)));
+                    case STAIRS -> builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties.get()), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
+                    case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties.get(), builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));
+                    case WALL -> builder.addVariant(variant, () -> new WallBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.WALL.apply(blockSupplier)));
+                    case WALL_SIGN -> builder.addVariant(variant, () -> new WallSignBlock(properties.get(), woodType));
+                    case WALL_HANGING_SIGN -> builder.addVariant(variant, () -> new WallHangingSignBlock(properties.get(), woodType));
+                    case WINDOW -> builder.addVariant(variant, () -> new WindowBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.WINDOW.apply("window", blockSupplier)));
+                    case WINDOW_HALF -> builder.addVariant(variant, () -> new HalfWindowBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.WINDOW_HALF.apply("window_half", blockSupplier)));
                 }
             }
         }

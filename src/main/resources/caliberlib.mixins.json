@@ -6,6 +6,7 @@
   "refmap": "caliberlib.refmap.json",
   "mixins": [
     "DeferredRegisterAccessor",
+    "LootTableProviderMixin",
     "RecipeProviderMixin"
   ],
   "client": [
