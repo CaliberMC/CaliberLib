@@ -75,7 +75,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
                     this.tag(ItemTags.WOODEN_FENCES).add(e.getValue().getSecond().get().asItem());
                 }
 
-                if (variant.equals(ModBlockFamily.Variant.CEILING_HANGING_SIGN)) {
+                if (variant.equals(ModBlockFamily.Variant.HANGING_SIGN)) {
                     this.tag(ItemTags.HANGING_SIGNS).add(e.getValue().getSecond().get().asItem());
                 }
 

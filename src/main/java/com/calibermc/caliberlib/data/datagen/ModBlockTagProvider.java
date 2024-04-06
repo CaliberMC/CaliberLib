@@ -140,7 +140,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     this.tag(ModTags.Blocks.VERTICAL_CORNER_SLABS).add(e.getValue().getSecond().get());
                 }
 
-                if (variant.equals(ModBlockFamily.Variant.CEILING_HANGING_SIGN)) {
+                if (variant.equals(ModBlockFamily.Variant.HANGING_SIGN)) {
                     this.tag(BlockTags.CEILING_HANGING_SIGNS).add(e.getValue().getSecond().get());
                 }
 

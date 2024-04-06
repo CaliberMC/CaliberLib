@@ -45,7 +45,7 @@ public class ModBlockHelper {
     public static final List<Variant> PLANK_VARIANTS_ETC = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF,
-            Variant.CEILING_HANGING_SIGN, Variant.WALL_HANGING_SIGN, Variant.SIGN, Variant.WALL_SIGN, Variant.DOOR, Variant.TALL_DOOR, Variant.BUTTON, Variant.TRAPDOOR);
+            Variant.HANGING_SIGN, Variant.WALL_HANGING_SIGN, Variant.SIGN, Variant.WALL_SIGN, Variant.DOOR, Variant.TALL_DOOR, Variant.BUTTON, Variant.TRAPDOOR);
 
     public static final List<Variant> BOARD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.PRESSURE_PLATE,
@@ -58,6 +58,10 @@ public class ModBlockHelper {
     public static final List<Variant> VANILLA_PLANK_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
             Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
             Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.TALL_DOOR, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+
+    public static final List<Variant> COMPAT_PLANK_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
+            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
+            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
 
     public static final List<Variant> STRIPPED_WOOD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.BEAM_DIAGONAL, Variant.BEAM_HORIZONTAL,
             Variant.BEAM_LINTEL, Variant.BEAM_POSTS, Variant.BEAM_VERTICAL, Variant.CAPITAL, Variant.CORNER, Variant.CORNER_SLAB,
@@ -230,7 +234,7 @@ public class ModBlockHelper {
 
     public static final BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> HANGING_SIGN = (s, pair) -> {
         ModBlockStateProvider provider = pair.getSecond();
-        Block sign = pair.getFirst().get(ModBlockFamily.Variant.CEILING_HANGING_SIGN);
+        Block sign = pair.getFirst().get(ModBlockFamily.Variant.HANGING_SIGN);
         Block wall = pair.getFirst().get(ModBlockFamily.Variant.WALL_HANGING_SIGN);
         provider.hangingSignBlock(sign, wall, provider.blockTexture(BlockManager.getMainBy(s, () -> sign)));
     };

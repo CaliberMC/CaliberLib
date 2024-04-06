@@ -202,6 +202,12 @@ public class ModBlockFamily {
             return this;
         }
 
+        public Builder hangingSign(Block pHangingSignBlock, Block pWallHangingSignBlock) {
+            this.family.variants.put(Variant.HANGING_SIGN, pHangingSignBlock);
+            this.family.variants.put(Variant.WALL_HANGING_SIGN, pWallHangingSignBlock);
+            return this;
+        }
+
         public Builder layer(Block pLayerBlock) {
             this.family.variants.put(Variant.LAYER, pLayerBlock);
             return this;
@@ -364,7 +370,7 @@ public class ModBlockFamily {
         ROOF_67("roof_67"),
         ROOF_PEAK("roof_peak"),
         SIGN("sign"),
-        CEILING_HANGING_SIGN("ceiling_hanging_sign"),
+        HANGING_SIGN("hanging_sign"),
         WALL_HANGING_SIGN("wall_hanging_sign"),
         SLAB("slab"),
         SLAB_VERTICAL("slab_vertical"),

@@ -53,8 +53,8 @@ public class BlockManager {
                 modifiedName = name.replace("boards", "board");
             } else if (name.contains("bamboo_block")) {
                 modifiedName = name.replace("_block", "");
-//            } else if (name.contains("shingles")) {
-//                modifiedName = name.replace("_shingles", "_shingle");
+            } else if (name.contains("shingles")) {
+                modifiedName = name.replace("_shingles", "_shingle");
             } else {
                 modifiedName = name;
             }
@@ -240,7 +240,7 @@ public class BlockManager {
                     case ROOF_67 -> builder.addVariant(variant, () -> new Roof67Block(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_67.apply(blockSupplier)));
                     case ROOF_PEAK -> builder.addVariant(variant, () -> new RoofPeakBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.ROOF_PEAK.apply(blockSupplier)));
                     case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.SIGN));
-                    case CEILING_HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
+                    case HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
                     case SLAB -> builder.addVariant(variant, () -> new SlabBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
 //                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
                     case TALL_DOOR -> builder.addVariant(variant, () -> new TallDoorBlock(properties.get(), builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropTallDoor).stateGen(ModBlockHelper.TALL_DOOR.apply(blockSupplier)));
