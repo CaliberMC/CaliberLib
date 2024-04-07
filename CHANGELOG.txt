@@ -31,6 +31,7 @@
 - Added Window Shutter Blocks
 - Added LootTable Provider Mixin
 - Made changes to BlockManager to allow for Mod Compatibility blocks
+- Bugfix: fixed ArchBlock class and models so textures display properly
 - Bugfix: fixed Tall Doors sounds not playing
 - Bugfix: fixed Talls Doors occlusion issues when in open state
 

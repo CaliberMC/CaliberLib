@@ -68,7 +68,7 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
         BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()) //.getOpposite()
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-        return blockstate1.setValue(TYPE, getArchShape(blockstate1, pContext.getLevel(), blockpos));
+        return blockstate1.setValue(TYPE, getArchShape(blockstate1, pContext.getLevel(), blockpos)).setValue(TRIM, getTrim(blockstate1, pContext.getLevel(), blockpos));
     }
 
     /**
