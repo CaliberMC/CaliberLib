@@ -45,16 +45,16 @@ public class ModWoodType {
     public static Set<WoodType> getWoodTypes() {
         Set<WoodType> woodTypes = new HashSet<>();
         woodTypes.add(ALPHA);
-        woodTypes.add(CEDAR);
-        woodTypes.add(FIR);
         woodTypes.add(BAOBAB);
         woodTypes.add(BLACKWOOD);
         woodTypes.add(BLUE_BIOSHROOM);
         woodTypes.add(BRIMWOOD);
+        woodTypes.add(CEDAR);
         woodTypes.add(COBALT);
         woodTypes.add(CYPRESS);
         woodTypes.add(DEAD);
         woodTypes.add(EUCALYPTUS);
+        woodTypes.add(FIR);
         woodTypes.add(GREEN_BIOSHROOM);
         woodTypes.add(HELLBARK);
         woodTypes.add(JACARANDA);
