@@ -31,15 +31,20 @@ public record ModBlockSetType(String name, boolean canOpenByHand, SoundType soun
     public static final BlockSetType DEAD = BlockSetType.register(new BlockSetType("dead"));
     public static final BlockSetType EUCALYPTUS = BlockSetType.register(new BlockSetType("eucalyptus"));
     public static final BlockSetType GREEN_BIOSHROOM = BlockSetType.register(new BlockSetType("green_bioshroom"));
+    public static final BlockSetType HELLBARK = BlockSetType.register(new BlockSetType("hellbark"));
+    public static final BlockSetType JACARANDA = BlockSetType.register(new BlockSetType("jacaranda"));
     public static final BlockSetType JOSHUA = BlockSetType.register(new BlockSetType("joshua"));
     public static final BlockSetType KAPOK = BlockSetType.register(new BlockSetType("kapok"));
     public static final BlockSetType LARCH = BlockSetType.register(new BlockSetType("larch"));
+    public static final BlockSetType MAGIC = BlockSetType.register(new BlockSetType("magic"));
     public static final BlockSetType MAGNOLIA = BlockSetType.register(new BlockSetType("magnolia"));
+    public static final BlockSetType MAHOGANY = BlockSetType.register(new BlockSetType("mahogany"));
     public static final BlockSetType MAUVE = BlockSetType.register(new BlockSetType("mauve"));
     public static final BlockSetType PALM = BlockSetType.register(new BlockSetType("palm"));
     public static final BlockSetType PINK_BIOSHROOM = BlockSetType.register(new BlockSetType("pink_bioshroom"));
     public static final BlockSetType REDWOOD = BlockSetType.register(new BlockSetType("redwood"));
     public static final BlockSetType SOCOTRA = BlockSetType.register(new BlockSetType("socotra"));
+    public static final BlockSetType UMBRAN = BlockSetType.register(new BlockSetType("umbran"));
     public static final BlockSetType WILLOW = BlockSetType.register(new BlockSetType("willow"));
     public static final BlockSetType YELLOW_BIOSHROOM = BlockSetType.register(new BlockSetType("yellow_bioshroom"));
     

@@ -22,10 +22,14 @@ public class ModWoodType {
     public static final WoodType EUCALYPTUS = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":eucalyptus", ModBlockSetType.EUCALYPTUS));
     public static final WoodType FIR = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":fir", ModBlockSetType.FIR));
     public static final WoodType GREEN_BIOSHROOM = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":green_bioshroom", ModBlockSetType.GREEN_BIOSHROOM));
+    public static final WoodType HELLBARK = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":hellbark", ModBlockSetType.HELLBARK));
+    public static final WoodType JACARANDA = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":jacaranda", ModBlockSetType.JACARANDA));
     public static final WoodType JOSHUA = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":joshua", ModBlockSetType.JOSHUA));
     public static final WoodType KAPOK = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":kapok", ModBlockSetType.KAPOK));
     public static final WoodType LARCH = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":larch", ModBlockSetType.LARCH));
+    public static final WoodType MAGIC = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":magic", ModBlockSetType.MAGIC));
     public static final WoodType MAGNOLIA = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":magnolia", ModBlockSetType.MAGNOLIA));
+    public static final WoodType MAHOGANY = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":mahogany", ModBlockSetType.MAHOGANY));
     public static final WoodType MAPLE = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":maple", ModBlockSetType.MAPLE));
     public static final WoodType MAUVE = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":mauve", ModBlockSetType.MAUVE));
     public static final WoodType PALM = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":palm", ModBlockSetType.PALM));
@@ -33,6 +37,7 @@ public class ModWoodType {
     public static final WoodType PINK_BIOSHROOM = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":pink_bioshroom", ModBlockSetType.PINK_BIOSHROOM));
     public static final WoodType REDWOOD = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":redwood", ModBlockSetType.REDWOOD));
     public static final WoodType SOCOTRA = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":socotra", ModBlockSetType.SOCOTRA));
+    public static final WoodType UMBRAN = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":umbran", ModBlockSetType.UMBRAN));
     public static final WoodType WILLOW = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":willow", ModBlockSetType.WILLOW));
     public static final WoodType YELLOW_BIOSHROOM = WoodType.register(new WoodType(CaliberLib.MOD_ID + ":yellow_bioshroom", ModBlockSetType.YELLOW_BIOSHROOM));
 
@@ -51,10 +56,14 @@ public class ModWoodType {
         woodTypes.add(DEAD);
         woodTypes.add(EUCALYPTUS);
         woodTypes.add(GREEN_BIOSHROOM);
+        woodTypes.add(HELLBARK);
+        woodTypes.add(JACARANDA);
         woodTypes.add(JOSHUA);
         woodTypes.add(KAPOK);
         woodTypes.add(LARCH);
+        woodTypes.add(MAGIC);
         woodTypes.add(MAGNOLIA);
+        woodTypes.add(MAHOGANY);
         woodTypes.add(MAPLE);
         woodTypes.add(MAUVE);
         woodTypes.add(PALM);
@@ -62,6 +71,7 @@ public class ModWoodType {
         woodTypes.add(PINK_BIOSHROOM);
         woodTypes.add(REDWOOD);
         woodTypes.add(SOCOTRA);
+        woodTypes.add(UMBRAN);
         woodTypes.add(WILLOW);
         woodTypes.add(YELLOW_BIOSHROOM);
 

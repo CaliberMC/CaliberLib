@@ -29,8 +29,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
     protected final String modid;
 
     public ModBlockStateProvider(DataGenerator gen, String modid, ExistingFileHelper exFileHelper) {
+        this(gen, modid, modid, exFileHelper);
+    }
+
+    public ModBlockStateProvider(DataGenerator gen, String modid, String blockManagerModId, ExistingFileHelper exFileHelper) {
         super(gen.getPackOutput(), modid, exFileHelper);
-        this.modid = modid;
+        this.modid = blockManagerModId;
     }
 
     public String name(Block block) {
@@ -1695,7 +1699,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(corner_slab_top_layer_4).rotationY(270).uvLock(true).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.NORTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
                 .modelForState().modelFile(full_block).addModel()
-                
+
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
                 .modelForState().modelFile(corner_slab_layer_1).rotationY(90).uvLock(true).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
@@ -1736,7 +1740,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(corner_slab_top_layer_4).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.EAST).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
                 .modelForState().modelFile(full_block).addModel()
-                
+
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
                 .modelForState().modelFile(corner_slab_layer_1).rotationY(180).uvLock(true).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
@@ -1777,7 +1781,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(corner_slab_top_layer_4).rotationY(90).uvLock(true).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.SOUTH).with(CornerSlabLayerBlock.TYPE, QuadShape.TOP_LEFT).with(CornerSlabLayerBlock.LAYERS, 5)
                 .modelForState().modelFile(full_block).addModel()
-                
+
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 1)
                 .modelForState().modelFile(corner_slab_layer_1).rotationY(270).uvLock(true).addModel()
                 .partialState().with(CornerSlabLayerBlock.FACING, Direction.WEST).with(CornerSlabLayerBlock.TYPE, QuadShape.RIGHT).with(CornerSlabLayerBlock.LAYERS, 2)
@@ -3806,8 +3810,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .partialState().with(RoofPeakBlock.FACING, Direction.WEST).with(RoofPeakBlock.TYPE, RoofPeakShape.END_OPPOSITE).with(RoofPeakBlock.HALF, Half.TOP)
                 .modelForState().modelFile(roof_peak_end_top).rotationY(90).addModel();
     }
-    
-    
+
+
 
     //    public void slabBlock(SlabBlock block, ResourceLocation texture) {
 //        slabBlock(block,  texture);
