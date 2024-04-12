@@ -24,6 +24,7 @@ public class ModTags {
         public static final TagKey<Block> CAPTIALS = tag("shapes/capitals");
         public static final TagKey<Block> COLUMNS = tag("shapes/columns");
         public static final TagKey<Block> CORNERS = tag("shapes/corners");
+        public static final TagKey<Block> CORNER_SLABS = tag("shapes/corner_slabs");
         public static final TagKey<Block> DOOR_FRAMES = tag("shapes/door_frames");
         public static final TagKey<Block> DOOR_FRAME_LINTELS = tag("shapes/door_frame_lintels");
         public static final TagKey<Block> EIGHTHS = tag("shapes/eighths");
@@ -38,6 +39,7 @@ public class ModTags {
         public static final TagKey<Block> ROOF_45S = tag("shapes/roof_45s");
         public static final TagKey<Block> ROOF_67S = tag("shapes/roof_67s");
         public static final TagKey<Block> ROOF_PEAKS = tag("shapes/roof_peaks");
+        public static final TagKey<Block> TALL_IRON_DOORS = tag("shapes/tall_iron_doors");
         public static final TagKey<Block> TALL_WOODEN_DOORS = tag("shapes/tall_wooden_doors");
         public static final TagKey<Block> VERTICAL_CORNER_SLABS = tag("shapes/vertical_corner_slabs");
         public static final TagKey<Block> VERTICAL_LAYERS = tag("shapes/vertical_layers");
