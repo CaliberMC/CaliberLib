@@ -2,7 +2,8 @@
 
 
 ### 0.1.6 (in progress)
-
+- Added STONE_VARIANTS_WITHOUT_SLABS to ModBlockHelper
+- Fixed ModItemModelProvider not generating models for some RU compat blocks
 
 ### 0.1.5
 - Downgraded Forge Version <- 47.1.3 to allow NeoForge 1.20.1 support

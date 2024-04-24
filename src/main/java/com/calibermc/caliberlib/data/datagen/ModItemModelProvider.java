@@ -80,7 +80,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                 }
 
                 if (variant.equals(ModBlockFamily.Variant.DOOR)
-                        || variant.equals(ModBlockFamily.Variant.TALL_DOOR)) {
+                        || variant.equals(ModBlockFamily.Variant.TALL_DOOR)
+                        || variant.equals(ModBlockFamily.Variant.SIGN)
+                        || variant.equals(ModBlockFamily.Variant.HANGING_SIGN)) {
                     withExistingParent(blockName, new ResourceLocation("item/generated"))
                             .texture("layer0", new ResourceLocation(this.modid, "item/" + parentName));
                 } else {
@@ -91,75 +93,75 @@ public class ModItemModelProvider extends ItemModelProvider {
         }
 
         // Register Block Item Models
-        ForgeRegistries.BLOCKS.getValues().stream()
-                .filter(block -> {
-                    ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
-                    return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
-                            && registryName != null && registryName.getNamespace().equals(this.modid)
-                            && !(block instanceof WallSignBlock) && !(block instanceof WallHangingSignBlock);
-                }) // Exclude WallSignBlock instances
-                .forEach(block -> {
-                    String blockName = ForgeRegistries.BLOCKS.getKey(block).getPath();
-                    String parentName = blockName;
-
-                    if (block instanceof ArchBlock) {
-                        parentName += "_trim_2";
-                    }
-
-
-                    if (block instanceof CornerLayerBlock
-                            || block instanceof PillarLayerBlock
-                            || block instanceof QuarterLayerBlock
-                            || block instanceof VerticalQuarterLayerBlock) {
-                        parentName += "_layer_3";
-                    }
-
-//                    if (block instanceof SlabLayerBlock || block instanceof VerticalSlabLayerBlock) {
-//                        parentName += "_layer_4";
+//        ForgeRegistries.BLOCKS.getValues().stream()
+//                .filter(block -> {
+//                    ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
+//                    return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
+//                            && registryName != null && registryName.getNamespace().equals(this.modid)
+//                            && !(block instanceof WallSignBlock) && !(block instanceof WallHangingSignBlock);
+//                }) // Exclude WallSignBlock instances
+//                .forEach(block -> {
+//                    String blockName = ForgeRegistries.BLOCKS.getKey(block).getPath();
+//                    String parentName = blockName;
+//
+//                    if (block instanceof ArchBlock) {
+//                        parentName += "_trim_2";
 //                    }
-
-                    if (block instanceof FallingLayerBlock
-                            || block instanceof FarmLayerBlock
-                            || block instanceof GrassLayerBlock
-                            || block instanceof MyceliumLayerBlock
-                            || block instanceof NyliumLayerBlock
-                            || block instanceof SoulSandLayerBlock
-                            || block instanceof TerrainLayerBlock
-                            || block instanceof BeamLintelBlock
-                            || block instanceof DoorFrameLintelBlock
-                            || block instanceof BeamPostsBlock
-                            || block instanceof DoorFrameBlock
-                            || block instanceof HorizontalBeamBlock) {
-                        parentName += "_1";
-                    }
-
-                    if (block instanceof VerticalBeamBlock) {
-                        parentName += "_3";
-                    }
-
-
-                    if (block instanceof ButtonBlock
-                            || block instanceof FenceBlock
-                            || block instanceof WallBlock
-                            || block instanceof Roof67Block) {
-                        parentName += "_inventory";
-                    }
-
-                    if (block instanceof TrapDoorBlock) {
-                        parentName += "_bottom";
-                    }
-
-                    try {
-                        if (block instanceof DoorBlock || block instanceof StandingSignBlock || block instanceof TallDoorBlock) {
-                            withExistingParent(blockName, new ResourceLocation("item/generated"))
-                                    .texture("layer0", new ResourceLocation(this.modid, "item/" + parentName));
-                        } else {
-                            withExistingParent(blockName, modLoc("block/" + parentName));
-                        }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-
-                });
+//
+//
+//                    if (block instanceof CornerLayerBlock
+//                            || block instanceof PillarLayerBlock
+//                            || block instanceof QuarterLayerBlock
+//                            || block instanceof VerticalQuarterLayerBlock) {
+//                        parentName += "_layer_3";
+//                    }
+//
+////                    if (block instanceof SlabLayerBlock || block instanceof VerticalSlabLayerBlock) {
+////                        parentName += "_layer_4";
+////                    }
+//
+//                    if (block instanceof FallingLayerBlock
+//                            || block instanceof FarmLayerBlock
+//                            || block instanceof GrassLayerBlock
+//                            || block instanceof MyceliumLayerBlock
+//                            || block instanceof NyliumLayerBlock
+//                            || block instanceof SoulSandLayerBlock
+//                            || block instanceof TerrainLayerBlock
+//                            || block instanceof BeamLintelBlock
+//                            || block instanceof DoorFrameLintelBlock
+//                            || block instanceof BeamPostsBlock
+//                            || block instanceof DoorFrameBlock
+//                            || block instanceof HorizontalBeamBlock) {
+//                        parentName += "_1";
+//                    }
+//
+//                    if (block instanceof VerticalBeamBlock) {
+//                        parentName += "_3";
+//                    }
+//
+//
+//                    if (block instanceof ButtonBlock
+//                            || block instanceof FenceBlock
+//                            || block instanceof WallBlock
+//                            || block instanceof Roof67Block) {
+//                        parentName += "_inventory";
+//                    }
+//
+//                    if (block instanceof TrapDoorBlock) {
+//                        parentName += "_bottom";
+//                    }
+//
+//                    try {
+//                        if (block instanceof DoorBlock || block instanceof StandingSignBlock || block instanceof TallDoorBlock) {
+//                            withExistingParent(blockName, new ResourceLocation("item/generated"))
+//                                    .texture("layer0", new ResourceLocation(this.modid, "item/" + parentName));
+//                        } else {
+//                            withExistingParent(blockName, modLoc("block/" + parentName));
+//                        }
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//
+//                });
     }
 }
