@@ -208,13 +208,13 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     }
                 }
 
-                if (variant.equals(ModBlockFamily.Variant.COLUMN)) {
-                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
-                        this.tag(ModTags.Blocks.COLUMNS).add(e.getValue().getSecond().get());
-                    } else {
-                        this.tag(ModTags.Blocks.COLUMNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
-                    }
-                }
+//                if (variant.equals(ModBlockFamily.Variant.COLUMN)) {
+//                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
+//                        this.tag(ModTags.Blocks.COLUMNS).add(e.getValue().getSecond().get());
+//                    } else {
+//                        this.tag(ModTags.Blocks.COLUMNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
+//                    }
+//                }
 
                 if (variant.equals(ModBlockFamily.Variant.CORNER)) {
                     if (namespace != null && namespace.getNamespace().equals("caliber")) {

@@ -1,7 +1,6 @@
 package com.calibermc.caliberlib.block.management;
 
 import com.calibermc.caliberlib.block.custom.*;
-import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
@@ -10,6 +9,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.*;
 
@@ -17,93 +17,154 @@ import static com.calibermc.caliberlib.data.ModBlockFamily.Variant;
 
 public class ModBlockHelper {
 
-    public static final List<Variant> VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.QUARTER,
-            Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static final List<Variant> ALL_VARIANTS = List.of(Variant.values());
 
-    public static final List<Variant> STONE_VARIANTS = Lists.newArrayList(Variant.ARCH, Variant.ARCH_HALF, Variant.ARCH_LARGE,
-            Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT, Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.QUARTER,
-            Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.SLAB, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    // Filters
+    private static final List<Variant> STONE_ONLY = List.of(Variant.ARCH, Variant.ARCH_HALF, Variant.ARCH_LARGE, Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT);
+    private static final List<Variant> STRIPPED = List.of(Variant.BEAM_DIAGONAL, Variant.BEAM_HORIZONTAL, Variant.BEAM_LINTEL, Variant.BEAM_POSTS, Variant.BEAM_VERTICAL, Variant.DOOR_FRAME, Variant.DOOR_FRAME_LINTEL);
+    private static final List<Variant> BUTTONS = List.of(Variant.BUTTON, Variant.PRESSURE_PLATE);
+    private static final List<Variant> DOORS = List.of(Variant.DOOR, Variant.TRAPDOOR);
+    private static final List<Variant> FENCES = List.of(Variant.FENCE, Variant.FENCE_GATE);
+    private static final List<Variant> ROOFS = List.of(Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45, Variant.ROOF_67);
+    private static final List<Variant> SIGNS = List.of(Variant.HANGING_SIGN, Variant.SIGN, Variant.WALL_HANGING_SIGN, Variant.WALL_SIGN);
+    private static final List<Variant> SLABS_STAIRS = List.of(Variant.SLAB, Variant.STAIRS);
 
-    public static final List<Variant> STONE_VARIANTS_WITHOUT_SLAB = Lists.newArrayList(Variant.ARCH, Variant.ARCH_HALF, Variant.ARCH_LARGE,
-            Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT, Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.QUARTER,
-            Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    // Combined Filters
+    private static final List<Variant> BUTTONS_DOORS_FENCES = List.of(Variant.BUTTON, Variant.PRESSURE_PLATE, Variant.DOOR, Variant.TRAPDOOR, Variant.FENCE, Variant.FENCE_GATE);
+    private static final List<Variant> DOORS_FENCES_ROOFS_SIGNS = List.of(Variant.DOOR, Variant.TRAPDOOR, Variant.FENCE, Variant.FENCE_GATE, Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45, Variant.ROOF_67, Variant.HANGING_SIGN, Variant.SIGN, Variant.WALL_HANGING_SIGN, Variant.WALL_SIGN);
+    private static final List<Variant> BUTTONS_DOORS_FENCES_ROOFS_SIGNS = List.of(Variant.BUTTON, Variant.PRESSURE_PLATE, Variant.DOOR, Variant.TRAPDOOR, Variant.FENCE, Variant.FENCE_GATE, Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45, Variant.ROOF_67, Variant.HANGING_SIGN, Variant.SIGN, Variant.WALL_HANGING_SIGN, Variant.WALL_SIGN);
 
-    public static final List<Variant> STONE_VARIANTS_WITHOUT_STAIRS = Lists.newArrayList(Variant.ARCH, Variant.ARCH_HALF, Variant.ARCH_LARGE,
-            Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT, Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.QUARTER,
-            Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    /* Final unmodifiable lists */
+    public static final List<Variant> VANILLA_STONE_VARIANTS = createVanillaStoneVariants();
+    public static final List<Variant> STONE_VARIANTS = createStoneVariants();
+    public static final List<Variant> STONE_VARIANTS_WITHOUT_SLAB = createStoneVariantsWithoutSlab();
+    public static final List<Variant> STONE_VARIANTS_WITHOUT_SLAB_STAIRS = createStoneVariantsWithoutSlabStairs();
+    public static final List<Variant> STONE_VARIANTS_WITHOUT_SLAB_STAIRS_WALL = createStoneVariantsWithoutSlabStairsWall();
+    public static final List<Variant> TERRACOTTA_VARIANTS = createTerracottaVariants();
+    public static final List<Variant> VANILLA_PLANK_VARIANTS = createVanillaPlankVariants();
+    public static final List<Variant> PLANK_VARIANTS = createPlankVariants(); // PLANK_VARIANTS_ETC
+    public static final List<Variant> COMPAT_PLANK_VARIANTS = createCompatPlankVariants(); // COMPAT_PLANK_VARIANTS
+    public static final List<Variant> BOARD_VARIANTS = createBoardVariants();
+    public static final List<Variant> VANILLA_STRIPPED_WOOD_VARIANTS = createVanillaStrippedWoodVariants();
+    public static final List<Variant> STRIPPED_WOOD_VARIANTS = createStrippedWoodVariants();
+    public static final List<Variant> ROOF_VARIANTS = createRoofVariants();
+    public static final List<Variant> THATCH_VARIANTS = createThatchVariants();
+    public static final List<Variant> WOOL_VARIANTS = createWoolVariants();
 
-    public static final List<Variant> STONE_VARIANTS_WITHOUT_STAIRS_WALL = Lists.newArrayList(Variant.ARCH, Variant.ARCH_HALF, Variant.ARCH_LARGE,
-            Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT, Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER, Variant.CORNER_SLAB,
-            Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.QUARTER, Variant.QUARTER_VERTICAL,
-            Variant.LAYER, Variant.LAYER_VERTICAL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createVanillaStoneVariants() {
+        List<Variant> VANILLA_STONE_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        VANILLA_STONE_VARIANTS.removeAll(DOORS_FENCES_ROOFS_SIGNS);
+        VANILLA_STONE_VARIANTS.removeAll(STRIPPED);
+        VANILLA_STONE_VARIANTS.remove(Variant.TALL_DOOR);
+        return List.copyOf(VANILLA_STONE_VARIANTS);
+    }
 
-    public static final List<Variant> PLANK_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createStoneVariants() {
+        List<Variant> STONE_VARIANTS = new ArrayList<>(VANILLA_STONE_VARIANTS);
+        STONE_VARIANTS.removeAll(BUTTONS);
+        STONE_VARIANTS.remove(Variant.BASE);
+        return List.copyOf(STONE_VARIANTS);
+    }
 
-    public static final List<Variant> DOORS_ETC = Lists.newArrayList(Variant.TALL_DOOR);
+    private static List<Variant> createStoneVariantsWithoutSlab() {
+        List<Variant> STONE_VARIANTS_WITHOUT_SLAB = new ArrayList<>(STONE_VARIANTS);
+        STONE_VARIANTS_WITHOUT_SLAB.remove(Variant.SLAB);
+        return List.copyOf(STONE_VARIANTS_WITHOUT_SLAB);
+    }
 
-    public static final List<Variant> PLANK_VARIANTS_ETC = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.FENCE, Variant.FENCE_GATE, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF,
-            Variant.HANGING_SIGN, Variant.WALL_HANGING_SIGN, Variant.SIGN, Variant.WALL_SIGN, Variant.DOOR, Variant.TALL_DOOR, Variant.BUTTON, Variant.TRAPDOOR);
+    private static List<Variant> createStoneVariantsWithoutSlabStairs() {
+        List<Variant> STONE_VARIANTS_WITHOUT_SLAB_STAIRS = new ArrayList<>(STONE_VARIANTS_WITHOUT_SLAB);
+        STONE_VARIANTS_WITHOUT_SLAB_STAIRS.remove(Variant.STAIRS);
+        return List.copyOf(STONE_VARIANTS_WITHOUT_SLAB_STAIRS);
+    }
 
-    public static final List<Variant> BOARD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR, Variant.PRESSURE_PLATE,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createStoneVariantsWithoutSlabStairsWall() {
+        List<Variant> STONE_VARIANTS_WITHOUT_SLAB_STAIRS_WALL = new ArrayList<>(STONE_VARIANTS_WITHOUT_SLAB_STAIRS);
+        STONE_VARIANTS_WITHOUT_SLAB_STAIRS_WALL.remove(Variant.WALL);
+        return List.copyOf(STONE_VARIANTS_WITHOUT_SLAB_STAIRS_WALL);
+    }
 
-    public static final List<Variant> PLANK_VARIANTS_WITHOUT_FENCES_STAIRS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createTerracottaVariants() {
+        List<Variant> TERRACOTTA_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        TERRACOTTA_VARIANTS.removeAll(BUTTONS_DOORS_FENCES);
+        TERRACOTTA_VARIANTS.removeAll(SIGNS);
+        TERRACOTTA_VARIANTS.removeAll(STRIPPED);
+        TERRACOTTA_VARIANTS.remove(Variant.TALL_DOOR);
+        TERRACOTTA_VARIANTS.remove(Variant.BASE);
+        return List.copyOf(TERRACOTTA_VARIANTS);
+    }
 
-    public static final List<Variant> VANILLA_PLANK_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.TALL_DOOR, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createVanillaPlankVariants() {
+        List<Variant> VANILLA_PLANK_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        VANILLA_PLANK_VARIANTS.removeAll(STONE_ONLY);
+        VANILLA_PLANK_VARIANTS.removeAll(STRIPPED);
+        VANILLA_PLANK_VARIANTS.removeAll(ROOFS);
+        return List.copyOf(VANILLA_PLANK_VARIANTS);
+    }
 
-    public static final List<Variant> COMPAT_PLANK_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.CAPITAL, Variant.CORNER,
-            Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.WALL, Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createPlankVariants() {
+        List<Variant> PLANK_VARIANTS = new ArrayList<>(VANILLA_PLANK_VARIANTS);
+        PLANK_VARIANTS.removeAll(BUTTONS_DOORS_FENCES);
+        PLANK_VARIANTS.removeAll(SLABS_STAIRS);
+        PLANK_VARIANTS.removeAll(SIGNS);
+        PLANK_VARIANTS.remove(Variant.BASE);
+        return List.copyOf(PLANK_VARIANTS);
+    }
 
-    public static final List<Variant> STRIPPED_WOOD_VARIANTS = Lists.newArrayList(Variant.BALUSTRADE, Variant.BEAM_DIAGONAL, Variant.BEAM_HORIZONTAL,
-            Variant.BEAM_LINTEL, Variant.BEAM_POSTS, Variant.BEAM_VERTICAL, Variant.CAPITAL, Variant.CORNER, Variant.CORNER_SLAB,
-            Variant.CORNER_SLAB_VERTICAL, Variant.DOOR_FRAME, Variant.DOOR_FRAME_LINTEL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL,
-            Variant.WINDOW, Variant.WINDOW_HALF);
+    private static List<Variant> createCompatPlankVariants() {
+        List<Variant> COMPAT_PLANK_VARIANTS = new ArrayList<>(PLANK_VARIANTS);
+        COMPAT_PLANK_VARIANTS.remove(Variant.TALL_DOOR);
+        return List.copyOf(COMPAT_PLANK_VARIANTS);
+    }
 
-    public static final List<Variant> TERRACOTTA_VARIANTS = Lists.newArrayList(Variant.ARCH, Variant.ARCH_HALF,
-            Variant.ARCH_LARGE, Variant.ARCH_LARGE_HALF, Variant.ARROWSLIT, Variant.BALUSTRADE, Variant.CAPITAL,
-            Variant.CORNER, Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45,
-            Variant.ROOF_67, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW,
-            Variant.WINDOW_HALF);
+    private static List<Variant> createBoardVariants() {
+        List<Variant> BOARD_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        BOARD_VARIANTS.removeAll(DOORS_FENCES_ROOFS_SIGNS);
+        BOARD_VARIANTS.removeAll(STONE_ONLY);
+        BOARD_VARIANTS.removeAll(STRIPPED);
+        BOARD_VARIANTS.remove(Variant.TALL_DOOR);
+        return List.copyOf(BOARD_VARIANTS);
+    }
 
-    public static final List<Variant> THATCH_VARIANTS = Lists.newArrayList(Variant.CAPITAL,
-            Variant.CORNER, Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45,
-            Variant.ROOF_67, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW,
-            Variant.WINDOW_HALF);
+    private static List<Variant> createRoofVariants() {
+        List<Variant> ROOF_VARIANTS = new ArrayList<>(ROOFS);
+        return List.copyOf(ROOF_VARIANTS);
+    }
 
-    public static final List<Variant> WOOL_VARIANTS = Lists.newArrayList(Variant.CAPITAL,
-            Variant.CORNER, Variant.CORNER_SLAB, Variant.CORNER_SLAB_VERTICAL, Variant.EIGHTH, Variant.PILLAR,
-            Variant.QUARTER, Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL, Variant.STAIRS, Variant.WALL, Variant.WINDOW,
-            Variant.WINDOW_HALF);
+    private static List<Variant> createVanillaStrippedWoodVariants() {
+        List<Variant> VANILLA_STRIPPED_WOOD_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        VANILLA_STRIPPED_WOOD_VARIANTS.removeAll(BUTTONS_DOORS_FENCES_ROOFS_SIGNS);
+        VANILLA_STRIPPED_WOOD_VARIANTS.removeAll(STONE_ONLY);
+        VANILLA_STRIPPED_WOOD_VARIANTS.remove(Variant.TALL_DOOR);
+        return List.copyOf(VANILLA_STRIPPED_WOOD_VARIANTS);
+    }
 
-    public static final List<Variant> TUDOR_VARIANTS = Lists.newArrayList(Variant.CORNER, Variant.QUARTER,
-            Variant.QUARTER_VERTICAL, Variant.LAYER, Variant.LAYER_VERTICAL);
+    private static List<Variant> createStrippedWoodVariants() {
+        List<Variant> STRIPPED_WOOD_VARIANTS = new ArrayList<>(VANILLA_STRIPPED_WOOD_VARIANTS);
+        STRIPPED_WOOD_VARIANTS.remove(Variant.BASE);
+        return List.copyOf(STRIPPED_WOOD_VARIANTS);
+    }
 
-    public static final List<Variant> ROOF_VARIANTS = Lists.newArrayList(Variant.ROOF_PEAK, Variant.ROOF_22, Variant.ROOF_45, Variant.ROOF_67);
+    private static List<Variant> createThatchVariants() {
+        List<Variant> THATCH_VARIANTS = new ArrayList<>(ALL_VARIANTS);
+        THATCH_VARIANTS.removeAll(BUTTONS);
+        THATCH_VARIANTS.removeAll(DOORS);
+        THATCH_VARIANTS.removeAll(FENCES);
+        THATCH_VARIANTS.removeAll(SIGNS);
+        THATCH_VARIANTS.removeAll(STONE_ONLY);
+        THATCH_VARIANTS.removeAll(STRIPPED);
+        THATCH_VARIANTS.remove(Variant.BALUSTRADE);
+        THATCH_VARIANTS.remove(Variant.TALL_DOOR);
+        return List.copyOf(THATCH_VARIANTS);
+    }
 
-//    public static final List<Variant> FURNITURE_VARIANTS =
-
-//    public static final List<Variant> LIGHTING_VARIANTS =
-
-//    public static final List<Variant> GLASS_VARIANTS =
-
-//    public static final List<Variant> OLD_TUDOR_VARIANTS = Lists.newArrayList(CROSS, DOWN, UP, LEFT, RIGHT, HORIZONTAL_1, HORIZONTAL_2, VERTICAL_1, VERTICAL_2);
+    private static List<Variant> createWoolVariants() {
+        List<Variant> WOOL_VARIANTS = new ArrayList<>(BOARD_VARIANTS);
+        WOOL_VARIANTS.removeAll(BUTTONS);
+        WOOL_VARIANTS.remove(Variant.BALUSTRADE);
+        WOOL_VARIANTS.remove(Variant.BASE);
+        return List.copyOf(WOOL_VARIANTS);
+    }
 
 
     public static <T> List<T> modifyList(List<T> list, Consumer<List<T>> consumer) {
@@ -120,6 +181,7 @@ public class ModBlockHelper {
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> ARCH_HALF = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<HalfArchBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.archHalfBlock(block, side, bottom, top), provider::archHalfBlock);
+
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> ARCH_LARGE = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<LargeArchBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
                     provider.archLargeBlock(block, side, bottom, top), provider::archLargeBlock);
@@ -239,8 +301,8 @@ public class ModBlockHelper {
 
     public static final BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> HANGING_SIGN = (s, pair) -> {
         ModBlockStateProvider provider = pair.getSecond();
-        Block sign = pair.getFirst().get(ModBlockFamily.Variant.HANGING_SIGN);
-        Block wall = pair.getFirst().get(ModBlockFamily.Variant.WALL_HANGING_SIGN);
+        Block sign = pair.getFirst().get(Variant.HANGING_SIGN);
+        Block wall = pair.getFirst().get(Variant.WALL_HANGING_SIGN);
         provider.hangingSignBlock(sign, wall, provider.blockTexture(BlockManager.getMainBy(s, () -> sign)));
     };
 
@@ -283,8 +345,8 @@ public class ModBlockHelper {
 
     public static final BiConsumer<Supplier<Block>, Pair<BlockManager, ModBlockStateProvider>> SIGN = (s, pair) -> {
         ModBlockStateProvider provider = pair.getSecond();
-        StandingSignBlock sign = (StandingSignBlock) pair.getFirst().get(ModBlockFamily.Variant.SIGN);
-        WallSignBlock wall = (WallSignBlock) pair.getFirst().get(ModBlockFamily.Variant.WALL_SIGN);
+        StandingSignBlock sign = (StandingSignBlock) pair.getFirst().get(Variant.SIGN);
+        WallSignBlock wall = (WallSignBlock) pair.getFirst().get(Variant.WALL_SIGN);
         provider.signBlock(sign, wall, provider.blockTexture(BlockManager.getMainBy(s, () -> sign)));
     };
 
@@ -371,6 +433,10 @@ public class ModBlockHelper {
             if (tex.getPath().equals("block/smooth_quartz")) {
                 side = top = bottom = new ResourceLocation(tex.getNamespace(), "block/quartz_block_bottom");
             }
+            genWithSides.data((T) b.get(), side, bottom, top, tex);
+        } else if (tex.getPath().contains("chalk_pillar") || tex.getPath().contains("purpur_pillar")) {
+            side = tex;
+            top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
             genWithSides.data((T) b.get(), side, bottom, top, tex);
         } else if (tex.getPath().contains("sandstone")) {
             if (tex.getPath().contains("cut")) {

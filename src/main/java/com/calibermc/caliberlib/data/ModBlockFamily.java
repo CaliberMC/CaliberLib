@@ -137,20 +137,20 @@ public class ModBlockFamily {
             return this;
         }
 
-        public Builder chiseled(Block pChiseledBlock) {
-            this.family.variants.put(Variant.CHISELED, pChiseledBlock);
-            return this;
-        }
+//        public Builder chiseled(Block pChiseledBlock) {
+//            this.family.variants.put(Variant.CHISELED, pChiseledBlock);
+//            return this;
+//        }
 
-        public Builder cracked(Block pCrackedBlock) {
-            this.family.variants.put(Variant.CRACKED, pCrackedBlock);
-            return this;
-        }
+//        public Builder cracked(Block pCrackedBlock) {
+//            this.family.variants.put(Variant.CRACKED, pCrackedBlock);
+//            return this;
+//        }
 
-        public Builder column(Block pColumnBlock) {
-            this.family.variants.put(Variant.COLUMN, pColumnBlock);
-            return this;
-        }
+//        public Builder column(Block pColumnBlock) {
+//            this.family.variants.put(Variant.COLUMN, pColumnBlock);
+//            return this;
+//        }
 
         public Builder corner(Block pCornerBlock) {
             this.family.variants.put(Variant.CORNER, pCornerBlock);
@@ -167,10 +167,10 @@ public class ModBlockFamily {
             return this;
         }
 
-        public Builder cut(Block pCutBlock) {
-            this.family.variants.put(Variant.CUT, pCutBlock);
-            return this;
-        }
+//        public Builder cut(Block pCutBlock) {
+//            this.family.variants.put(Variant.CUT, pCutBlock);
+//            return this;
+//        }
 
         public Builder door(Block pDoorBlock) {
             this.family.variants.put(Variant.DOOR, pDoorBlock);
@@ -228,10 +228,10 @@ public class ModBlockFamily {
             return this;
         }
 
-        public Builder polished(Block pPolishedBlock) {
-            this.family.variants.put(Variant.POLISHED, pPolishedBlock);
-            return this;
-        }
+//        public Builder polished(Block pPolishedBlock) {
+//            this.family.variants.put(Variant.POLISHED, pPolishedBlock);
+//            return this;
+//        }
 
         public Builder quarter(Block pQuarterBlock) {
             this.family.variants.put(Variant.QUARTER, pQuarterBlock);
@@ -347,13 +347,13 @@ public class ModBlockFamily {
         BEAM_VERTICAL("beam_vertical"),
         BUTTON("button"),
         CAPITAL("capital"),
-        CHISELED("chiseled"),
-        CRACKED("cracked"),
-        COLUMN("column"),
+//        CHISELED("chiseled"),
+//        CRACKED("cracked"),
+//        COLUMN("column"),
         CORNER("corner"),
         CORNER_SLAB("corner_slab"),
         CORNER_SLAB_VERTICAL("corner_slab_vertical"),
-        CUT("cut"),
+//        CUT("cut"),
         DOOR("door"),
         DOOR_FRAME("door_frame"),
         DOOR_FRAME_LINTEL("door_frame_lintel"),
@@ -376,24 +376,24 @@ public class ModBlockFamily {
         SLAB_VERTICAL("slab_vertical"),
         STAIRS("stairs"),
         PRESSURE_PLATE("pressure_plate"),
-        POLISHED("polished"),
+//        POLISHED("polished"),
         TALL_DOOR("tall_door"),
         TRAPDOOR("trapdoor"),
         WALL("wall"),
         WALL_SIGN("wall_sign"),
         WINDOW("window"),
-        WINDOW_HALF("window_half"),
+        WINDOW_HALF("window_half");
 
         /* TUDOR BLOCKS */
-        CROSS("cross"),
-        DOWN("down"),
-        UP("up"),
-        LEFT("left"),
-        RIGHT("right"),
-        HORIZONTAL_1("horizontal_1"),
-        HORIZONTAL_2("horizontal_2"),
-        VERTICAL_1("vertical_1"),
-        VERTICAL_2("vertical_2");
+//        CROSS("cross"),
+//        DOWN("down"),
+//        UP("up"),
+//        LEFT("left"),
+//        RIGHT("right"),
+//        HORIZONTAL_1("horizontal_1"),
+//        HORIZONTAL_2("horizontal_2"),
+//        VERTICAL_1("vertical_1"),
+//        VERTICAL_2("vertical_2");
 
         private final String name;
 
