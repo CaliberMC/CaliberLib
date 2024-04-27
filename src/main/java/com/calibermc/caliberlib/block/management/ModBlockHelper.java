@@ -413,20 +413,24 @@ public class ModBlockHelper {
         String originalPath = tex.getPath();
         String modifiedPath = tex.getPath();
         boolean isMinecraftNamespace = tex.getNamespace().equals("minecraft");
+        boolean isCreateStone = tex.getNamespace().equals("create") && (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("limestone") || tex.getPath().contains("ochrum") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia") || tex.getPath().contains("veridium"));
 
         if (tex.getPath().contains("_wood") && !tex.getPath().contains("stained") || tex.getPath().contains("_hyphae")) {
             String replacement = tex.getPath().contains("_wood") ? "_wood" : "_hyphae";
             String newTexture = tex.getPath().contains("_wood") ? "_log" : "_stem";
             tex = new ResourceLocation(tex.getNamespace(), tex.getPath().replace(replacement, newTexture));
             genWithSides.data((T) b.get(), tex, tex, tex, tex);
+
         } else if (tex.getPath().contains("bamboo_block") && !tex.getPath().contains("stained")) {
             tex = new ResourceLocation(tex.getNamespace(), "block/stripped_bamboo_block");
             genWithSides.data((T) b.get(), tex, tex, tex, tex);
+
         } else if (tex.getPath().contains("tudor")) {
             String woodType = extractWoodType(tex);
             String prefix = tex.getPath().contains("stained") ? "stained_" : "";
             top = bottom = new ResourceLocation(tex.getNamespace(), "block/" + prefix + woodType + "_boards");
             genWithSides.data((T) b.get(), side, bottom, top, tex);
+
         } else if (tex.getPath().equals("block/basalt") || tex.getPath().equals("block/polished_basalt") || (tex.getPath().contains("quartz") && !tex.getPath().contains("brick"))) {
             side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_side");
             top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
@@ -434,23 +438,74 @@ public class ModBlockHelper {
                 side = top = bottom = new ResourceLocation(tex.getNamespace(), "block/quartz_block_bottom");
             }
             genWithSides.data((T) b.get(), side, bottom, top, tex);
+
         } else if (tex.getPath().contains("chalk_pillar") || tex.getPath().contains("purpur_pillar")) {
             side = tex;
             top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
             genWithSides.data((T) b.get(), side, bottom, top, tex);
+
+        } else if (isCreateStone) {
+            String brickPath = originalPath.replace("block/", "block/palettes/stone_types/brick/");
+            String cutPath = originalPath.replace("block/", "block/palettes/stone_types/cut/");
+            String layeredPath = originalPath.replace("block/", "block/palettes/stone_types/layered/");
+            String naturalPath = originalPath.replace("block/", "block/palettes/stone_types/natural/");
+            String pillarPath = originalPath.replace("block/", "block/palettes/stone_types/pillar/");
+            String polishedPath = originalPath.replace("block/", "block/palettes/stone_types/polished/");
+            String smallBrickPath = originalPath.replace("block/", "block/palettes/stone_types/small_brick/");
+            String stonePath = originalPath.replace("block/", "block/palettes/stone_types/");
+
+            if (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("ochrum") || tex.getPath().contains("veridium")) {
+                if (tex.getPath().contains("brick") && tex.getPath().contains("cut")) {
+                    modifiedPath = brickPath.replace("cut_", "").replace("_brick", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_brick");
+
+                } else if (tex.getPath().contains("small")) {
+                    modifiedPath = smallBrickPath.replace("small_", "").replace("_brick", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_small_brick");
+
+                } else if (tex.getPath().contains("cut") && !tex.getPath().contains("polished") && !tex.getPath().contains("brick")) {
+                    modifiedPath = cutPath.replace("cut_", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut");
+
+                } else if (tex.getPath().contains("layered")) {
+                    modifiedPath = layeredPath.replace("layered_", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_layered");
+
+                } else if (tex.getPath().contains("pillar")) {
+                    modifiedPath = pillarPath.replace("_pillar", "_cut_pillar");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath);
+
+                } else if (tex.getPath().contains("polished_cut")) {
+                    modifiedPath = polishedPath.replace("polished_cut_", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_polished");
+
+                } else {
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), naturalPath + "_0");
+                    tex = new ResourceLocation(tex.getNamespace(), originalPath + "_natural_0");
+                }
+
+            } else if (tex.getPath().contains("limestone") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia")) {
+                top = bottom = side = new ResourceLocation(tex.getNamespace(), stonePath);
+            }
+            genWithSides.data((T) b.get(), side, bottom, top, tex);
+
         } else if (tex.getPath().contains("sandstone")) {
+
             if (tex.getPath().contains("cut")) {
                 modifiedPath = modifiedPath.replace("cut_", "");
                 side = tex;
                 top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
             } else if (tex.getPath().contains("chiseled")) {
                 modifiedPath = modifiedPath.replace("chiseled_", "");
                 side = tex;
                 top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
             } else if (tex.getPath().contains("smooth")) {
                 modifiedPath = modifiedPath.replace("smooth_", "");
                 side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
                 top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
             } else {
                 side = tex;
                 top = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
