@@ -1,7 +1,7 @@
 package com.calibermc.caliberlib.data.datagen;
 
 import com.calibermc.caliberlib.block.management.BlockManager;
-import com.calibermc.caliberlib.block.properties.ModBlockSetType;
+import com.calibermc.caliberlib.block.properties.RecipeStoneTypes;
 import com.calibermc.caliberlib.block.properties.RecipeWoodTypes;
 import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.calibermc.caliberlib.util.ModTags;
@@ -12,17 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 
 public class ModBlockTagProvider extends BlockTagsProvider {
@@ -47,20 +46,12 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     .toList();
 
             for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : sortedBlocks) {
-//        for (BlockManager blockManager : BlockManager.BLOCK_MANAGERS.get(this.modid)) {
-//            for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : blockManager.getBlocks().entrySet()) {
                 ModBlockFamily.Variant variant = e.getKey().variant;
                 String blockName = e.getValue().getFirst().getPath();
                 BlockSetType blockSetType = blockManager.blockType();
                 ResourceLocation namespace = e.getValue().getFirst();
 
-                if (blockName.contains("andesite") || blockName.contains("basalt") || blockName.contains("blackstone")
-                        || blockName.contains("brick") || blockName.contains("calcite") || blockName.contains("diorite")
-                        || blockName.contains("dripstone") || blockName.contains("end_stone") || blockName.contains("granite")
-                        || blockName.contains("limestone") || blockName.contains("marble") || blockName.contains("netherite")
-                        || blockName.contains("obsidian") || blockName.contains("prismarine") || blockName.contains("purpur")
-                        || blockName.contains("quartz") || blockName.contains("sandstone") || blockName.contains("stone")
-                        || blockName.contains("tuff") || blockName.contains("terracotta") || blockName.contains("warped")) {
+                if (Arrays.stream(RecipeStoneTypes.values()).anyMatch(p -> blockManager.getName().contains(p.getName()))) {
                     if (namespace != null && namespace.getNamespace().equals("caliber")) {
                         this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(e.getValue().getSecond().get());
                     } else {
@@ -558,6 +549,10 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                         }
                     }
                 }
+
+
+
+
             }
         }
 
