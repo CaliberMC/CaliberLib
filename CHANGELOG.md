@@ -10,7 +10,8 @@
 #### Bugfixes
 - Removed non BlockManager item model data generation _(this was causing item models to appear invisible in inventory)_
 - Adjusted texture alignment for Pillar models
-- Added fixBlockTex for Chalk Pillar _(BOP Chalk Pillars have "top" texture on top and bottom)_
+- Added fixBlockTex for Chalk Pillar and Purpur Pillar _(Pillars have "top" texture on top and bottom)_
+- Added fixBlockTex for Create Variants
 
 ---
 ### 0.1.5

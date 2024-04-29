@@ -412,8 +412,9 @@ public class ModBlockHelper {
         ResourceLocation bottom = tex;
         String originalPath = tex.getPath();
         String modifiedPath = tex.getPath();
+        String topBottomPath = tex.getPath();
         boolean isMinecraftNamespace = tex.getNamespace().equals("minecraft");
-        boolean isCreateStone = tex.getNamespace().equals("create") && (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("limestone") || tex.getPath().contains("ochrum") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia") || tex.getPath().contains("veridium"));
+        boolean isCreateStone = tex.getNamespace().equals("create"); //&& (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("limestone") || tex.getPath().contains("ochrum") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia") || tex.getPath().contains("veridium"));
 
         if (tex.getPath().contains("_wood") && !tex.getPath().contains("stained") || tex.getPath().contains("_hyphae")) {
             String replacement = tex.getPath().contains("_wood") ? "_wood" : "_hyphae";
@@ -446,46 +447,50 @@ public class ModBlockHelper {
 
         } else if (isCreateStone) {
             String brickPath = originalPath.replace("block/", "block/palettes/stone_types/brick/");
+            String capPath = originalPath.replace("block/", "block/palettes/stone_types/cap/");
             String cutPath = originalPath.replace("block/", "block/palettes/stone_types/cut/");
             String layeredPath = originalPath.replace("block/", "block/palettes/stone_types/layered/");
             String naturalPath = originalPath.replace("block/", "block/palettes/stone_types/natural/");
             String pillarPath = originalPath.replace("block/", "block/palettes/stone_types/pillar/");
             String polishedPath = originalPath.replace("block/", "block/palettes/stone_types/polished/");
-            String smallBrickPath = originalPath.replace("block/", "block/palettes/stone_types/small_brick/");
             String stonePath = originalPath.replace("block/", "block/palettes/stone_types/");
 
-            if (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("ochrum") || tex.getPath().contains("veridium")) {
-                if (tex.getPath().contains("brick") && tex.getPath().contains("cut")) {
-                    modifiedPath = brickPath.replace("cut_", "").replace("_brick", "");
-                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_brick");
-
-                } else if (tex.getPath().contains("small")) {
-                    modifiedPath = smallBrickPath.replace("small_", "").replace("_brick", "");
+            if (tex.getPath().contains("brick")) {
+                if (tex.getPath().contains("small")) {
+                    modifiedPath = originalPath.replace("small_", "").replace(tex.getPath().contains("_bricks") ? "_bricks" : "_brick", "");
+                    modifiedPath = modifiedPath.replace("block/", "block/palettes/stone_types/small_brick/");
                     top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_small_brick");
+                } else if (tex.getPath().contains("cut")) {
+                    modifiedPath = brickPath.replace("cut_", "").replace(tex.getPath().contains("_bricks") ? "_bricks" : "_brick", "");
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_brick");
+                }
+            } else if (tex.getPath().contains("cut") && !tex.getPath().contains("polished") && !tex.getPath().contains("brick")) {
+                modifiedPath = cutPath.replace("cut_", "");
+                top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut");
 
-                } else if (tex.getPath().contains("cut") && !tex.getPath().contains("polished") && !tex.getPath().contains("brick")) {
-                    modifiedPath = cutPath.replace("cut_", "");
-                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut");
+            } else if (tex.getPath().contains("layered")) {
+                topBottomPath = capPath.replace("layered_", "");
+                modifiedPath = layeredPath.replace("layered_", "");
+                side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_layered");
+                top = bottom = new ResourceLocation(tex.getNamespace(), topBottomPath + "_cut_cap");
 
-                } else if (tex.getPath().contains("layered")) {
-                    modifiedPath = layeredPath.replace("layered_", "");
-                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_layered");
+            } else if (tex.getPath().contains("pillar")) {
+                topBottomPath = capPath.replace("_pillar", "");
+                modifiedPath = pillarPath.replace("_pillar", "_cut_pillar");
+                side = new ResourceLocation(tex.getNamespace(), modifiedPath);
+                top = bottom = new ResourceLocation(tex.getNamespace(), topBottomPath + "_cut_cap");
 
-                } else if (tex.getPath().contains("pillar")) {
-                    modifiedPath = pillarPath.replace("_pillar", "_cut_pillar");
-                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath);
+            } else if (tex.getPath().contains("polished_cut")) {
+                modifiedPath = polishedPath.replace("polished_cut_", "");
+                top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_polished");
 
-                } else if (tex.getPath().contains("polished_cut")) {
-                    modifiedPath = polishedPath.replace("polished_cut_", "");
-                    top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_cut_polished");
-
-                } else {
+            } else {
+                if (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("ochrum") || tex.getPath().contains("veridium")) {
                     top = bottom = side = new ResourceLocation(tex.getNamespace(), naturalPath + "_0");
                     tex = new ResourceLocation(tex.getNamespace(), originalPath + "_natural_0");
+                } else if (tex.getPath().contains("limestone") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia")) {
+                    top = bottom = side = new ResourceLocation(tex.getNamespace(), stonePath);
                 }
-
-            } else if (tex.getPath().contains("limestone") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia")) {
-                top = bottom = side = new ResourceLocation(tex.getNamespace(), stonePath);
             }
             genWithSides.data((T) b.get(), side, bottom, top, tex);
 
