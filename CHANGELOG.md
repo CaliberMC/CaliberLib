@@ -1,17 +1,24 @@
 # Change Log
 
+### 0.1.7 (in progress)
+#### Features
 
-### 0.1.6 (in progress)
+
+#### Bugfixes
+
+
+### 0.1.6
 #### Features
 - Added STONE_VARIANTS_WITHOUT_SLABS to ModBlockHelper
 - Added Slabs to Stripped Wood variants
 - Refactored Variant Lists for easier management of BlockManager variants
+- Added fixBlockTex for Chalk Pillar and Purpur Pillar _(Pillars have "top" texture on top and bottom)_
+- Added fixBlockTex for Create Variants
 
 #### Bugfixes
 - Removed non BlockManager item model data generation _(this was causing item models to appear invisible in inventory)_
-- Adjusted texture alignment for Pillar models
-- Added fixBlockTex for Chalk Pillar and Purpur Pillar _(Pillars have "top" texture on top and bottom)_
-- Added fixBlockTex for Create Variants
+- Adjusted texture alignment for Pillar models _(textures were misaligned)_
+
 
 ---
 ### 0.1.5
