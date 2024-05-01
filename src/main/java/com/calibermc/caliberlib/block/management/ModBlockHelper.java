@@ -1,21 +1,27 @@
 package com.calibermc.caliberlib.block.management;
 
+import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.custom.*;
+import com.calibermc.caliberlib.block.properties.RecipeStoneTypes;
+import com.calibermc.caliberlib.compat.ChippedPath;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.ModelBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 
 import static com.calibermc.caliberlib.data.ModBlockFamily.Variant;
 
 public class ModBlockHelper {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CaliberLib.class);
 
     private static final List<Variant> ALL_VARIANTS = List.of(Variant.values());
 
@@ -415,6 +421,7 @@ public class ModBlockHelper {
         String topBottomPath = tex.getPath();
         boolean isMinecraftNamespace = tex.getNamespace().equals("minecraft");
         boolean isCreateStone = tex.getNamespace().equals("create"); //&& (tex.getPath().contains("asurine") || tex.getPath().contains("crimsite") || tex.getPath().contains("limestone") || tex.getPath().contains("ochrum") || tex.getPath().contains("scoria") || tex.getPath().contains("scorchia") || tex.getPath().contains("veridium"));
+        boolean isChipped = tex.getNamespace().equals("chipped");
 
         if (tex.getPath().contains("_wood") && !tex.getPath().contains("stained") || tex.getPath().contains("_hyphae")) {
             String replacement = tex.getPath().contains("_wood") ? "_wood" : "_hyphae";
@@ -443,6 +450,37 @@ public class ModBlockHelper {
         } else if (tex.getPath().contains("chalk_pillar") || tex.getPath().contains("purpur_pillar")) {
             side = tex;
             top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+            genWithSides.data((T) b.get(), side, bottom, top, tex);
+
+        } else if (tex.getPath().contains("sandstone")) {
+
+            if (tex.getPath().contains("cut")) {
+                modifiedPath = modifiedPath.replace("cut_", "");
+                side = tex;
+                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
+            } else if (tex.getPath().contains("chiseled")) {
+                modifiedPath = modifiedPath.replace("chiseled_", "");
+                side = tex;
+                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
+            } else if (tex.getPath().contains("smooth")) {
+                modifiedPath = modifiedPath.replace("smooth_", "");
+                side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+
+            } else {
+                side = tex;
+                top = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
+                bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_bottom");
+            }
+
+            if (isMinecraftNamespace) {
+                side = tex.getPath().contains("smooth") ? top : new ResourceLocation("minecraft", originalPath);
+                top = new ResourceLocation("minecraft", modifiedPath + "_top");
+                bottom = !tex.getPath().contains("smooth") && !tex.getPath().contains("cut") && !tex.getPath().contains("chiseled") ?
+                        new ResourceLocation("minecraft", modifiedPath + "_bottom") : top;
+            }
             genWithSides.data((T) b.get(), side, bottom, top, tex);
 
         } else if (isCreateStone) {
@@ -494,41 +532,69 @@ public class ModBlockHelper {
             }
             genWithSides.data((T) b.get(), side, bottom, top, tex);
 
-        } else if (tex.getPath().contains("sandstone")) {
-
-            if (tex.getPath().contains("cut")) {
-                modifiedPath = modifiedPath.replace("cut_", "");
-                side = tex;
-                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
-
-            } else if (tex.getPath().contains("chiseled")) {
-                modifiedPath = modifiedPath.replace("chiseled_", "");
-                side = tex;
-                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
-
-            } else if (tex.getPath().contains("smooth")) {
-                modifiedPath = modifiedPath.replace("smooth_", "");
-                side = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
-                top = bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
-
-            } else {
-                side = tex;
-                top = new ResourceLocation(tex.getNamespace(), modifiedPath + "_top");
-                bottom = new ResourceLocation(tex.getNamespace(), modifiedPath + "_bottom");
-            }
-
-            if (isMinecraftNamespace) {
-                side = tex.getPath().contains("smooth") ? top : new ResourceLocation("minecraft", originalPath);
-                top = new ResourceLocation("minecraft", modifiedPath + "_top");
-                bottom = !tex.getPath().contains("smooth") && !tex.getPath().contains("cut") && !tex.getPath().contains("chiseled") ?
-                        new ResourceLocation("minecraft", modifiedPath + "_bottom") : top;
-            }
+        } else if (isChipped) {
+            String name = "";
+            name = extractChippedPath(tex.getPath(), name);
+            modifiedPath = originalPath.replace("block/", "block/" + name + "/");
+            top = bottom = side = new ResourceLocation(tex.getNamespace(), modifiedPath);
 
             genWithSides.data((T) b.get(), side, bottom, top, tex);
+
         } else {
             gen.data((T) b.get(), tex);
         }
     }
+
+    private static final Set<String> lowerPriorityMaterials = Set.of("bricks", "sandstone", "obsidian", "stone");
+
+    private static String extractChippedPath(String texPath, String defaultValue) {
+        List<String> matches = Arrays.stream(ChippedPath.values())
+                .map(ChippedPath::getName)
+                .filter(texPath::contains)
+                .collect(Collectors.toList());
+
+        if (matches.isEmpty()) {
+            return defaultValue;
+        }
+
+        // Filter to find the best match that isn't in the lower priority materials
+        return matches.stream()
+                .filter(name -> !lowerPriorityMaterials.contains(name))
+                .findFirst()
+                .orElseGet(() -> findFirstLowerPriorityMaterial(matches));
+    }
+
+    private static String findFirstLowerPriorityMaterial(List<String> matches) {
+        // Ordered lower priority materials, "stone" being the lowest priority
+        String[] orderedLowerPriorityMaterials = {"bricks", "obsidian", "sandstone", "terracotta", "stone"};
+
+        // Return the first match from the ordered lower priority materials that is present in matches
+        for (String material : orderedLowerPriorityMaterials) {
+            if (matches.contains(material)) {
+                return material;
+            }
+        }
+        return "";
+    }
+
+    // Filter brick
+//    private static String extractChippedPath(String texPath, String defaultValue) {
+//        List<String> matches = Arrays.stream(ChippedPath.values())
+//                .map(ChippedPath::getName)
+//                .filter(texPath::contains)
+//                .collect(Collectors.toList());  // Collect all matches
+//
+//        if (matches.isEmpty()) {
+//            return defaultValue;  // Return default if no matches
+//        }
+//
+//        // Prioritize non-'bricks' matches, use 'bricks' only if it's the only match
+//        return matches.stream()
+//                .filter(name -> !name.equals("bricks"))  // Filter out 'bricks'
+//                .findFirst()                             // Try to find any match that isn't 'bricks'
+//                .orElse("bricks");                       // If none found, default to 'bricks' if it was in the original matches
+//    }
+
 
     private static String extractWoodType(ResourceLocation resourceLocation) {
         if (resourceLocation.getPath().contains("acacia")) {

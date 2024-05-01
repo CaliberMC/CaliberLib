@@ -83,7 +83,7 @@ public class ModItemTagProvider extends ItemTagsProvider {
                         } else {
                             this.tag(ItemTags.STONE_BRICKS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
                         }
-                    } else if (blockName.contains("log") || (blockName.contains("wood"))) {
+                    } else if (blockName.contains("log") || ((blockName.contains("wood") && !blockName.equals("woodcutter")))) {
                         if (namespace != null && namespace.getNamespace().equals("caliber")) {
                             this.tag(ItemTags.LOGS_THAT_BURN).add(e.getValue().getSecond().get().asItem());
                         } else {

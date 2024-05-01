@@ -68,9 +68,9 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     }
                 }
 
-                if ((!blockName.contains("stone") && (blockName.contains("clay") || blockName.contains("dirt") || blockName.contains("gravel")
-                        || blockName.contains("mycelium") || blockName.contains("nylium") || blockName.contains("podzol")
-                        || blockName.contains("soil") || (blockName.contains("sand"))))) {
+                if ((!blockName.contains("stone") && !(blockName.contains("sanded")) && (blockName.contains("clay") || blockName.contains("dirt")
+                        || blockName.contains("gravel") || blockName.contains("mycelium") || blockName.contains("nylium")
+                        || blockName.contains("podzol") || blockName.contains("soil") || (blockName.contains("sand"))))) {
                     if (namespace != null && namespace.getNamespace().equals("caliber")) {
                         this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(e.getValue().getSecond().get());
                     } else {
@@ -535,7 +535,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                         } else {
                             this.tag(BlockTags.STONE_BRICKS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
                         }
-                    } else if (blockName.contains("wood")) {
+                    } else if (blockName.contains("wood") && !blockName.contains("woodcutter")) {
                         if (namespace != null && namespace.getNamespace().equals("caliber")) {
                             this.tag(BlockTags.LOGS_THAT_BURN).add(e.getValue().getSecond().get());
                         } else {
@@ -618,7 +618,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                             this.tag(BlockTags.LEAVES).add(block);
                         }
 
-                        if (blockName.contains("log") || (blockName.contains("wood"))) {
+                        if (blockName.contains("log") || (blockName.contains("wood") && !blockName.contains("woodcutter"))) {
                             this.tag(BlockTags.LOGS_THAT_BURN).add(block);
                             if (!blockName.contains("stripped") && !blockName.contains("wood")) {
                                 this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(block);
