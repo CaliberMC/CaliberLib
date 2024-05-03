@@ -150,9 +150,7 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
     public boolean canBeReplaced(BlockState state, BlockPlaceContext pContext) {
         int currentLayers = state.getValue(LAYERS);
         if (pContext.getItemInHand().getItem() == this.asItem()) {
-            Direction clickedFace = pContext.getClickedFace();
-            // Allow replacement if it's a side click and not at max layers
-            return isSide(clickedFace) && currentLayers < layerCount;
+            return currentLayers < layerCount;
         }
         return false;
     }

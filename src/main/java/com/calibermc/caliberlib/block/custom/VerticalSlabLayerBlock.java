@@ -132,8 +132,9 @@ public class VerticalSlabLayerBlock extends Block implements SimpleWaterloggedBl
         int currentLayers = state.getValue(LAYERS);
         if (pContext.getItemInHand().getItem() == this.asItem()) {
             Direction clickedFace = pContext.getClickedFace();
-            // Allow replacement if it's a side click and not at max layers
-            return isSide(clickedFace) && currentLayers < layerCount;
+            Direction currentFacing = state.getValue(FACING);
+            // Allow replacement if it's the same face that block is facing and not at max layers
+            return clickedFace == currentFacing && currentLayers < layerCount;
         }
         return false;
     }
