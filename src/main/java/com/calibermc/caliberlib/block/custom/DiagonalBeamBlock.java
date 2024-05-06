@@ -3,15 +3,14 @@ package com.calibermc.caliberlib.block.custom;
 import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.block.shapes.misc.BeamConnection;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.AirBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -26,16 +25,16 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.commons.logging.Log;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
 
 import java.util.stream.Stream;
 
-import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
+import static com.calibermc.caliberlib.block.properties.ModBlockStateProperties.isAir;
+import static com.calibermc.caliberlib.block.properties.ModBlockStateProperties.isSide;
 
 public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -130,56 +129,55 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, BEAM, CONNECT, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, BEAM, CONNECT, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Direction direction = pState.getValue(FACING);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        Direction direction = blockState.getValue(FACING);
         return switch (direction) {
-            case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-            case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-            case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-            default -> SHAPE_NORTH[pState.getValue(BEAM)];
+            case EAST -> SHAPE_EAST[blockState.getValue(BEAM)];
+            case SOUTH -> SHAPE_SOUTH[blockState.getValue(BEAM)];
+            case WEST -> SHAPE_WEST[blockState.getValue(BEAM)];
+            default -> SHAPE_NORTH[blockState.getValue(BEAM)];
         };
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos pCurrentPos = pContext.getClickedPos();
-        BlockState blockstate = pContext.getLevel().getBlockState(pCurrentPos);
-        FluidState fluidstate = pContext.getLevel().getFluidState(pCurrentPos);
-        LevelAccessor pLevel = pContext.getLevel();
-        Direction pFacing = pContext.getHorizontalDirection().getOpposite();
-        Direction pOppositeFacing = pContext.getHorizontalDirection();
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos currentPos = blockPlaceContext.getClickedPos();
+        BlockState blockstate = blockPlaceContext.getLevel().getBlockState(currentPos);
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(currentPos);
+        LevelAccessor levelAccessor = blockPlaceContext.getLevel();
+        Direction facing = blockPlaceContext.getHorizontalDirection().getOpposite();
+        Direction pOppositeFacing = blockPlaceContext.getHorizontalDirection();
 
         if (blockstate.is(this)) {
             int newCount = blockstate.getValue(BEAM) + 1;
             if (newCount > beamShape) {
                 newCount = 1;
             }
-            pContext.getItemInHand().grow(1);
+            blockPlaceContext.getItemInHand().grow(1);
             return blockstate.setValue(BEAM, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < beamShape) && fluidstate.is(FluidTags.WATER)));
         } else {
-            blockstate = this.defaultBlockState().setValue(BEAM, 1).setValue(FACING, pFacing).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+            blockstate = this.defaultBlockState().setValue(BEAM, 1).setValue(FACING, facing).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         }
 
-        return getConnectionState(blockstate, pCurrentPos, pLevel, pFacing, pOppositeFacing);
+        return getConnectionState(blockstate, currentPos, levelAccessor, facing, pOppositeFacing);
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext pContext) {
-        if (pContext.getItemInHand().getItem() == this.asItem()) {
-            Direction clickedFace = pContext.getClickedFace();
-            return isSide(clickedFace) && pContext.replacingClickedOnBlock();
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext blockPlaceContext) {
+        if (blockPlaceContext.getItemInHand().getItem() == this.asItem()) {
+            Direction clickedFace = blockPlaceContext.getClickedFace();
+            return isSide(clickedFace) && blockPlaceContext.replacingClickedOnBlock();
         }
         return false;
     }
@@ -191,61 +189,50 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
      * Note that this method should ideally consider only the specific direction passed in.
      */
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+    public BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
 
-        Direction placedBlockFacing = pState.getValue(FACING);
-        Direction placedBlockOppositeFacing = pState.getValue(FACING).getOpposite();
+        Direction placedBlockFacing = blockState.getValue(FACING);
+        Direction placedBlockOppositeFacing = blockState.getValue(FACING).getOpposite();
 
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        if (blockState.getValue(WATERLOGGED)) {
+            levelAccessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
 
-        return getConnectionState(pState, pCurrentPos, pLevel, placedBlockFacing, placedBlockOppositeFacing);
+        return getConnectionState(blockState, currentPos, levelAccessor, placedBlockFacing, placedBlockOppositeFacing);
     }
 
     @NotNull
-    public BlockState getConnectionState(BlockState blockstate, BlockPos pCurrentPos, LevelAccessor pLevel, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// BlockState upState, BlockState downState, BlockState forwardState, BlockState backwardState, BlockState forwardUpState, BlockState backwardUpState, Direction placedBlockFacing, Direction placedBlockOppositeFacing
+    public BlockState getConnectionState(BlockState blockstate, BlockPos currentPos, LevelAccessor levelAccessor, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// BlockState ublockState, BlockState downState, BlockState forwardState, BlockState backwardState, BlockState forwardUblockState, BlockState backwardUblockState, Direction placedBlockFacing, Direction placedBlockOppositeFacing
 
-        BlockPos backwardPos = pCurrentPos.relative(placedBlockFacing);
-        BlockPos backward2Pos = backwardPos.relative(placedBlockFacing);
-        BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
-        BlockPos backwardUpPos = pCurrentPos.relative(placedBlockFacing).above();
-        BlockPos forwardUpPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).above();
-        BlockPos backwardDownPos = pCurrentPos.relative(placedBlockFacing).below();
-        BlockPos forwardDownPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).below();
-        BlockPos upPos = pCurrentPos.above();
-        BlockPos downPos = pCurrentPos.below();
+        BlockPos backwardPos = currentPos.relative(placedBlockFacing);
+        BlockPos forwardPos = currentPos.relative(placedBlockFacing.getOpposite());
+        BlockPos backwardUblockPos = currentPos.relative(placedBlockFacing).above();
+        BlockPos forwardUblockPos = currentPos.relative(placedBlockFacing.getOpposite()).above();
+        BlockPos backwardDownPos = currentPos.relative(placedBlockFacing).below();
+        BlockPos forwardDownPos = currentPos.relative(placedBlockFacing.getOpposite()).below();
+        BlockPos ublockPos = currentPos.above();
+        BlockPos downPos = currentPos.below();
 
-        BlockState backwardState = pLevel.getBlockState(backwardPos);
-        BlockState backward2State = pLevel.getBlockState(backward2Pos);
-        BlockState forwardState = pLevel.getBlockState(forwardPos);
-        BlockState backwardUpState = pLevel.getBlockState(backwardUpPos);
-        BlockState forwardUpState = pLevel.getBlockState(forwardUpPos);
-        BlockState backwardDownState = pLevel.getBlockState(backwardDownPos);
-        BlockState forwardDownState = pLevel.getBlockState(forwardDownPos);
-        BlockState upState = pLevel.getBlockState(upPos);
-        BlockState downState = pLevel.getBlockState(downPos);
+        BlockState backwardState = levelAccessor.getBlockState(backwardPos);
+        BlockState forwardState = levelAccessor.getBlockState(forwardPos);
+        BlockState backwardUblockState = levelAccessor.getBlockState(backwardUblockPos);
+        BlockState forwardUblockState = levelAccessor.getBlockState(forwardUblockPos);
+        BlockState backwardDownState = levelAccessor.getBlockState(backwardDownPos);
+        BlockState forwardDownState = levelAccessor.getBlockState(forwardDownPos);
+        BlockState ublockState = levelAccessor.getBlockState(ublockPos);
+        BlockState downState = levelAccessor.getBlockState(downPos);
 
         TopBottomShape backwardHorizontal = backwardState.getBlock() instanceof HorizontalBeamBlock ? backwardState.getValue(HorizontalBeamBlock.TYPE) : null;
         TopBottomShape forwardHorizontal = forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(HorizontalBeamBlock.TYPE) : null;
 
-        Direction upBlockVertical = upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(FACING) : null;
+        Direction upBlockVertical = ublockState.getBlock() instanceof VerticalBeamBlock ? ublockState.getValue(FACING) : null;
         Direction downBlockVertical = downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(FACING) : null;
         Direction backwardDownVertical = backwardDownState.getBlock() instanceof VerticalBeamBlock ? backwardDownState.getValue(FACING) : null;
         Direction backwardBlockDiagonal = backwardState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 1) ? backwardState.getValue(FACING) : null;
         Direction forwardBlockDiagonal = forwardState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 1) ? forwardState.getValue(FACING) : null;
         Direction backwardBlockDiagonal2 = backwardState.getBlock() instanceof DiagonalBeamBlock && (backwardState.getValue(BEAM) == 2) ? backwardState.getValue(FACING) : null;
         Direction forwardBlockDiagonal2 = forwardState.getBlock() instanceof DiagonalBeamBlock && (forwardState.getValue(BEAM) == 2) ? forwardState.getValue(FACING) : null;
-        Direction backwardUpDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock ? backwardUpState.getValue(FACING) : null;
-        Direction forwardUpDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock ? forwardUpState.getValue(FACING) : null;
-        Direction upDiagonal = upState.getBlock() instanceof DiagonalBeamBlock ? upState.getValue(FACING) : null;
-        Direction downDiagonal = downState.getBlock() instanceof DiagonalBeamBlock ? downState.getValue(FACING) : null;
-
-        Direction backwardUpBlockDiagonal = backwardUpState.getBlock() instanceof DiagonalBeamBlock && (backwardUpState.getValue(BEAM) == 1) ? backwardUpState.getValue(FACING) : null;
-        Direction forwardDownBlockDiagonal = forwardDownState.getBlock() instanceof DiagonalBeamBlock && (forwardDownState.getValue(BEAM) == 1) ? forwardDownState.getValue(FACING) : null;
-//        Direction forwardUpBlockDiagonal = forwardUpState.getBlock() instanceof DiagonalBeamBlock && (forwardUpState.getValue(BEAM) == 1) ? forwardUpState.getValue(FACING) : null;
-
-
+        Direction backwardUpDiagonal = backwardUblockState.getBlock() instanceof DiagonalBeamBlock ? backwardUblockState.getValue(FACING) : null;
 
         BeamConnection connect = BeamConnection.NONE;
         if (forwardHorizontal == TopBottomShape.BOTTOM && downBlockVertical == placedBlockFacing
@@ -373,7 +360,7 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
 
 
         } else if ((backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)
-                && ((backwardUpDiagonal == placedBlockOppositeFacing) || (isAir(backwardUpState) && isAir(forwardUpState)))) { //forwardUpDiagonal == placedBlockFacing ||
+                && ((backwardUpDiagonal == placedBlockOppositeFacing) || (isAir(backwardUblockState) && isAir(forwardUblockState)))) { //forwardUpDiagonal == placedBlockFacing ||
             connect = BeamConnection.N;
 
 
@@ -381,52 +368,28 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
             connect = BeamConnection.NONE;
         }
 
-//        } else if (backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST) {
-//            if ((upDiagonal == placedBlockFacing && backwardUpBlockDiagonal == placedBlockOppositeFacing)
-//                    || (isAir(backwardUpState) && isAir(upState))
-//                    || !(backwardUpDiagonal == placedBlockFacing)) {
-//                connect = BeamConnection.N;
-//            }
-
-            //OLD
-//        } else if ((backwardBlockDiagonal == Direction.NORTH || backwardBlockDiagonal == Direction.EAST)
-//                && !((forwardUpDiagonal == placedBlockFacing || backwardUpDiagonal == placedBlockFacing))) {
-//            connect = BeamConnection.N;
-
-
-
-
-//        LOGGER.info("Block: " + pCurrentPos.toString() + " State: " + pState.getValue(CONNECT) + " Facing: " + placedBlockFacing);
-//        LOGGER.info("Forward: " + forwardPos.toString() + " State: " + (forwardState.getBlock() instanceof DiagonalBeamBlock || forwardState.getBlock() instanceof HorizontalBeamBlock ? forwardState.getValue(BEAM) + " Facing: " + forwardState.getValue(FACING) : null));
-//        LOGGER.info("Backward: " + backwardPos.toString() + " State: " + (backwardState.getBlock() instanceof DiagonalBeamBlock || backwardState.getBlock() instanceof HorizontalBeamBlock ? backwardState.getValue(BEAM) + " Facing: " + backwardState.getValue(FACING) : null));
-//        LOGGER.info("Up: " + upPos.toString() + " State: " + (upState.getBlock() instanceof VerticalBeamBlock ? upState.getValue(BEAM) + " Facing: " + upState.getValue(FACING) : null));
-//        LOGGER.info("Down: " + downPos.toString() + " State: " + (downState.getBlock() instanceof VerticalBeamBlock ? downState.getValue(BEAM) + " Facing: " + downState.getValue(FACING) : null));
-
-//        LOGGER.info("Connect: " + connect);
-
         return blockstate.setValue(CONNECT, connect);
     }
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return SimpleWaterloggedBlock.super.placeLiquid(pLevel, pPos, pState, pFluidState);
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluid) {
+        return SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluid);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(pLevel, pPos, pState, pFluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
-
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

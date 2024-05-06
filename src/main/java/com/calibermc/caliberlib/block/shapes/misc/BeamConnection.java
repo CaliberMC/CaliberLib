@@ -1,6 +1,5 @@
 package com.calibermc.caliberlib.block.shapes.misc;
 
-import com.calibermc.caliberlib.block.custom.DiagonalBeamBlock;
 import net.minecraft.util.StringRepresentable;
 import org.jetbrains.annotations.NotNull;
 

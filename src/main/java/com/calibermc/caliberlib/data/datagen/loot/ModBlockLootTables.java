@@ -1,6 +1,6 @@
 package com.calibermc.caliberlib.data.datagen.loot;
 
-import com.calibermc.caliberlib.block.custom.TallDoorBlock;
+import com.calibermc.caliberlib.block.TallDoorBlock;
 import com.calibermc.caliberlib.block.management.BlockManager;
 import com.calibermc.caliberlib.block.shapes.doors.TallDoorPart;
 import com.mojang.datafixers.util.Pair;

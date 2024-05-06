@@ -1,10 +1,11 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,8 +24,8 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
@@ -40,18 +41,18 @@ public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(TYPE, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(TYPE, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        TopBottomShape capitalShape = pState.getValue(TYPE);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        TopBottomShape capitalShape = blockState.getValue(TYPE);
         switch (capitalShape) {
             case TOP -> {
                 return TOP_SHAPE;
@@ -61,36 +62,34 @@ public class CapitalBlock extends Block implements SimpleWaterloggedBlock {
             }
         }
     }
-
+    
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
-        Direction direction = pContext.getClickedFace();
-        return direction != Direction.DOWN && (direction == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ? blockstate1 : blockstate1.setValue(TYPE, TopBottomShape.TOP);
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
+        BlockState blockstate = this.defaultBlockState().setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+        Direction direction = blockPlaceContext.getClickedFace();
+        return direction != Direction.DOWN && (direction == Direction.UP || !(blockPlaceContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ? blockstate : blockstate.setValue(TYPE, TopBottomShape.TOP);
     }
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return SimpleWaterloggedBlock.super.placeLiquid(pLevel, pPos, pState, pFluidState);
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluid) {
+        return SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluid);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(pLevel, pPos, pState, pFluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
-
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

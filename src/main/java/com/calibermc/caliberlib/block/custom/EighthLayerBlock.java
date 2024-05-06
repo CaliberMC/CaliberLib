@@ -1,12 +1,11 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.QuadShape;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -20,15 +19,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.Map;
 
-import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
 import static net.minecraft.core.Direction.*;
 
 public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
@@ -99,65 +95,64 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(LAYERS, FACING, TYPE, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(LAYERS, FACING, TYPE, WATERLOGGED);
     }
 
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        QuadShape cornerSlabShape = pState.getValue(TYPE);
-        Direction direction = pState.getValue(FACING);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        QuadShape cornerSlabShape = blockState.getValue(TYPE);
+        Direction direction = blockState.getValue(FACING);
         switch (cornerSlabShape) {
             case TOP_LEFT -> {
                 return switch (direction) {
-                    case EAST -> TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> TOP_LEFT_EAST_RIGHT_NORTH[blockState.getValue(LAYERS)];
+                    case SOUTH -> TOP_LEFT_SOUTH_RIGHT_EAST[blockState.getValue(LAYERS)];
+                    case WEST -> TOP_LEFT_WEST_RIGHT_SOUTH[blockState.getValue(LAYERS)];
+                    default -> TOP_LEFT_NORTH_RIGHT_WEST[blockState.getValue(LAYERS)];
                 };
             }
             case TOP_RIGHT -> {
                 return switch (direction) {
-                    case EAST -> TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> TOP_LEFT_SOUTH_RIGHT_EAST[blockState.getValue(LAYERS)];
+                    case SOUTH -> TOP_LEFT_WEST_RIGHT_SOUTH[blockState.getValue(LAYERS)];
+                    case WEST -> TOP_LEFT_NORTH_RIGHT_WEST[blockState.getValue(LAYERS)];
+                    default -> TOP_LEFT_EAST_RIGHT_NORTH[blockState.getValue(LAYERS)];
                 };
             }
             case LEFT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> LEFT_EAST_RIGHT_NORTH[blockState.getValue(LAYERS)];
+                    case SOUTH -> LEFT_SOUTH_RIGHT_EAST[blockState.getValue(LAYERS)];
+                    case WEST -> LEFT_WEST_RIGHT_SOUTH[blockState.getValue(LAYERS)];
+                    default -> LEFT_NORTH_RIGHT_WEST[blockState.getValue(LAYERS)];
                 };
             }
             default -> {
                 return switch (direction) {
-                    case EAST -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> LEFT_SOUTH_RIGHT_EAST[blockState.getValue(LAYERS)];
+                    case SOUTH -> LEFT_WEST_RIGHT_SOUTH[blockState.getValue(LAYERS)];
+                    case WEST -> LEFT_NORTH_RIGHT_WEST[blockState.getValue(LAYERS)];
+                    default -> LEFT_EAST_RIGHT_NORTH[blockState.getValue(LAYERS)];
                 };
             }
         }
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
-        Direction direction = pContext.getHorizontalDirection().getOpposite();
-        Direction clickedFace = pContext.getClickedFace();
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        double hitY = pContext.getClickLocation().y - (double) blockpos.getY();
-        double hitX = pContext.getClickLocation().x - (double) blockpos.getX();
-        double hitZ = pContext.getClickLocation().z - (double) blockpos.getZ();
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        BlockState blockstate = blockPlaceContext.getLevel().getBlockState(blockpos);
+        Direction direction = blockPlaceContext.getHorizontalDirection().getOpposite();
+        Direction clickedFace = blockPlaceContext.getClickedFace();
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
+        double hitY = blockPlaceContext.getClickLocation().y - (double) blockpos.getY();
+        double hitX = blockPlaceContext.getClickLocation().x - (double) blockpos.getX();
+        double hitZ = blockPlaceContext.getClickLocation().z - (double) blockpos.getZ();
 
         if (blockstate.is(this) && clickedFace != Direction.UP && clickedFace != Direction.DOWN) {
             int i = blockstate.getValue(LAYERS);
@@ -166,7 +161,7 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
             return blockstate.setValue(LAYERS, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
-            BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
+            BlockState blockstate1 = this.defaultBlockState().setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
                     .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
             if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
@@ -195,19 +190,17 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext pContext) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext blockPlaceContext) {
         int currentLayers = state.getValue(LAYERS);
-        if (pContext.getItemInHand().getItem() == this.asItem()) {
-            Direction clickedFace = pContext.getClickedFace();
-            // Allow replacement if it's a side click and not at max layers
-            return isSide(clickedFace) && currentLayers < layerCount;
+        if (blockPlaceContext.getItemInHand().getItem() == this.asItem()) {
+            return currentLayers < layerCount;
         }
         return false;
     }
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
@@ -216,15 +209,15 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

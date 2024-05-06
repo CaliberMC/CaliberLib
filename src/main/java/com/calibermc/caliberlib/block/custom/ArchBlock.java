@@ -2,20 +2,21 @@ package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.ArchShape;
 import com.calibermc.caliberlib.block.shapes.trim.ArchTrim;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -23,16 +24,15 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
-import static net.minecraft.core.Direction.NORTH;
-
-public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+public class ArchBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<ArchShape> TYPE = ModBlockStateProperties.ARCH_SHAPE;
     public static final EnumProperty<ArchTrim> TRIM = ModBlockStateProperties.ARCH_TRIM;
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final VoxelShape SHAPE = Block.box(0, 8, 0, 16, 16, 16);
 
@@ -40,35 +40,34 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(TRIM, ArchTrim.BOTH)
-                .setValue(FACING, NORTH)
+                .setValue(FACING, Direction.NORTH)
                 .setValue(TYPE, ArchShape.STRAIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(TRIM, FACING, TYPE, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(TRIM, FACING, TYPE, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection()) //.getOpposite()
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
+        BlockState blockstate = this.defaultBlockState().setValue(FACING, blockPlaceContext.getHorizontalDirection()) //.getOpposite()
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-        return blockstate1.setValue(TYPE, getArchShape(blockstate1, pContext.getLevel(), blockpos)).setValue(TRIM, getTrim(blockstate1, pContext.getLevel(), blockpos));
+        return blockstate.setValue(TYPE, getArchShape(blockstate, blockPlaceContext.getLevel(), blockpos)).setValue(TRIM, getTrim(blockstate, blockPlaceContext.getLevel(), blockpos));
     }
 
     /**
@@ -78,31 +77,31 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
      * Note that this method should ideally consider only the specific direction passed in.
      */
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+    public BlockState updateShape(BlockState blockState, Direction facing, BlockState facingState, LevelAccessor levelAccessor, BlockPos currentPos, BlockPos facingPos) {
+        if (blockState.getValue(WATERLOGGED)) {
+            levelAccessor.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
 
-        if (pFacing.getAxis().isHorizontal()) {
+        if (facing.getAxis().isHorizontal()) {
             // Set the TYPE value based on the ArchShape
-            pState = pState.setValue(TYPE, getArchShape(pState, pLevel, pCurrentPos));
+            blockState = blockState.setValue(TYPE, getArchShape(blockState, levelAccessor, currentPos));
 
             // Set the TRIM value
-            pState = pState.setValue(TRIM, getTrim(pState, pLevel, pCurrentPos));
+            blockState = blockState.setValue(TRIM, getTrim(blockState, levelAccessor, currentPos));
         } else {
-            pState = super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+            blockState = super.updateShape(blockState, facing, facingState, levelAccessor, currentPos, facingPos);
         }
 
-        return pState;
+        return blockState;
     }
 
-    private static ArchShape getArchShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        Direction facing = pState.getValue(FACING);
+    private static ArchShape getArchShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        Direction facing = blockState.getValue(FACING);
         Direction opposite = facing.getOpposite();
-        boolean front = isArch(pLevel.getBlockState(pPos.relative(facing)));
-        boolean back = isArch(pLevel.getBlockState(pPos.relative(opposite)));
-        boolean left = isArch(pLevel.getBlockState(pPos.relative(facing.getCounterClockWise())));
-        boolean right = isArch(pLevel.getBlockState(pPos.relative(facing.getClockWise())));
+        boolean front = isArch(blockGetter.getBlockState(blockPos.relative(facing)));
+        boolean back = isArch(blockGetter.getBlockState(blockPos.relative(opposite)));
+        boolean left = isArch(blockGetter.getBlockState(blockPos.relative(facing.getCounterClockWise())));
+        boolean right = isArch(blockGetter.getBlockState(blockPos.relative(facing.getClockWise())));
 
         // Check for corner (left)
         if ((left && front && !right && !back) || (right && back && !left && !front)) {
@@ -131,11 +130,11 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
         return ArchShape.STRAIGHT;
     }
 
-    private ArchTrim getTrim(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        Direction facing = pState.getValue(FACING);
+    private ArchTrim getTrim(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        Direction facing = blockState.getValue(FACING);
         Direction opposite = facing.getOpposite();
-        boolean airInFront = isAir(pLevel.getBlockState(pPos.relative(facing)));
-        boolean airInBack = isAir(pLevel.getBlockState(pPos.relative(opposite)));
+        boolean airInFront = ModBlockStateProperties.isAir(blockGetter.getBlockState(blockPos.relative(facing)));
+        boolean airInBack = ModBlockStateProperties.isAir(blockGetter.getBlockState(blockPos.relative(opposite)));
 
         // Check for blocks on both sides (front and back)
         if (!airInFront && !airInBack) {
@@ -154,30 +153,30 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
     }
 
 
-    public static boolean isArch(BlockState pState) {
-        return pState.getBlock() instanceof ArchBlock;
+    public static boolean isArch(BlockState blockState) {
+        return blockState.getBlock() instanceof ArchBlock;
     }
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return SimpleWaterloggedBlock.super.placeLiquid(pLevel, pPos, pState, pFluidState);
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluid) {
+        return SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluid);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(pLevel, pPos, pState, pFluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

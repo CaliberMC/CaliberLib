@@ -1,6 +1,5 @@
 package com.calibermc.caliberlib.data.datagen;
 
-import com.calibermc.caliberlib.data.datagen.loot.ModBlockLootTables;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;

@@ -1,4 +1,4 @@
-package com.calibermc.caliberlib.block.custom.terrain;
+package com.calibermc.caliberlib.block.terrain;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 import java.util.function.Supplier;
 
 public class FarmLayerBlock extends Block {
@@ -140,7 +139,7 @@ public class FarmLayerBlock extends Block {
     }
 
     public void fallOn(Level pLevel, BlockState pState, BlockPos pPos, Entity pEntity, float pFallDistance) {
-        if (!pLevel.isClientSide && net.minecraftforge.common.ForgeHooks.onFarmlandTrample(pLevel, pPos, Blocks.DIRT.defaultBlockState(), pFallDistance, pEntity)) { // Forge: Move logic to Entity#canTrample
+        if (!pLevel.isClientSide && net.neoforged.neoforge.common.CommonHooks.onFarmlandTrample(pLevel, pPos, Blocks.DIRT.defaultBlockState(), pFallDistance, pEntity)) { // Forge: Move logic to Entity#canTrample
             turnToDirt(pState, pLevel, pPos);
         }
 
@@ -155,7 +154,7 @@ public class FarmLayerBlock extends Block {
     private static boolean isUnderCrops(BlockGetter pLevel, BlockPos pPos) {
         BlockState plant = pLevel.getBlockState(pPos.above());
         BlockState state = pLevel.getBlockState(pPos);
-        return plant.getBlock() instanceof net.minecraftforge.common.IPlantable && state.canSustainPlant(pLevel, pPos, Direction.UP, (net.minecraftforge.common.IPlantable) plant.getBlock());
+        return plant.getBlock() instanceof net.neoforged.neoforge.common.IPlantable && state.canSustainPlant(pLevel, pPos, Direction.UP, (net.neoforged.neoforge.common.IPlantable) plant.getBlock());
     }
 
     private static boolean isNearWater(LevelReader pLevel, BlockPos pPos) {
@@ -165,7 +164,7 @@ public class FarmLayerBlock extends Block {
             }
         }
 
-        return net.minecraftforge.common.FarmlandWaterManager.hasBlockWaterTicket(pLevel, pPos);
+        return net.neoforged.neoforge.common.FarmlandWaterManager.hasBlockWaterTicket(pLevel, pPos);
     }
 
     @Override

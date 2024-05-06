@@ -1,4 +1,4 @@
-package com.calibermc.caliberlib.util;
+package com.calibermc.caliberlib.block.properties;
 
 import com.calibermc.caliberlib.block.shapes.*;
 import com.calibermc.caliberlib.block.shapes.doors.TallDoorPart;
@@ -6,6 +6,8 @@ import com.calibermc.caliberlib.block.shapes.misc.BeamConnection;
 import com.calibermc.caliberlib.block.shapes.trim.ArchTrim;
 import com.calibermc.caliberlib.block.shapes.trim.LargeArchTrim;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
@@ -36,6 +38,14 @@ public class ModBlockStateProperties {
     public static final EnumProperty<TallDoorPart> TALL_DOOR_PART = EnumProperty.create("part", TallDoorPart.class);
     public static final EnumProperty<BeamConnection> BEAM_CONNECTION = EnumProperty.create("connect", BeamConnection.class);
 
+
+    public static boolean isWaterlogged(BlockState state) {
+        return state.getValue(BlockStateProperties.WATERLOGGED);
+    }
+
+    public static boolean isAir(BlockState state) {
+        return state.isAir();
+    }
 
     public static boolean isSide(Direction direction) {
         return direction == Direction.NORTH || direction == Direction.EAST || direction == Direction.SOUTH || direction == Direction.WEST;

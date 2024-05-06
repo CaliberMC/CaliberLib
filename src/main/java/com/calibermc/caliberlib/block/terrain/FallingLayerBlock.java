@@ -1,8 +1,10 @@
-package com.calibermc.caliberlib.block.custom.terrain;
+package com.calibermc.caliberlib.block.terrain;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,8 +23,8 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class FallingLayerBlock extends FallingBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -44,6 +46,12 @@ public class FallingLayerBlock extends FallingBlock implements SimpleWaterlogged
                 .setValue(LAYERS, 1)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
+
+    @Override
+    protected MapCodec<? extends FallingBlock> codec() {
+        return null;
+    }
+
 //    public int getDustColor(BlockState pState, BlockGetter pReader, BlockPos pPos) {
 //        return -8356741;
 //    }
@@ -115,8 +123,8 @@ public class FallingLayerBlock extends FallingBlock implements SimpleWaterlogged
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override

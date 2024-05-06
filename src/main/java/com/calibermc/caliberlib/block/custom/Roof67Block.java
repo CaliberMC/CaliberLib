@@ -1,12 +1,13 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.RoofShape;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -26,12 +27,11 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
+import static com.calibermc.caliberlib.block.properties.ModBlockStateProperties.isSide;
 
 public class Roof67Block extends Block implements SimpleWaterloggedBlock {
 
@@ -50,13 +50,13 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, TYPE, HALF, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, TYPE, HALF, WATERLOGGED);
     }
 
     public static final Map<Direction, VoxelShape> TOP_OUTER_LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
@@ -152,10 +152,10 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
             ).reduce((v0, v2) -> Shapes.join(v0, v2, BooleanOp.OR)).get()));
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Direction direction = pState.getValue(FACING);
-        Half half = pState.getValue(HALF);
-        RoofShape type = pState.getValue(TYPE);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        Direction direction = blockState.getValue(FACING);
+        Half half = blockState.getValue(HALF);
+        RoofShape type = blockState.getValue(TYPE);
 
         if (half == Half.TOP) {
             return switch (type) {
@@ -178,19 +178,18 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        Level level = pContext.getLevel();
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        Level level = blockPlaceContext.getLevel();
         BlockState blockstate = level.getBlockState(blockpos);
 
         if (blockstate.is(this)) {
             return blockstate.setValue(HALF, Half.BOTTOM).setValue(WATERLOGGED, Boolean.FALSE);
         } else {
             FluidState fluidstate = level.getFluidState(blockpos);
-            Direction facing = pContext.getHorizontalDirection().getOpposite();
-            Half half = (pContext.getClickedFace() != Direction.UP && (pContext.getClickedFace() == Direction.DOWN ||
-                    !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D))) ? Half.BOTTOM : Half.TOP;
+            Direction facing = blockPlaceContext.getHorizontalDirection().getOpposite();
+            Half half = (blockPlaceContext.getClickedFace() != Direction.UP && (blockPlaceContext.getClickedFace() == Direction.DOWN ||
+                    !(blockPlaceContext.getClickLocation().y - (double) blockpos.getY() > 0.5D))) ? Half.BOTTOM : Half.TOP;
 
             BlockState blockstate1 = this.defaultBlockState()
                     .setValue(FACING, facing)
@@ -206,10 +205,10 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pContext) {
-        ItemStack itemstack = pContext.getItemInHand();
-        Half Half = pState.getValue(HALF);
-        Direction clickedFace = pContext.getClickedFace();
+    public boolean canBeReplaced(BlockState blockState, BlockPlaceContext blockPlaceContext) {
+        ItemStack itemstack = blockPlaceContext.getItemInHand();
+        Half Half = blockState.getValue(HALF);
+        Direction clickedFace = blockPlaceContext.getClickedFace();
         if (Half != net.minecraft.world.level.block.state.properties.Half.BOTTOM && itemstack.is(this.asItem())) {
             return isSide(clickedFace);
         }
@@ -223,28 +222,28 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
      * Note that this method should ideally consider only the specific direction passed in.
      */
     @Override
-    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+    public BlockState updateShape(BlockState blockState, Direction pFacing, BlockState pFacingState, LevelAccessor levelAccessor, BlockPos pCurrentPos, BlockPos pFacingPos) {
+        if (blockState.getValue(WATERLOGGED)) {
+            levelAccessor.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
 
         if (pFacing.getAxis().isHorizontal()) {
             // Set the TYPE value based on the RoofShape
-            pState = pState.setValue(TYPE, getRoofShape(pState, pLevel, pCurrentPos));
+            blockState = blockState.setValue(TYPE, getRoofShape(blockState, levelAccessor, pCurrentPos));
 
         } else {
-            pState = super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+            blockState = super.updateShape(blockState, pFacing, pFacingState, levelAccessor, pCurrentPos, pFacingPos);
         }
 
-        return pState;
+        return blockState;
     }
 
-    private static RoofShape getRoofShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        Direction direction = pState.getValue(FACING);
-        BlockState blockstate = pLevel.getBlockState(pPos.relative(direction));
-        if (isRoof(blockstate) && pState.getValue(HALF) == blockstate.getValue(HALF)) {
+    private static RoofShape getRoofShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos) {
+        Direction direction = blockState.getValue(FACING);
+        BlockState blockstate = blockGetter.getBlockState(blockPos.relative(direction));
+        if (isRoof(blockstate) && blockState.getValue(HALF) == blockstate.getValue(HALF)) {
             Direction direction1 = blockstate.getValue(FACING);
-            if (direction1.getAxis() != pState.getValue(FACING).getAxis() && canTakeShape(pState, pLevel, pPos, direction1.getOpposite())) {
+            if (direction1.getAxis() != blockState.getValue(FACING).getAxis() && canTakeShape(blockState, blockGetter, blockPos, direction1.getOpposite())) {
                 if (direction1 == direction.getCounterClockWise()) {
                     return RoofShape.INNER_LEFT;
                 }
@@ -253,10 +252,10 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
             }
         }
 
-        BlockState blockstate1 = pLevel.getBlockState(pPos.relative(direction.getOpposite()));
-        if (isRoof(blockstate1) && pState.getValue(HALF) == blockstate1.getValue(HALF)) {
+        BlockState blockstate1 = blockGetter.getBlockState(blockPos.relative(direction.getOpposite()));
+        if (isRoof(blockstate1) && blockState.getValue(HALF) == blockstate1.getValue(HALF)) {
             Direction direction2 = blockstate1.getValue(FACING);
-            if (direction2.getAxis() != pState.getValue(FACING).getAxis() && canTakeShape(pState, pLevel, pPos, direction2)) {
+            if (direction2.getAxis() != blockState.getValue(FACING).getAxis() && canTakeShape(blockState, blockGetter, blockPos, direction2)) {
                 if (direction2 == direction.getCounterClockWise()) {
                     return RoofShape.OUTER_LEFT;
                 }
@@ -268,36 +267,35 @@ public class Roof67Block extends Block implements SimpleWaterloggedBlock {
         return RoofShape.STRAIGHT;
     }
 
-    public static boolean isRoof(BlockState pState) {
-        return pState.getBlock() instanceof Roof67Block;
+    public static boolean isRoof(BlockState blockState) {
+        return blockState.getBlock() instanceof Roof67Block;
     }
 
-    private static boolean canTakeShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pFace) {
-        BlockState blockstate = pLevel.getBlockState(pPos.relative(pFace));
-        return !isRoof(blockstate) || blockstate.getValue(FACING) != pState.getValue(FACING) || blockstate.getValue(HALF) != pState.getValue(HALF);
+    private static boolean canTakeShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, Direction pFace) {
+        BlockState blockstate = blockGetter.getBlockState(blockPos.relative(pFace));
+        return !isRoof(blockstate) || blockstate.getValue(FACING) != blockState.getValue(FACING) || blockstate.getValue(HALF) != blockState.getValue(HALF);
     }
 
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return SimpleWaterloggedBlock.super.placeLiquid(pLevel, pPos, pState, pFluidState);
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluid) {
+        return SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluid);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(pLevel, pPos, pState, pFluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
-
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

@@ -2,14 +2,14 @@ package com.calibermc.caliberlib.block.management;
 
 import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.custom.*;
-import com.calibermc.caliberlib.block.properties.RecipeStoneTypes;
+import com.calibermc.caliberlib.block.properties.properties.RecipeStoneTypes;
 import com.calibermc.caliberlib.compat.ChippedPath;
 import com.calibermc.caliberlib.data.datagen.ModBlockStateProvider;
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.ModelBuilder;
+
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -277,7 +277,7 @@ public class ModBlockHelper {
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR_FRAME = (textureFrom) -> (b, provider) ->
 
             ModBlockHelper.<DoorFrameBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->
-                            provider.doorFrameBlock(block, tex), provider::doorFrameBlock);
+                    provider.doorFrameBlock(block, tex), provider::doorFrameBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> DOOR_FRAME_LINTEL = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<DoorFrameLintelBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->

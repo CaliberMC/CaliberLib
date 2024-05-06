@@ -2,7 +2,6 @@ package com.calibermc.caliberlib.mixin;
 
 import com.calibermc.caliberlib.util.DataGenUtil;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.data.recipes.RecipeProvider;
 import org.joml.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

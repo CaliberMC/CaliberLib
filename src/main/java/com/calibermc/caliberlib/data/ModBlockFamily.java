@@ -8,7 +8,7 @@ import com.google.common.collect.Maps;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -347,13 +347,10 @@ public class ModBlockFamily {
         BEAM_VERTICAL("beam_vertical"),
         BUTTON("button"),
         CAPITAL("capital"),
-//        CHISELED("chiseled"),
-//        CRACKED("cracked"),
 //        COLUMN("column"),
         CORNER("corner"),
         CORNER_SLAB("corner_slab"),
         CORNER_SLAB_VERTICAL("corner_slab_vertical"),
-//        CUT("cut"),
         DOOR("door"),
         DOOR_FRAME("door_frame"),
         DOOR_FRAME_LINTEL("door_frame_lintel"),
@@ -376,7 +373,6 @@ public class ModBlockFamily {
         SLAB_VERTICAL("slab_vertical"),
         STAIRS("stairs"),
         PRESSURE_PLATE("pressure_plate"),
-//        POLISHED("polished"),
         TALL_DOOR("tall_door"),
         TRAPDOOR("trapdoor"),
         WALL("wall"),
@@ -384,16 +380,6 @@ public class ModBlockFamily {
         WINDOW("window"),
         WINDOW_HALF("window_half");
 
-        /* TUDOR BLOCKS */
-//        CROSS("cross"),
-//        DOWN("down"),
-//        UP("up"),
-//        LEFT("left"),
-//        RIGHT("right"),
-//        HORIZONTAL_1("horizontal_1"),
-//        HORIZONTAL_2("horizontal_2"),
-//        VERTICAL_1("vertical_1"),
-//        VERTICAL_2("vertical_2");
 
         private final String name;
 

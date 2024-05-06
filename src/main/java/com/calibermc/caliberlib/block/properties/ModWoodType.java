@@ -2,7 +2,6 @@ package com.calibermc.caliberlib.block.properties;
 
 import com.calibermc.caliberlib.CaliberLib;
 import com.calibermc.caliberlib.block.management.BlockManager;
-import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import net.minecraft.world.level.block.state.properties.WoodType;
 
 import java.util.HashSet;

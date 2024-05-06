@@ -1,7 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.doors.TallDoorPart;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -33,12 +33,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -88,40 +86,41 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public void playerWillDestroy(@NotNull Level level, BlockPos pos, BlockState state, Player player) {
+    public BlockState playerWillDestroy(@NotNull Level level, BlockPos blockPos, BlockState blockState, Player player) {
         if (!level.isClientSide && player.isCreative()) {
-            BlockPos otherPos1 = pos;
-            BlockPos otherPos2 = pos;
-            TallDoorPart TallDoorPart = state.getValue(THIRD);
+            BlockPos otherPos1 = blockPos;
+            BlockPos otherPos2 = blockPos;
+            TallDoorPart TallDoorPart = blockState.getValue(THIRD);
             switch (TallDoorPart) {
                 case BOTTOM:
-                    otherPos1 = pos.above();
-                    otherPos2 = pos.above(2);
+                    otherPos1 = blockPos.above();
+                    otherPos2 = blockPos.above(2);
                     break;
                 case MIDDLE:
-                    otherPos1 = pos.below();
-                    otherPos2 = pos.above();
+                    otherPos1 = blockPos.below();
+                    otherPos2 = blockPos.above();
                     break;
                 case TOP:
-                    otherPos1 = pos.below(2);
-                    otherPos2 = pos.below();
+                    otherPos1 = blockPos.below(2);
+                    otherPos2 = blockPos.below();
                     break;
             }
             BlockState blockstate1 = level.getBlockState(otherPos1);
             BlockState blockstate2 = level.getBlockState(otherPos2);
-            if (blockstate1.getBlock() == state.getBlock() && blockstate1.getValue(THIRD) == com.calibermc.caliberlib.block.shapes.doors.TallDoorPart.BOTTOM) {
+            if (blockstate1.getBlock() == blockState.getBlock() && blockstate1.getValue(THIRD) == com.calibermc.caliberlib.block.shapes.doors.TallDoorPart.BOTTOM) {
                 level.setBlock(otherPos1, blockstate1.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 35);
                 level.levelEvent(player, 2001, otherPos1, Block.getId(blockstate1));
             }
-            if (blockstate2.getBlock() == state.getBlock() && blockstate2.getValue(THIRD) == com.calibermc.caliberlib.block.shapes.doors.TallDoorPart.BOTTOM) {
+            if (blockstate2.getBlock() == blockState.getBlock() && blockstate2.getValue(THIRD) == com.calibermc.caliberlib.block.shapes.doors.TallDoorPart.BOTTOM) {
                 level.setBlock(otherPos2, blockstate2.getValue(WATERLOGGED) ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState(), 35);
                 level.levelEvent(player, 2001, otherPos1, Block.getId(blockstate1));
             }
         }
-        super.playerWillDestroy(level, pos, state, player);
+        super.playerWillDestroy(level, blockPos, blockState, player);
+        return blockState;
     }
 
-    @Nullable
+
     @Override
     public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
         BlockPos blockpos = context.getClickedPos();
@@ -279,7 +278,6 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public long getSeed(@NotNull BlockState state, @NotNull BlockPos pos) {
         return Mth.getSeed(pos.getX(), pos.below(state.getValue(THIRD) == TallDoorPart.BOTTOM ? 0 : state.getValue(THIRD) == TallDoorPart.MIDDLE ? 1 : 2).getY(), pos.getZ());
     }

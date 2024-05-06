@@ -1,12 +1,13 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.QuadShape;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -25,8 +26,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+
 import java.util.Map;
 
 import static net.minecraft.core.Direction.*;
@@ -71,45 +73,44 @@ public class EighthBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, TYPE, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, TYPE, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        QuadShape eighthShape = pState.getValue(TYPE);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        QuadShape eighthShape = blockState.getValue(TYPE);
         switch (eighthShape) {
             case TOP_RIGHT -> {
-                return TOP_RIGHT_SHAPE.get(pState.getValue(FACING));
+                return TOP_RIGHT_SHAPE.get(blockState.getValue(FACING));
             }
             case TOP_LEFT -> {
-                return TOP_LEFT_SHAPE.get(pState.getValue(FACING));
+                return TOP_LEFT_SHAPE.get(blockState.getValue(FACING));
             }
             case LEFT -> {
-                return LEFT_SHAPE.get(pState.getValue(FACING));
+                return LEFT_SHAPE.get(blockState.getValue(FACING));
             }
             default -> {
-                return RIGHT_SHAPE.get(pState.getValue(FACING));
+                return RIGHT_SHAPE.get(blockState.getValue(FACING));
             }
         }
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
-        double hitY = pContext.getClickLocation().y - (double) blockpos.getY();
-        double hitX = pContext.getClickLocation().x - (double) blockpos.getX();
-        double hitZ = pContext.getClickLocation().z - (double) blockpos.getZ();
-        Direction direction = pContext.getHorizontalDirection().getOpposite();
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        BlockState blockstate = blockPlaceContext.getLevel().getBlockState(blockpos);
+        double hitY = blockPlaceContext.getClickLocation().y - (double) blockpos.getY();
+        double hitX = blockPlaceContext.getClickLocation().x - (double) blockpos.getX();
+        double hitZ = blockPlaceContext.getClickLocation().z - (double) blockpos.getZ();
+        Direction direction = blockPlaceContext.getHorizontalDirection().getOpposite();
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
+        BlockState blockstate1 = this.defaultBlockState().setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
         if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
@@ -138,25 +139,24 @@ public class EighthBlock extends Block implements SimpleWaterloggedBlock {
 
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return SimpleWaterloggedBlock.super.placeLiquid(pLevel, pPos, pState, pFluidState);
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState fluid) {
+        return SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, fluid);
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return SimpleWaterloggedBlock.super.canPlaceLiquid(pLevel, pPos, pState, pFluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
-
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> true;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

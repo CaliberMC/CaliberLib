@@ -1,10 +1,11 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,10 +22,8 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-
-import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
 
 public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -96,30 +95,30 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(LAYERS, FACING, TYPE, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(LAYERS, FACING, TYPE, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        TopBottomShape quarterLayerShape = pState.getValue(TYPE);
-        Direction direction = pState.getValue(FACING);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        TopBottomShape quarterLayerShape = blockState.getValue(TYPE);
+        Direction direction = blockState.getValue(FACING);
 
         switch (quarterLayerShape) {
             case TOP -> {
                 return switch (direction) {
-                    case EAST -> EAST_TOP[pState.getValue(LAYERS)];
-                    case SOUTH -> SOUTH_TOP[pState.getValue(LAYERS)];
-                    case WEST -> WEST_TOP[pState.getValue(LAYERS)];
-                    default -> NORTH_TOP[pState.getValue(LAYERS)];
+                    case EAST -> EAST_TOP[blockState.getValue(LAYERS)];
+                    case SOUTH -> SOUTH_TOP[blockState.getValue(LAYERS)];
+                    case WEST -> WEST_TOP[blockState.getValue(LAYERS)];
+                    default -> NORTH_TOP[blockState.getValue(LAYERS)];
                 };
             }
             case BOTTOM -> {
                 return switch (direction) {
-                    case EAST -> EAST_BOTTOM[pState.getValue(LAYERS)];
-                    case SOUTH -> SOUTH_BOTTOM[pState.getValue(LAYERS)];
-                    case WEST -> WEST_BOTTOM[pState.getValue(LAYERS)];
-                    default -> NORTH_BOTTOM[pState.getValue(LAYERS)];
+                    case EAST -> EAST_BOTTOM[blockState.getValue(LAYERS)];
+                    case SOUTH -> SOUTH_BOTTOM[blockState.getValue(LAYERS)];
+                    case WEST -> WEST_BOTTOM[blockState.getValue(LAYERS)];
+                    default -> NORTH_BOTTOM[blockState.getValue(LAYERS)];
                 };
             }
         }
@@ -127,39 +126,36 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
-        Direction clickedFace = pContext.getClickedFace();
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
+        BlockState blockstate = blockPlaceContext.getLevel().getBlockState(blockpos);
+        Direction clickedFace = blockPlaceContext.getClickedFace();
         if (blockstate.is(this) && clickedFace != Direction.UP && clickedFace != Direction.DOWN) {
             int i = blockstate.getValue(LAYERS);
             int newCount = Math.min(layerCount, i + 1);
             return blockstate.setValue(LAYERS, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
-            BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
+            BlockState blockstate1 = this.defaultBlockState().setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite())
                     .setValue(LAYERS, 1).setValue(TYPE, TopBottomShape.BOTTOM).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
-            return clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ?
-                    blockstate1 : blockstate1.setValue(FACING, pContext.getHorizontalDirection().getOpposite()).setValue(TYPE, TopBottomShape.TOP);
+            return clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(blockPlaceContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ?
+                    blockstate1 : blockstate1.setValue(FACING, blockPlaceContext.getHorizontalDirection().getOpposite()).setValue(TYPE, TopBottomShape.TOP);
         }
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext pContext) {
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext blockPlaceContext) {
         int currentLayers = state.getValue(LAYERS);
-        if (pContext.getItemInHand().getItem() == this.asItem()) {
-            Direction clickedFace = pContext.getClickedFace();
-            // Allow replacement if it's a side click and not at max layers
-            return isSide(clickedFace) && currentLayers < layerCount;
+        if (blockPlaceContext.getItemInHand().getItem() == this.asItem()) {
+            return currentLayers < layerCount;
         }
         return false;
     }
 
     @Override
-    public FluidState getFluidState(BlockState pState) {
-        return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+    public FluidState getFluidState(BlockState blockState) {
+        return blockState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(blockState);
     }
 
     @Override
@@ -168,15 +164,15 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
-            case LAND -> pState.getValue(LAYERS) < 4;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
+            case LAND -> blockState.getValue(LAYERS) < 4;
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

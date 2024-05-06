@@ -1,22 +1,21 @@
 package com.calibermc.caliberlib.data.datagen;
 
 import com.calibermc.caliberlib.block.management.BlockManager;
-import com.calibermc.caliberlib.block.properties.RecipeStoneTypes;
-import com.calibermc.caliberlib.block.properties.RecipeWoodTypes;
+import com.calibermc.caliberlib.block.properties.properties.RecipeStoneTypes;
+import com.calibermc.caliberlib.block.properties.properties.RecipeWoodTypes;
 import com.calibermc.caliberlib.data.ModBlockFamily;
-import com.calibermc.caliberlib.util.ModTags;
+import com.calibermc.caliberlib.data.ModTags;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.BlockTagsProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -557,14 +556,14 @@ public class ModBlockTagProvider extends BlockTagsProvider {
         }
 
             // BLOCKS NOT REGISTERED WITH BLOCK MANAGER
-         ForgeRegistries.BLOCKS.getValues().stream()
+         BuiltInRegistries.BLOCK.stream()
                     .filter(block -> {
-                        ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
+                        ResourceLocation registryName = BuiltInRegistries.BLOCK.getKey(block);
                         return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
                                 && registryName != null && registryName.getNamespace().equals(this.modId);
                     })
                     .forEach(block -> {
-                        String blockName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
+                        String blockName = Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block)).getPath();
 
                         if (blockName.contains("andesite") || blockName.contains("basalt") || blockName.contains("blackstone")
                                 || blockName.contains("brick") || blockName.contains("calcite") || blockName.contains("diorite")

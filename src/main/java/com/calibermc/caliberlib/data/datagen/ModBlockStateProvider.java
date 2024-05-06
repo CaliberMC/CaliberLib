@@ -10,16 +10,17 @@ import com.calibermc.caliberlib.block.shapes.trim.LargeArchTrim;
 import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.Half;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
+
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -38,7 +39,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     public String name(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block).getPath();
+        return BuiltInRegistries.BLOCK.getKey(block).getPath();
     }
 
     @Override
@@ -2583,9 +2584,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
         simpleBlock(wallSignBlock, sign);
     }
 
-    public void leavesBlock(RegistryObject<Block> blockRegistryObject) {
+    public void leavesBlock(DeferredHolder<Block, Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(),
-                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                models().singleTexture(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
                         "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
@@ -2865,9 +2866,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 .modelForState().modelFile(full_block).addModel();
     }
 
-    public void saplingBlock(RegistryObject<Block> blockRegistryObject) {
+    public void saplingBlock(DeferredHolder<Block, Block> blockRegistryObject) {
         simpleBlock(blockRegistryObject.get(),
-                models().cross(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
+                models().cross(BuiltInRegistries.BLOCK.getKey(blockRegistryObject.get()).getPath(), blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
     public void slabLayerBlock(SlabLayerBlock block) {

@@ -1,16 +1,16 @@
 package com.calibermc.caliberlib.data.datagen;
 
 import com.calibermc.caliberlib.block.custom.*;
-import com.calibermc.caliberlib.block.custom.terrain.*;
+import com.calibermc.caliberlib.block.terrain.*;
 import com.calibermc.caliberlib.block.management.BlockManager;
 import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.*;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
 
 import java.util.Map;
 import java.util.function.Supplier;

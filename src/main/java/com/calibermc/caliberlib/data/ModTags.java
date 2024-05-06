@@ -1,6 +1,5 @@
-package com.calibermc.caliberlib.util;
+package com.calibermc.caliberlib.data;
 
-import com.calibermc.caliberlib.CaliberLib;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -29,7 +28,7 @@ public class ModTags {
         public static final TagKey<Block> DOOR_FRAME_LINTELS = tag("shapes/door_frame_lintels");
         public static final TagKey<Block> EIGHTHS = tag("shapes/eighths");
         public static final TagKey<Block> HALF_ARCHES = tag("shapes/half_arches");
-        public static final TagKey<Block> HALF_LARGE_ARCHES= tag("shapes/half_large_arches");
+        public static final TagKey<Block> HALF_LARGE_ARCHES = tag("shapes/half_large_arches");
         public static final TagKey<Block> HALF_WINDOWS = tag("shapes/half_windows");
         public static final TagKey<Block> LARGE_ARCHES = tag("shapes/large_arches");
         public static final TagKey<Block> LAYERS = tag("shapes/layers");
@@ -55,6 +54,7 @@ public class ModTags {
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation("caliber", name));
         }
+
         private static TagKey<Block> forgeTag(String name) {
             return BlockTags.create(new ResourceLocation("forge", name));
         }

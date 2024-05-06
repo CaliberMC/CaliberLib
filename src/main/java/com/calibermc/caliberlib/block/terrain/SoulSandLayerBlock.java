@@ -1,14 +1,15 @@
-package com.calibermc.caliberlib.block.custom.terrain;
+package com.calibermc.caliberlib.block.terrain;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.MyceliumBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoulSandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -21,10 +22,10 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
-public class MyceliumLayerBlock extends MyceliumBlock implements SimpleWaterloggedBlock {
+public class SoulSandLayerBlock extends SoulSandBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     public final int layerCount = 8;
@@ -38,10 +39,9 @@ public class MyceliumLayerBlock extends MyceliumBlock implements SimpleWaterlogg
             Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D),
             Block.box(0.0D, 0.1D, 0.0D, 16.0D, 16.0D, 16.0D)};
 
-    public MyceliumLayerBlock(Properties properties) {
+    public SoulSandLayerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any() // ? this.defaultBlockState()
-                .setValue(SNOWY, Boolean.FALSE)
                 .setValue(LAYERS, 1)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
@@ -53,7 +53,7 @@ public class MyceliumLayerBlock extends MyceliumBlock implements SimpleWaterlogg
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(SNOWY, LAYERS, WATERLOGGED);
+        pBuilder.add(LAYERS, WATERLOGGED);
     }
 
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
@@ -72,7 +72,6 @@ public class MyceliumLayerBlock extends MyceliumBlock implements SimpleWaterlogg
         return SHAPE_BY_LAYER[pState.getValue(LAYERS)];
     }
 
-    @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext itemContext) {
         BlockPos blockpos = itemContext.getClickedPos();
@@ -113,8 +112,8 @@ public class MyceliumLayerBlock extends MyceliumBlock implements SimpleWaterlogg
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(LAYERS) < layerCount && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override

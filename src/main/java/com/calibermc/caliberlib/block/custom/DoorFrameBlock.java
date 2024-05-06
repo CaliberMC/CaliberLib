@@ -1,9 +1,10 @@
 package com.calibermc.caliberlib.block.custom;
 
-import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.block.properties.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -24,10 +25,10 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import static com.calibermc.caliberlib.block.properties.ModBlockStateProperties.isSide;
 
-import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
 
 public class DoorFrameBlock extends Block implements SimpleWaterloggedBlock {
 
@@ -63,55 +64,54 @@ public class DoorFrameBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean useShapeForLightOcclusion(BlockState pState) {
+    public boolean useShapeForLightOcclusion(BlockState blockState) {
         return true;
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, BEAM, WATERLOGGED);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING, BEAM, WATERLOGGED);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Direction direction = pState.getValue(FACING);
+    public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext pContext) {
+        Direction direction = blockState.getValue(FACING);
         switch (direction) {
             case EAST:
-                return SHAPE_EAST[pState.getValue(BEAM)];
+                return SHAPE_EAST[blockState.getValue(BEAM)];
             case SOUTH:
-                return SHAPE_SOUTH[pState.getValue(BEAM)];
+                return SHAPE_SOUTH[blockState.getValue(BEAM)];
             case WEST:
-                return SHAPE_WEST[pState.getValue(BEAM)];
+                return SHAPE_WEST[blockState.getValue(BEAM)];
             default:
-                return SHAPE_NORTH[pState.getValue(BEAM)];
+                return SHAPE_NORTH[blockState.getValue(BEAM)];
         }
     }
 
-    @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockPos blockpos = pContext.getClickedPos();
-        BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
-        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
+    public BlockState getStateForPlacement(BlockPlaceContext blockPlaceContext) {
+        BlockPos blockpos = blockPlaceContext.getClickedPos();
+        BlockState blockstate = blockPlaceContext.getLevel().getBlockState(blockpos);
+        FluidState fluidstate = blockPlaceContext.getLevel().getFluidState(blockpos);
         if (blockstate.is(this)) {
             int newCount = blockstate.getValue(BEAM) + 1;
             if (newCount > beamShape) {
                 newCount = 1;
             }
-            pContext.getItemInHand().grow(1);
+            blockPlaceContext.getItemInHand().grow(1);
             return blockstate.setValue(BEAM, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < beamShape) && fluidstate.is(FluidTags.WATER)));
         } else {
-            return this.defaultBlockState().setValue(BEAM, 1).setValue(FACING, pContext.getHorizontalDirection()
+            return this.defaultBlockState().setValue(BEAM, 1).setValue(FACING, blockPlaceContext.getHorizontalDirection()
                     .getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         }
     }
 
     @Override
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext pContext) {
-        if (pContext.getItemInHand().getItem() == this.asItem()) {
-            Direction clickedFace = pContext.getClickedFace();
-            return isSide(clickedFace) && pContext.replacingClickedOnBlock();
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext blockPlaceContext) {
+        if (blockPlaceContext.getItemInHand().getItem() == this.asItem()) {
+            Direction clickedFace = blockPlaceContext.getClickedFace();
+            return isSide(clickedFace) && blockPlaceContext.replacingClickedOnBlock();
         }
         return false;
     }
@@ -127,15 +127,15 @@ public class DoorFrameBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     @Override
-    public boolean canPlaceLiquid(BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
-        return state.getValue(BEAM) < beamShape && SimpleWaterloggedBlock.super.canPlaceLiquid(world, pos, state, fluid);
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid fluid) {
+        return state.getValue(BEAM) < beamShape && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, fluid);
     }
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return switch (pType) {
+    public boolean isPathfindable(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, PathComputationType pathType) {
+        return switch (pathType) {
             case LAND -> false;
-            case WATER -> pLevel.getFluidState(pPos).is(FluidTags.WATER);
+            case WATER -> blockGetter.getFluidState(blockPos).is(FluidTags.WATER);
             case AIR -> false;
         };
     }

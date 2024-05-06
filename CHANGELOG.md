@@ -1,11 +1,20 @@
 # Change Log
 
+### 0.3.0 (in progress)
+#### Features
+- Updated to Minecraft 1.20.4
+- We have changed from Forge to NeoForge.  _(This will allow us to better support the latest versions of Minecraft going forward.)_
+- Lots of refactoring and cleanup
+
+#### Bugfixes
+
 ### 0.1.7 (in progress)
 #### Features
 
 
 #### Bugfixes
-
+Fixed CornerSlabLayerBlock, EighthLayerBlock and QuarterLayerBlock logic for adding layers.  You can now click on any face to add layers to the block.
+Fix VerticalLayerBlock logic for adding layers.  You can now click only the face opposite the facing direction to add layers to the block.
 
 ### 0.1.6
 #### Features
