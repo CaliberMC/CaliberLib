@@ -96,6 +96,8 @@ public class ArchBlock extends HorizontalDirectionalBlock implements SimpleWater
         return pState;
     }
 
+    //TODO: Setup with Intersection Block Shape to replace Trim Value?  Setup like Capital Block.
+
     private static ArchShape getArchShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         Direction facing = pState.getValue(FACING);
         Direction opposite = facing.getOpposite();

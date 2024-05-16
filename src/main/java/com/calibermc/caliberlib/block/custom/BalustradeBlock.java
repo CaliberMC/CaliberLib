@@ -38,6 +38,7 @@ public class BalustradeBlock extends Block implements SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<BalustradeShape> TYPE = ModBlockStateProperties.BALUSTRADE_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+
     public static final Map<Direction, VoxelShape> SINGLE_SHAPE = Maps.newEnumMap(ImmutableMap.of(
             NORTH, Stream.of(Block.box(1.5, 10, 1.5, 14.5, 16, 14.5),
                     Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),

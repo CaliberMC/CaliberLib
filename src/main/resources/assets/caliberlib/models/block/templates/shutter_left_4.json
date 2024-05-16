@@ -1,0 +1,75 @@
+{
+	"credit": "Made by Charm8er for CaliberMC",
+	"elements": [
+		{
+			"name": "shutter",
+			"from": [-5.3934, 0, 6.29289],
+			"to": [2.6066, 16, 8.29289],
+			"rotation": {"angle": -45, "axis": "y", "origin": [-8, 0, 8]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [8, 0, 0, 16], "texture": "#missing"},
+				"east": {"uv": [2, 0, 0, 16], "texture": "#missing"},
+				"south": {"uv": [8, 0, 0, 16], "texture": "#missing"},
+				"west": {"uv": [2, 0, 0, 16], "texture": "#missing"},
+				"up": {"uv": [8, 0, 0, 2], "rotation": 180, "texture": "#missing"},
+				"down": {"uv": [8, 0, 0, 2], "rotation": 180, "texture": "#missing"}
+			}
+		},
+		{
+			"name": "hinge_top",
+			"from": [-0.25, 13, 15],
+			"to": [0.25, 14, 17],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-8, 0, 8]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"east": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"south": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"west": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"up": {"uv": [0.5, 0, 0, 2], "texture": "#missing"},
+				"down": {"uv": [0.5, 0, 0, 2], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "hinge_middle",
+			"from": [-0.25, 7.5, 15],
+			"to": [0.25, 8.5, 17],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-8, 0, 8]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"east": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"south": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"west": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"up": {"uv": [0.5, 0, 0, 2], "texture": "#missing"},
+				"down": {"uv": [0.5, 0, 0, 2], "texture": "#missing"}
+			}
+		},
+		{
+			"name": "hinge_bottom",
+			"from": [-0.25, 2, 15],
+			"to": [0.25, 3, 17],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-8, 0, 8]},
+			"color": 7,
+			"faces": {
+				"north": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"east": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"south": {"uv": [0.5, 0, 0, 1], "texture": "#missing"},
+				"west": {"uv": [2, 0, 0, 1], "texture": "#missing"},
+				"up": {"uv": [0.5, 0, 0, 2], "texture": "#missing"},
+				"down": {"uv": [0.5, 0, 0, 2], "texture": "#missing"}
+			}
+		}
+	],
+	"groups": [
+		0,
+		{
+			"name": "VoxelShapes",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": [1, 2, 3, 4, 4, 4, 4]
+		}
+	]
+}

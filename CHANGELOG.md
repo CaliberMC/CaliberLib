@@ -1,8 +1,11 @@
 # Change Log
 
-### 0.1.7 (in progress)
+### 0.2.0 (in progress)
 #### Features
-
+- Added support for Fabric Mod Loader
+- Added Window Shutter Blocks
+- Added new block states to Capital Blocks so they can connect
+- Added new block states to Window and Window Half Blocks so they can have an arched top
 
 #### Bugfixes
 
