@@ -242,7 +242,7 @@ public class BlockManager {
                     case SIGN -> builder.addVariant(variant, () -> new StandingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.SIGN));
                     case HANGING_SIGN -> builder.addVariant(variant, () -> new CeilingHangingSignBlock(properties.get(), woodType), (b) -> b.stateGenBase(ModBlockHelper.HANGING_SIGN));
                     case SLAB -> builder.addVariant(variant, () -> new SlabBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB.apply(blockSupplier)));
-//                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabLayerBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
+                    case SLAB_VERTICAL -> builder.addVariant(variant, () -> new VerticalSlabBlock(properties.get()), (b) -> b.stateGen(ModBlockHelper.SLAB_VERTICAL.apply(blockSupplier)));
                     case TALL_DOOR -> builder.addVariant(variant, () -> new TallDoorBlock(properties.get(), builder.blockSetType), (b) -> b.lootGen(ModBlockLootTables::dropTallDoor).stateGen(ModBlockHelper.TALL_DOOR.apply(blockSupplier)));
                     case STAIRS -> builder.addVariant(variant, () -> new StairBlock(baseBlockState, properties.get()), (b) -> b.stateGen(ModBlockHelper.STAIRS.apply(blockSupplier)));
                     case TRAPDOOR -> builder.addVariant(variant, () -> new TrapDoorBlock(properties.get(), builder.blockSetType), (b) -> b.stateGen(ModBlockHelper.TRAP_DOOR.apply(blockSupplier)));

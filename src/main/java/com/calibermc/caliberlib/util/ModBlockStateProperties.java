@@ -7,6 +7,7 @@ import com.calibermc.caliberlib.block.shapes.trim.ArchTrim;
 import com.calibermc.caliberlib.block.shapes.trim.LargeArchTrim;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
@@ -37,6 +38,12 @@ public class ModBlockStateProperties {
     public static final EnumProperty<TallDoorPart> TALL_DOOR_PART = EnumProperty.create("part", TallDoorPart.class);
     public static final EnumProperty<BeamConnection> BEAM_CONNECTION = EnumProperty.create("connect", BeamConnection.class);
     public static final EnumProperty<IntersectionShape> INTERSECTION_SHAPE = EnumProperty.create("connect", IntersectionShape.class);
+
+    public static final BooleanProperty ARCH = BooleanProperty.create("arch");
+
+    public static boolean isVertical(Direction direction) {
+        return direction == Direction.UP || direction == Direction.DOWN;
+    }
 
     public static boolean isSide(Direction direction) {
         return direction == Direction.NORTH || direction == Direction.EAST || direction == Direction.SOUTH || direction == Direction.WEST;

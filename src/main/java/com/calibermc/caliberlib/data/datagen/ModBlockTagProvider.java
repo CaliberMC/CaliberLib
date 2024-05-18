@@ -231,14 +231,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     }
                 }
 
-                if (variant.equals(ModBlockFamily.Variant.HANGING_SIGN)) {
-                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
-                        this.tag(BlockTags.CEILING_HANGING_SIGNS).add(e.getValue().getSecond().get());
-                    } else {
-                        this.tag(BlockTags.CEILING_HANGING_SIGNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
-                    }
-                }
-
                 if (variant.equals(ModBlockFamily.Variant.DOOR)) {
                     if ((Arrays.stream(RecipeWoodTypes.values()).anyMatch(p -> blockManager.getName().contains(p.getName())))){
                         if (namespace != null && namespace.getNamespace().equals("caliber")) {
@@ -301,6 +293,14 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                         this.tag(BlockTags.FENCE_GATES).add(e.getValue().getSecond().get());
                     } else {
                         this.tag(BlockTags.FENCE_GATES).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
+                    }
+                }
+
+                if (variant.equals(ModBlockFamily.Variant.HANGING_SIGN)) {
+                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
+                        this.tag(BlockTags.CEILING_HANGING_SIGNS).add(e.getValue().getSecond().get());
+                    } else {
+                        this.tag(BlockTags.CEILING_HANGING_SIGNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
                     }
                 }
 
@@ -392,6 +392,14 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                     }
                 }
 
+                if (variant.equals(ModBlockFamily.Variant.SIGN)) {
+                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
+                        this.tag(BlockTags.STANDING_SIGNS).add(e.getValue().getSecond().get());
+                    } else {
+                        this.tag(BlockTags.STANDING_SIGNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
+                    }
+                }
+
                 if (variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
                     if (namespace != null && namespace.getNamespace().equals("caliber")) {
                         this.tag(ModTags.Blocks.VERTICAL_SLABS).add(e.getValue().getSecond().get());
@@ -413,14 +421,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                         this.tag(BlockTags.STAIRS).add(e.getValue().getSecond().get());
                     } else {
                         this.tag(BlockTags.STAIRS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
-                    }
-                }
-
-                if (variant.equals(ModBlockFamily.Variant.SIGN)) {
-                    if (namespace != null && namespace.getNamespace().equals("caliber")) {
-                        this.tag(BlockTags.STANDING_SIGNS).add(e.getValue().getSecond().get());
-                    } else {
-                        this.tag(BlockTags.STANDING_SIGNS).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
                     }
                 }
 

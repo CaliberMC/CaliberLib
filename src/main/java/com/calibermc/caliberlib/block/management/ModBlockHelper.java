@@ -372,8 +372,8 @@ public class ModBlockHelper {
                 provider.slabBlock(block, texture, texture, texture, texture);
             });
 
-//    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SLAB_VERTICAL = (textureFrom) -> (b, provider) ->
-//            ModBlockHelper.<VerticalSlabLayerBlock>fixBlockTex(textureFrom, b, provider, provider::slabVerticalBlock, provider::slabVerticalBlock);
+    public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> SLAB_VERTICAL = (textureFrom) -> (b, provider) ->
+            ModBlockHelper.<VerticalSlabBlock>fixBlockTex(textureFrom, b, provider, provider::slabVerticalBlock, provider::slabVerticalBlock);
 
     public static final Function<Supplier<Block>, BiConsumer<Supplier<Block>, ModBlockStateProvider>> STAIRS = (textureFrom) -> (b, provider) ->
             ModBlockHelper.<StairBlock>fixBlockTex(textureFrom, b, provider, (block, side, bottom, top, tex) ->

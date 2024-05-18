@@ -62,8 +62,40 @@ public class ModTags {
     }
 
     public static class Items {
-        /* Forge Item Tags */
-//        public static final TagKey<Item> BRONZE_INGOTS = forgeTag("ingots/bronze_ingot");
+        /* Shapes */
+        public static final TagKey<Item> ARCHES = tag("shapes/arches");
+        public static final TagKey<Item> ARROWSLITS = tag("shapes/arrowslits");
+        public static final TagKey<Item> BALUSTRADES = tag("shapes/balustrades");
+        public static final TagKey<Item> DIAGONAL_BEAMS = tag("shapes/diagonal_beams");
+        public static final TagKey<Item> HORIZONTAL_BEAMS = tag("shapes/horizontal_beams");
+        public static final TagKey<Item> BEAM_LINTELS = tag("shapes/beam_lintels");
+        public static final TagKey<Item> BEAM_POSTS = tag("shapes/beam_posts");
+        public static final TagKey<Item> VERTICAL_BEAMS = tag("shapes/vertical_beams");
+        public static final TagKey<Item> CAPTIALS = tag("shapes/capitals");
+        public static final TagKey<Item> COLUMNS = tag("shapes/columns");
+        public static final TagKey<Item> CORNERS = tag("shapes/corners");
+        public static final TagKey<Item> CORNER_SLABS = tag("shapes/corner_slabs");
+        public static final TagKey<Item> DOOR_FRAMES = tag("shapes/door_frames");
+        public static final TagKey<Item> DOOR_FRAME_LINTELS = tag("shapes/door_frame_lintels");
+        public static final TagKey<Item> EIGHTHS = tag("shapes/eighths");
+        public static final TagKey<Item> HALF_ARCHES = tag("shapes/half_arches");
+        public static final TagKey<Item> HALF_LARGE_ARCHES= tag("shapes/half_large_arches");
+        public static final TagKey<Item> HALF_WINDOWS = tag("shapes/half_windows");
+        public static final TagKey<Item> LARGE_ARCHES = tag("shapes/large_arches");
+        public static final TagKey<Item> LAYERS = tag("shapes/layers");
+        public static final TagKey<Item> PILLARS = tag("shapes/pillars");
+        public static final TagKey<Item> QUARTERS = tag("shapes/quarters");
+        public static final TagKey<Item> ROOF_22S = tag("shapes/roof_22s");
+        public static final TagKey<Item> ROOF_45S = tag("shapes/roof_45s");
+        public static final TagKey<Item> ROOF_67S = tag("shapes/roof_67s");
+        public static final TagKey<Item> ROOF_PEAKS = tag("shapes/roof_peaks");
+        public static final TagKey<Item> TALL_IRON_DOORS = tag("shapes/tall_iron_doors");
+        public static final TagKey<Item> TALL_WOODEN_DOORS = tag("shapes/tall_wooden_doors");
+        public static final TagKey<Item> VERTICAL_CORNER_SLABS = tag("shapes/vertical_corner_slabs");
+        public static final TagKey<Item> VERTICAL_LAYERS = tag("shapes/vertical_layers");
+        public static final TagKey<Item> VERTICAL_QUARTERS = tag("shapes/vertical_quarters");
+        public static final TagKey<Item> VERTICAL_SLABS = tag("shapes/vertical_slabs");
+        public static final TagKey<Item> WINDOWS = tag("shapes/windows");
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation("caliber", name));

@@ -2,13 +2,19 @@ package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.WindowShape;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
+import com.calibermc.caliberlib.util.ModTags;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -17,11 +23,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -33,10 +41,13 @@ import java.util.stream.Stream;
 
 import static net.minecraft.core.Direction.*;
 
-public class HalfWindowBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
+public class HalfWindowBlock extends Block implements SimpleWaterloggedBlock {
 
+    public static final BooleanProperty ARCH = ModBlockStateProperties.ARCH;
+    public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<WindowShape> TYPE = ModBlockStateProperties.WINDOW_SHAPE;
+
     public static final Map<Direction, VoxelShape> TOP_SHAPE = Maps.newEnumMap(ImmutableMap.of(
             NORTH, Stream.of(
                     Block.box(12, 0, 12, 16, 16, 16),
@@ -120,6 +131,7 @@ public class HalfWindowBlock extends HorizontalDirectionalBlock implements Simpl
     public HalfWindowBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
+                .setValue(ARCH, false )
                 .setValue(FACING, NORTH)
                 .setValue(TYPE, WindowShape.FULL_BLOCK)
                 .setValue(WATERLOGGED, Boolean.FALSE));
@@ -132,7 +144,7 @@ public class HalfWindowBlock extends HorizontalDirectionalBlock implements Simpl
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, TYPE, WATERLOGGED);
+        pBuilder.add(FACING, TYPE, ARCH, WATERLOGGED);
     }
 
     @Override
@@ -160,34 +172,78 @@ public class HalfWindowBlock extends HorizontalDirectionalBlock implements Simpl
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite())
-                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
-
-        return blockstate1.setValue(TYPE, WindowShape.FULL_BLOCK)
-                .setValue(WATERLOGGED, Boolean.FALSE);
+        return this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection())
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER)
+                .setValue(TYPE, WindowShape.FULL_BLOCK)
+                .setValue(ARCH, Boolean.FALSE);
     }
 
-    /**
-     * Update the provided state given the provided neighbor direction and neighbor state, returning a new state.
-     * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
-     * returns its solidified counterpart.
-     * Note that this method should ideally consider only the specific direction passed in.
-     */
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
         if (pState.getValue(WATERLOGGED)) {
             pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
-        if (pLevel.getBlockState(pCurrentPos.below()).getBlock() == this && pLevel.getBlockState(pCurrentPos.above()).getBlock() != this) {
-            return pState.setValue(TYPE, WindowShape.TOP);
-        } else if (pLevel.getBlockState(pCurrentPos.below()).getBlock() == this && pLevel.getBlockState(pCurrentPos.above()).getBlock() == this) {
-            return pState.setValue(TYPE, WindowShape.MIDDLE);
-        } else if (pLevel.getBlockState(pCurrentPos.below()).getBlock() != this && pLevel.getBlockState(pCurrentPos.above()).getBlock() == this) {
-            return pState.setValue(TYPE, WindowShape.BOTTOM);
-        } else {
-            return pState.setValue(TYPE, WindowShape.FULL_BLOCK);
+        boolean isArch = pState.getValue(ARCH);
+        Direction currentFacing = pState.getValue(FACING);
+
+        // Check if the block is FACING same direction as the current block
+        if (pFacingState.getBlock() == this && pFacingState.getValue(FACING) == currentFacing) {
+
+            // Check if the block is a HalfWindowBlock, if so update the WindowShape to attach above and below
+            if (pLevel.getBlockState(pCurrentPos.below()).getBlock() == this && pLevel.getBlockState(pCurrentPos.above()).getBlock() != this) {
+                return pState.setValue(ARCH, isArch).setValue(TYPE, WindowShape.TOP);
+            } else if (pLevel.getBlockState(pCurrentPos.below()).getBlock() == this && pLevel.getBlockState(pCurrentPos.above()).getBlock() == this) {
+                return pState.setValue(ARCH, isArch).setValue(TYPE, WindowShape.MIDDLE);
+            } else if (pLevel.getBlockState(pCurrentPos.below()).getBlock() != this && pLevel.getBlockState(pCurrentPos.above()).getBlock() == this) {
+                return pState.setValue(ARCH, isArch).setValue(TYPE, WindowShape.BOTTOM);
+            } else {
+                return pState.setValue(ARCH, isArch).setValue(TYPE, WindowShape.FULL_BLOCK);
+            }
         }
+
+        return pState;
+    }
+
+    private void propagateArchState(Level level, BlockPos pos, boolean newArchState) {
+        // Propagate up
+        BlockPos currentPos = pos.above();
+        while (level.getBlockState(currentPos).getBlock() == this) {
+            BlockState currentState = level.getBlockState(currentPos);
+            level.setBlock(currentPos, currentState.setValue(ARCH, newArchState), 3);
+            currentPos = currentPos.above();
+        }
+
+        // Propagate down
+        currentPos = pos.below();
+        while (level.getBlockState(currentPos).getBlock() == this) {
+            BlockState currentState = level.getBlockState(currentPos);
+            level.setBlock(currentPos, currentState.setValue(ARCH, newArchState), 3);
+            currentPos = currentPos.below();
+        }
+    }
+
+    @Override
+    public InteractionResult use(BlockState pState, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack heldItem = player.getItemInHand(hand);
+
+        // Check if the player is holding a HalfArchBlock item
+        if (heldItem.is(ModTags.Items.HALF_ARCHES)) {
+            if (!level.isClientSide) {
+                boolean newArchState = !pState.getValue(ARCH);
+                level.setBlock(pos, pState.setValue(ARCH, newArchState), 3);
+
+                // Play the block update sound
+                level.levelEvent(2001, pos, Block.getId(pState));
+
+                // Propagate the state change
+                propagateArchState(level, pos, newArchState);
+            }
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.PASS;
     }
 
     @Override
