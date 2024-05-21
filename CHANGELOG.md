@@ -1,15 +1,15 @@
 # Change Log
 
-### 0.2.0 (in progress)
+### 1.0.0 (in progress)
 #### Features
+- Complete overhaul for Multi-loader support and to allow for dynamic resources and registration
 - Added support for Fabric Mod Loader
-- Added Window Shutter Blocks
-- Added new block states to Capital Blocks so they can connect
+- Added new block states to Capital Blocks so they can connect like stairs
 - Added new block states to Window and Window Half Blocks so they can have an arched top
 
 #### Bugfixes
 
-
+---
 ### 0.1.6
 #### Features
 - Added STONE_VARIANTS_WITHOUT_SLABS to ModBlockHelper

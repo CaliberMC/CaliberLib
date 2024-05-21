@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.calibermc.caliberlib.forge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "caliberlib.refmap.json",
+  "mixins": [
+    "LootTableProviderMixin",
+    "RecipeProviderMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

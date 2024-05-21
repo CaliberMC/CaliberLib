@@ -1,7 +1,9 @@
 # Caliber Lib
-**CaliberMC Library**
+**The Multi-Block Library**
 
-[![FORGE](https://img.shields.io/static/v1?label=modloader&message=forge&color=orange)](https://files.minecraftforge.net/net/minecraftforge/forge/)
+[![FORGE](https://img.shields.io/static/v1?label=modloader&message=forge&color=orange)](https://files.minecraftforge.net/net/minecraftforge/forge/) 
+[![FABRIC](https://img.shields.io/static/v1?label=modloader&message=fabric&color=tan)](https://fabricmc.net/use/)
+[![Version](https://img.shields.io/static/v1?label=version&message=1.0.0&color=green)](./CHANGELOG.md)
 ![Mod Environment](https://img.shields.io/static/v1?label=environment&message=client%2Fserver&color=yellow)
 [![License](https://img.shields.io/static/v1?label=licence&message=MIT&color=blue)](./LICENSE)
 

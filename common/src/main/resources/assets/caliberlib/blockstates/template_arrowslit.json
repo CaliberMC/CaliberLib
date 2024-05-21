@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "$block_arrowslit",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "$block_arrowslit"
+    },
+    "facing=south": {
+      "model": "$block_arrowslit",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "$block_arrowslit",
+      "y": 270
+    }
+  }
+}
