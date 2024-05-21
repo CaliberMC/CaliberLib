@@ -117,12 +117,10 @@ allprojects {
         archivesName = "${rootProject.mod_id}"
     }
 
-//    version = ${rootProject.mod_version}-${rootProject.minecraft_version}
     group = rootProject.mod_group_id
 
     repositories {
         mavenLocal()
-
 
         maven { url "https://maven.parchmentmc.org" }
 
