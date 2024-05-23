@@ -23,11 +23,14 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}+${rootProject.minecraft_version}"
 
-//    include(modImplementation ("net.mehvahdjukaar:moonlight-fabric:${rootProject.moonlight_version}"))
+    //include(modImplementation ("net.mehvahdjukaar:moonlight-fabric:${rootProject.moonlight_version}"))
     include(modImplementation("curse.maven:moonlightlib-499980:5201141"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+
+    include(implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:${mixin_extras_version}")))
+    annotationProcessor 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
 }
 
 def resourceTargets = ['fabric.mod.json', 'pack.mcmeta']

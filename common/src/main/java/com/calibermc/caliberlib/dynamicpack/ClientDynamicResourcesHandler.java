@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.datafixers.util.Pair;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
+import net.mehvahdjukaar.moonlight.api.platform.PlatHelper;
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
 import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
@@ -30,10 +31,14 @@ import java.util.function.Supplier;
 
 public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
 
-    public static final ClientDynamicResourcesHandler INSTANCE = new ClientDynamicResourcesHandler();
+    public static ClientDynamicResourcesHandler registerResourceHandler(String modId) {
+        ClientDynamicResourcesHandler resourcesHandler = new ClientDynamicResourcesHandler(modId);
+        resourcesHandler.register();
+        return resourcesHandler;
+    }
 
-    public ClientDynamicResourcesHandler() {
-        super(new DynamicTexturePack(new ResourceLocation(CaliberLib.MOD_ID, "generated_pack")));
+    public ClientDynamicResourcesHandler(String modId) {
+        super(new DynamicTexturePack(new ResourceLocation(modId, "generated_pack")));
     }
 
     @Override
@@ -48,85 +53,87 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
 
     @Override
     public void regenerateDynamicAssets(ResourceManager manager) {
-        for (BlockManager blockManager : BlockManager.BLOCK_MANAGERS.get(this.modId)) {
-            for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : blockManager.getBlocks().entrySet()) {
-                ModBlockFamily.Variant variant = e.getKey().variant;
-                var blockState = StaticResource.getOrFail(manager, ResType.BLOCKSTATES.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s".formatted(variant.equals(ModBlockFamily.Variant.BASE) ? "base" : e.getKey().variant()))));
-                var itemModel = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_base")));
-                var itemModel2d = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_2d")));
+        if (BlockManager.BLOCK_MANAGERS.containsKey(this.modId)) {
+            for (BlockManager blockManager : BlockManager.BLOCK_MANAGERS.get(this.modId)) {
+                for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : blockManager.getBlocks().entrySet()) {
+                    ModBlockFamily.Variant variant = e.getKey().variant;
+                    var blockState = StaticResource.getOrFail(manager, ResType.BLOCKSTATES.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s".formatted(variant.equals(ModBlockFamily.Variant.BASE) ? "base" : e.getKey().variant()))));
+                    var itemModel = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_base")));
+                    var itemModel2d = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_2d")));
 
-                try {
-                    ResourceLocation id = Utils.getID(e.getValue().getSecond());
-                    String modelId = new ResourceLocation(id.getNamespace(), "block/" + id.getPath()).toString();
+                    try {
+                        ResourceLocation id = Utils.getID(e.getValue().getSecond());
+                        String modelId = new ResourceLocation(id.getNamespace(), "block/" + id.getPath()).toString();
 
-                    String finalModelId1 = modelId;
-                    this.addSimilarJsonResource(manager, blockState,
-                            text -> genModelByUsingBS(text, blockManager, manager, id, e.getKey().variant(), finalModelId1),
-                            name -> id.getPath() + ".json");
-
-                    if (variant.equals(ModBlockFamily.Variant.DOOR) || variant.equals(ModBlockFamily.Variant.TALL_DOOR)
-                            || variant.equals(ModBlockFamily.Variant.WALL_HANGING_SIGN) || variant.equals(ModBlockFamily.Variant.SIGN)) {
-                        String textureId = new ResourceLocation(id.getNamespace(), "item/" + id.getPath()).toString();
-                        this.addSimilarJsonResource(manager, itemModel2d,
-                                text -> text.replace("$texture", textureId),
+                        String finalModelId1 = modelId;
+                        this.addSimilarJsonResource(manager, blockState,
+                                text -> genModelByUsingBS(text, blockManager, manager, id, e.getKey().variant(), finalModelId1),
                                 name -> id.getPath() + ".json");
-                    } else {
-                        if (variant.equals(ModBlockFamily.Variant.ARCH)) {
-                            modelId += "_trim_2";
+
+                        if (variant.equals(ModBlockFamily.Variant.DOOR) || variant.equals(ModBlockFamily.Variant.TALL_DOOR)
+                                || variant.equals(ModBlockFamily.Variant.WALL_HANGING_SIGN) || variant.equals(ModBlockFamily.Variant.SIGN)) {
+                            String textureId = new ResourceLocation(id.getNamespace(), "item/" + id.getPath()).toString();
+                            this.addSimilarJsonResource(manager, itemModel2d,
+                                    text -> text.replace("$texture", textureId),
+                                    name -> id.getPath() + ".json");
+                        } else {
+                            if (variant.equals(ModBlockFamily.Variant.ARCH)) {
+                                modelId += "_trim_2";
+                            }
+
+                            if (variant.equals(ModBlockFamily.Variant.CORNER)
+                                    || variant.equals(ModBlockFamily.Variant.CORNER_SLAB)
+                                    || variant.equals(ModBlockFamily.Variant.CORNER_SLAB_VERTICAL)
+                                    || variant.equals(ModBlockFamily.Variant.EIGHTH)
+                                    || variant.equals(ModBlockFamily.Variant.PILLAR)
+                                    || variant.equals(ModBlockFamily.Variant.QUARTER)
+                                    || variant.equals(ModBlockFamily.Variant.QUARTER_VERTICAL)) {
+                                modelId += "_layer_3";
+                            }
+
+    //                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
+    //                    parentName += "_layer_4";
+    //                }
+
+                            if (variant.equals(ModBlockFamily.Variant.LAYER)
+                                    || variant.equals(ModBlockFamily.Variant.LAYER_VERTICAL)
+                                    || variant.equals(ModBlockFamily.Variant.BEAM_LINTEL)
+                                    || variant.equals(ModBlockFamily.Variant.DOOR_FRAME_LINTEL)
+                                    || variant.equals(ModBlockFamily.Variant.BEAM_POSTS)
+                                    || variant.equals(ModBlockFamily.Variant.DOOR_FRAME)
+                                    || variant.equals(ModBlockFamily.Variant.BEAM_HORIZONTAL)
+                                    || variant.equals(ModBlockFamily.Variant.BEAM_DIAGONAL)) {
+                                modelId += "_1";
+                            }
+
+                            if (variant.equals(ModBlockFamily.Variant.BEAM_VERTICAL)) {
+                                modelId += "_3";
+                            }
+
+                            if (variant.equals(ModBlockFamily.Variant.BUTTON)
+                                    || variant.equals(ModBlockFamily.Variant.FENCE)
+                                    || variant.equals(ModBlockFamily.Variant.WALL)
+                                    || variant.equals(ModBlockFamily.Variant.ROOF_67)) {
+                                modelId += "_inventory";
+                                var blockModel = StaticResource.getOrFail(manager, ResType.BLOCK_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s_inventory".formatted(e.getKey().variant()))));
+                                this.addSimilarJsonResource(manager, blockModel,
+                                        text -> textures(text, manager, blockManager),
+                                        name -> name.replace("template_%s".formatted(e.getKey().variant()), id.getPath()));
+
+                            }
+
+                            if (variant.equals(ModBlockFamily.Variant.TRAPDOOR)) {
+                                modelId += "_bottom";
+                            }
+                            String finalModelId = modelId;
+                            this.addSimilarJsonResource(manager, itemModel,
+                                    text -> text.replace("$block", finalModelId),
+                                    name -> id.getPath() + ".json");
                         }
 
-                        if (variant.equals(ModBlockFamily.Variant.CORNER)
-                                || variant.equals(ModBlockFamily.Variant.CORNER_SLAB)
-                                || variant.equals(ModBlockFamily.Variant.CORNER_SLAB_VERTICAL)
-                                || variant.equals(ModBlockFamily.Variant.EIGHTH)
-                                || variant.equals(ModBlockFamily.Variant.PILLAR)
-                                || variant.equals(ModBlockFamily.Variant.QUARTER)
-                                || variant.equals(ModBlockFamily.Variant.QUARTER_VERTICAL)) {
-                            modelId += "_layer_3";
-                        }
-
-//                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
-//                    parentName += "_layer_4";
-//                }
-
-                        if (variant.equals(ModBlockFamily.Variant.LAYER)
-                                || variant.equals(ModBlockFamily.Variant.LAYER_VERTICAL)
-                                || variant.equals(ModBlockFamily.Variant.BEAM_LINTEL)
-                                || variant.equals(ModBlockFamily.Variant.DOOR_FRAME_LINTEL)
-                                || variant.equals(ModBlockFamily.Variant.BEAM_POSTS)
-                                || variant.equals(ModBlockFamily.Variant.DOOR_FRAME)
-                                || variant.equals(ModBlockFamily.Variant.BEAM_HORIZONTAL)
-                                || variant.equals(ModBlockFamily.Variant.BEAM_DIAGONAL)) {
-                            modelId += "_1";
-                        }
-
-                        if (variant.equals(ModBlockFamily.Variant.BEAM_VERTICAL)) {
-                            modelId += "_3";
-                        }
-
-                        if (variant.equals(ModBlockFamily.Variant.BUTTON)
-                                || variant.equals(ModBlockFamily.Variant.FENCE)
-                                || variant.equals(ModBlockFamily.Variant.WALL)
-                                || variant.equals(ModBlockFamily.Variant.ROOF_67)) {
-                            modelId += "_inventory";
-                            var blockModel = StaticResource.getOrFail(manager, ResType.BLOCK_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s_inventory".formatted(e.getKey().variant()))));
-                            this.addSimilarJsonResource(manager, blockModel,
-                                    text -> textures(text, manager, blockManager),
-                                    name -> name.replace("template_%s".formatted(e.getKey().variant()), id.getPath()));
-
-                        }
-
-                        if (variant.equals(ModBlockFamily.Variant.TRAPDOOR)) {
-                            modelId += "_bottom";
-                        }
-                        String finalModelId = modelId;
-                        this.addSimilarJsonResource(manager, itemModel,
-                                text -> text.replace("$block", finalModelId),
-                                name -> id.getPath() + ".json");
+                    } catch (Exception ex) {
+                        CaliberLib.LOGGER.error("Failed to generate assets for {}", e.getValue(), ex);
                     }
-
-                } catch (Exception ex) {
-                    CaliberLib.LOGGER.error("Failed to generate assets for {}", e.getValue(), ex);
                 }
             }
         }
@@ -277,17 +284,20 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
 
     @Override
     public void addDynamicTranslations(AfterLanguageLoadEvent lang) {
-        for (BlockManager b : BlockManager.BLOCK_MANAGERS.get(this.modId)) {
-            for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : b.getBlocks().entrySet()) {
-                String base = lang.getEntry("block_type.caliber.block");
-                if (base != null) {
-                    String typeName = lang.getEntry(b.getTranslationKey());
-                    if (typeName != null) {
-                        lang.addEntry(e.getValue().getSecond().get().getDescriptionId(), String.format(base, typeName, e.getKey().variant.equals(ModBlockFamily.Variant.BASE) ? "" : " " + StringUtils.capitalize(e.getKey().variant().replace("_", " "))));
+        if (BlockManager.BLOCK_MANAGERS.containsKey(this.modId)) {
+            for (BlockManager b : BlockManager.BLOCK_MANAGERS.get(this.modId)) {
+                for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : b.getBlocks().entrySet()) {
+                    String base = lang.getEntry("block_type.caliber.block");
+                    if (base != null) {
+                        String typeName = lang.getEntry(b.getTranslationKey());
+                        if (typeName != null) {
+                            lang.addEntry(e.getValue().getSecond().get().getDescriptionId(), String.format(base, typeName, e.getKey().variant.equals(ModBlockFamily.Variant.BASE) ? "" : " " + StringUtils.capitalize(e.getKey().variant().replace("_", " "))));
+                        }
                     }
                 }
-            }
 
-        };
+            }
+        }
+        ;
     }
 }

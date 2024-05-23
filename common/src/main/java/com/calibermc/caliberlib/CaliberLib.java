@@ -32,12 +32,11 @@ public class CaliberLib {
         BlockSetAPI.addDynamicBlockRegistration(CaliberLib::registerBlocks, BlockManager.class);
         BlockSetAPI.addDynamicRegistration(CaliberLib::registerItems, BlockManager.class, BuiltInRegistries.ITEM);
 
-        ServerDynamicResourcesHandler.INSTANCE.register();
 
+        ServerDynamicResourcesHandler.registerResourceHandler(CaliberLib.MOD_ID);
         if (PlatHelper.getPhysicalSide().isClient()) {
-            ClientDynamicResourcesHandler.INSTANCE.register();
+            ClientDynamicResourcesHandler.registerResourceHandler(CaliberLib.MOD_ID);
         }
-
         //RegHelper.addItemsToTabsRegistration(CaliberLib::addItemsToTabs);
     }
 

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 @Mixin(WoodType.class)
 public class WoodTypeMixin {
 
-    @Inject(at = @At("RETURN"), method = "values", cancellable = true)
+    @Inject(at = @At("RETURN"), method = "values()Ljava/util/stream/Stream;", cancellable = true)
     private static void patch$values(CallbackInfoReturnable<Stream<WoodType>> cir) {
         Set<WoodType> set = ModWoodType.getWoodTypes();
         set.addAll(cir.getReturnValue().toList());
