@@ -22,7 +22,9 @@ dependencies {
 publishing {
     publications {
         mavenCommon(MavenPublication) {
-            artifactId = rootProject.mod_id
+            groupId = mod_group_id
+            artifactId = mod_id + "-" + project.name
+            version = pub_version
             from components.java
         }
     }
