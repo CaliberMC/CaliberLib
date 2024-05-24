@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 
 public class ModBlockStateProperties {
+    public static final EnumProperty<TopBottomShape> TOP_BOTTOM_SHAPE = EnumProperty.create("half", TopBottomShape.class);
+
     public static final EnumProperty<ArchShape> ARCH_SHAPE = EnumProperty.create("type", ArchShape.class);
     public static final EnumProperty<BalustradeShape> BALUSTRADE_SHAPE = EnumProperty.create("type", BalustradeShape.class);
     public static final EnumProperty<LargeArchShape> LARGE_ARCH_SHAPE = EnumProperty.create("type", LargeArchShape.class);
@@ -21,7 +23,7 @@ public class ModBlockStateProperties {
     public static final EnumProperty<RoofShape> ROOF_SHAPE = EnumProperty.create("type", RoofShape.class);
     public static final EnumProperty<RoofPeakShape> ROOF_PEAK_SHAPE = EnumProperty.create("type", RoofPeakShape.class);
     public static final EnumProperty<SingleDoubleShape> SINGLE_DOUBLE_SHAPE = EnumProperty.create("type", SingleDoubleShape.class);
-    public static final EnumProperty<TopBottomShape> TOP_BOTTOM_SHAPE = EnumProperty.create("type", TopBottomShape.class);
+    public static final EnumProperty<IntersectionShape> INTERSECTION_SHAPE = EnumProperty.create("type", IntersectionShape.class);
     public static final EnumProperty<TopBottomDoubleShape> TOP_BOTTOM_DOUBLE_SHAPE = EnumProperty.create("type", TopBottomDoubleShape.class);
     public static final EnumProperty<WindowShape> WINDOW_SHAPE = EnumProperty.create("type", WindowShape.class);
 
@@ -36,7 +38,6 @@ public class ModBlockStateProperties {
     public static final EnumProperty<RoofPitch> ROOF_PITCH = EnumProperty.create("pitch", RoofPitch.class);
     public static final EnumProperty<TallDoorPart> TALL_DOOR_PART = EnumProperty.create("part", TallDoorPart.class);
     public static final EnumProperty<BeamConnection> BEAM_CONNECTION = EnumProperty.create("connect", BeamConnection.class);
-    public static final EnumProperty<IntersectionShape> INTERSECTION_SHAPE = EnumProperty.create("connect", IntersectionShape.class);
 
     public static final BooleanProperty ARCH = BooleanProperty.create("arch");
 

@@ -1,7 +1,6 @@
 {
 	"credit": "Made by Charm8er for CaliberMC",
-	"parent": "caliberlib:block/templates/caliber_block_no_occlusion",
-	"ambientocclusion": false,
+	"parent": "caliberlib:block/templates/caliber_block",
 	"elements": [
 		{
 			"name": "ah",
