@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.datafixers.util.Pair;
 import net.mehvahdjukaar.moonlight.api.events.AfterLanguageLoadEvent;
-import net.mehvahdjukaar.moonlight.api.platform.PlatHelper;
 import net.mehvahdjukaar.moonlight.api.resources.RPUtils;
 import net.mehvahdjukaar.moonlight.api.resources.ResType;
 import net.mehvahdjukaar.moonlight.api.resources.StaticResource;
@@ -57,11 +56,11 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
             for (BlockManager blockManager : BlockManager.BLOCK_MANAGERS.get(this.modId)) {
                 for (Map.Entry<BlockManager.BlockAdditional, Pair<ResourceLocation, Supplier<Block>>> e : blockManager.getBlocks().entrySet()) {
                     ModBlockFamily.Variant variant = e.getKey().variant;
-                    var blockState = StaticResource.getOrFail(manager, ResType.BLOCKSTATES.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s".formatted(variant.equals(ModBlockFamily.Variant.BASE) ? "base" : e.getKey().variant()))));
-                    var itemModel = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_base")));
-                    var itemModel2d = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_2d")));
-
                     try {
+                        var blockState = StaticResource.getOrFail(manager, ResType.BLOCKSTATES.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_%s".formatted(variant.equals(ModBlockFamily.Variant.BASE) ? "base" : e.getKey().variant()))));
+                        var itemModel = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_base")));
+                        var itemModel2d = StaticResource.getOrFail(manager, ResType.ITEM_MODELS.getPath(new ResourceLocation(CaliberLib.MOD_ID, "template_2d")));
+
                         ResourceLocation id = Utils.getID(e.getValue().getSecond());
                         String modelId = new ResourceLocation(id.getNamespace(), "block/" + id.getPath()).toString();
 
@@ -91,9 +90,9 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
                                 modelId += "_layer_3";
                             }
 
-    //                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
-    //                    parentName += "_layer_4";
-    //                }
+                            //                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
+                            //                    parentName += "_layer_4";
+                            //                }
 
                             if (variant.equals(ModBlockFamily.Variant.LAYER)
                                     || variant.equals(ModBlockFamily.Variant.LAYER_VERTICAL)
@@ -298,6 +297,5 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
 
             }
         }
-        ;
     }
 }

@@ -5,6 +5,7 @@ import com.calibermc.caliberlib.dynamicpack.ClientDynamicResourcesHandler;
 import com.calibermc.caliberlib.dynamicpack.ServerDynamicResourcesHandler;
 import com.calibermc.caliberlib.util.block.BlockManagerRegistry;
 import com.mojang.datafixers.util.Pair;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.mehvahdjukaar.moonlight.api.misc.Registrator;
 import net.mehvahdjukaar.moonlight.api.platform.PlatHelper;
 import net.mehvahdjukaar.moonlight.api.set.BlockSetAPI;

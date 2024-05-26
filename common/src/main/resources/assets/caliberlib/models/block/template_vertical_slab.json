@@ -1,0 +1,9 @@
+{
+  "parent": "caliberlib:block/templates/vertical_slab",
+  "textures": {
+    "bottom": "$texture",
+    "top": "$texture",
+    "side": "$texture",
+    "back": "$texture"
+  }
+}

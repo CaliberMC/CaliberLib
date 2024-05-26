@@ -4,7 +4,13 @@
 #### Features
 - Complete overhaul for Multi-loader support and to allow for dynamic resources and registration
 - Added support for Fabric Mod Loader
+- Re-designed Arch Models
+- Overhauled Arch Block placement/update logic
+- Re-designed Balustrade Models
+- Added new block states to Balustrade Block so they can connect like walls
+- Re-designed Capital Models
 - Added new block states to Capital Blocks so they can connect like stairs
+- Added Arched top version of Window and Half Window models
 - Added new block states to Window and Window Half Blocks so they can have an arched top
 
 #### Bugfixes

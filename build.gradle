@@ -1,6 +1,6 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.3-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
     id "com.matthewprenger.cursegradle" version "1.4.0"
     id "com.modrinth.minotaur" version "2.8.4"
 }
@@ -117,10 +117,12 @@ allprojects {
         archivesName = "${rootProject.mod_id}"
     }
 
+//    version = ${rootProject.mod_version}-${rootProject.minecraft_version}
     group = rootProject.mod_group_id
 
     repositories {
         mavenLocal()
+
 
         maven { url "https://maven.parchmentmc.org" }
 
@@ -190,4 +192,5 @@ allprojects {
             ])
         }
     }
+
 }
