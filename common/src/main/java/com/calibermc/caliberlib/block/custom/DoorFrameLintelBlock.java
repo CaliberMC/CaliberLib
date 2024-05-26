@@ -31,7 +31,7 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
+    public static final EnumProperty<TopBottomShape> HALF = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
     public static final IntegerProperty BEAM = ModBlockStateProperties.LINTEL_SHAPE;
     public final int beamShape = 4;
 
@@ -92,7 +92,7 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(BEAM, 1)
-                .setValue(TYPE, TopBottomShape.BOTTOM)
+                .setValue(HALF, TopBottomShape.BOTTOM)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, Boolean.FALSE));
 
@@ -105,11 +105,11 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING, BEAM, TYPE, WATERLOGGED);
+        pBuilder.add(FACING, BEAM, HALF, WATERLOGGED);
     }
 
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        TopBottomShape topBottomShape = pState.getValue(TYPE);
+        TopBottomShape topBottomShape = pState.getValue(HALF);
         Direction direction = pState.getValue(FACING);
 
         switch (topBottomShape) {
@@ -149,11 +149,11 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
             return blockstate.setValue(BEAM, Integer.valueOf(newCount)).
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < beamShape) && fluidstate.is(FluidTags.WATER)));
         } else {
-            BlockState blockstate1 = this.defaultBlockState().setValue(BEAM, 1).setValue(TYPE, TopBottomShape.TOP)
+            BlockState blockstate1 = this.defaultBlockState().setValue(BEAM, 1).setValue(HALF, TopBottomShape.TOP)
                     .setValue(FACING, pContext.getHorizontalDirection()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
             return clickedFace != Direction.DOWN && (clickedFace == Direction.UP || !(pContext.getClickLocation().y - (double) blockpos.getY() > 0.5D)) ?
-                    blockstate1 : blockstate1.setValue(TYPE, TopBottomShape.BOTTOM);
+                    blockstate1 : blockstate1.setValue(HALF, TopBottomShape.BOTTOM);
         }
     }
 

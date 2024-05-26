@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.ArchShape;
+import com.calibermc.caliberlib.block.shapes.IntersectionShape;
 import com.calibermc.caliberlib.block.shapes.trim.ArchTrim;
 import com.calibermc.caliberlib.data.ModBlockFamily;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
@@ -35,57 +36,16 @@ public class ArchBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final EnumProperty<ArchShape> TYPE = ModBlockStateProperties.ARCH_SHAPE;
-    public static final EnumProperty<ArchTrim> TRIM = ModBlockStateProperties.ARCH_TRIM;
+    public static final EnumProperty<IntersectionShape> TYPE = ModBlockStateProperties.INTERSECTION_SHAPE;
 
-    public static final VoxelShape SHAPE = Block.box(0, 8, 0, 16, 16, 16);
+    public static final VoxelShape SHAPE = Block.box(0, 10, 0, 16, 16, 16);
 
     public ArchBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
-                .setValue(TRIM, ArchTrim.BOTH)
                 .setValue(FACING, NORTH)
-                .setValue(TYPE, ArchShape.STRAIGHT)
+                .setValue(TYPE, IntersectionShape.SINGLE)
                 .setValue(WATERLOGGED, Boolean.FALSE));
-    }
-
-    private static ArchShape getArchShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
-        Direction facing = pState.getValue(FACING);
-        Direction opposite = facing.getOpposite();
-        boolean front = isArch(pLevel.getBlockState(pPos.relative(facing)));
-        boolean back = isArch(pLevel.getBlockState(pPos.relative(opposite)));
-        boolean left = isArch(pLevel.getBlockState(pPos.relative(facing.getCounterClockWise())));
-        boolean right = isArch(pLevel.getBlockState(pPos.relative(facing.getClockWise())));
-
-        // Check for corner (left)
-        if ((left && front && !right && !back) || (right && back && !left && !front)) {
-            return ArchShape.CORNER_LEFT;
-        }
-        // Check for corner (right)
-        if ((right && front && !left && !back) || (left && back && !right && !front)) {
-            return ArchShape.CORNER_RIGHT;
-        }
-        // Check for 3-way intersection (forward)
-        if (back && left && right && !front) {
-            return ArchShape.T;
-        }
-        // Check for 3-way intersection (left)
-        if (left && front && back && !right) {
-            return ArchShape.LEFT_T;
-        }
-        // Check for 3-way intersection (right)
-        if (right && front && back && !left) {
-            return ArchShape.RIGHT_T;
-        }
-        // Check for 4-way intersection
-        if (right && left && front && back) {
-            return ArchShape.CROSS;
-        }
-        return ArchShape.STRAIGHT;
-    }
-
-    public static boolean isArch(BlockState pState) {
-        return pState.getBlock() instanceof ArchBlock;
     }
 
     @Override
@@ -95,7 +55,7 @@ public class ArchBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(TRIM, FACING, TYPE, WATERLOGGED);
+        pBuilder.add(FACING, TYPE, WATERLOGGED);
     }
 
     @Override
@@ -108,57 +68,102 @@ public class ArchBlock extends Block implements SimpleWaterloggedBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-        BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
+        BlockState blockstate = this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection())
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-        return blockstate1.setValue(TYPE, getArchShape(blockstate1, pContext.getLevel(), blockpos)).setValue(TRIM, getTrim(blockstate1, pContext.getLevel(), blockpos));
+        return blockstate.setValue(TYPE, getArchShape(blockstate, pContext.getLevel(), blockpos));
     }
 
-    /**
-     * Update the provided state given the provided neighbor direction and neighbor state, returning a new state.
-     * For example, fences make their connections to the passed in state if possible, and wet concrete powder immediately
-     * returns its solidified counterpart.
-     * Note that this method should ideally consider only the specific direction passed in.
-     */
     @Override
     public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-        if (pState.getValue(WATERLOGGED)) {
-            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
-        }
 
+        // Update the shape first
         if (pFacing.getAxis().isHorizontal()) {
-            // Set the TYPE value based on the ArchShape
+            BlockState front = pLevel.getBlockState(pCurrentPos.relative(pFacing));
+            BlockState back = pLevel.getBlockState(pCurrentPos.relative(pFacing.getOpposite()));
+            BlockState left = pLevel.getBlockState(pCurrentPos.relative(pFacing.getCounterClockWise()));
+            BlockState right = pLevel.getBlockState(pCurrentPos.relative(pFacing.getClockWise()));
+
+            // Get the capital shape
             pState = pState.setValue(TYPE, getArchShape(pState, pLevel, pCurrentPos));
 
-            // Set the TRIM value
-            pState = pState.setValue(TRIM, getTrim(pState, pLevel, pCurrentPos));
-        } else {
-            pState = super.updateShape(pState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
+            // Handle END FACING direction
+            if (pState.getValue(TYPE) == IntersectionShape.END) {
+                if (!isArch(back) && isArch(front)) {
+                    pState = pState.setValue(FACING, pFacing.getOpposite());
+                } else if (!isArch(front) && isArch(back)) {
+                    pState = pState.setValue(FACING, pFacing);
+                } else if (!isArch(left) && isArch(right)) {
+                    pState = pState.setValue(FACING, pFacing.getCounterClockWise());
+                } else if (!isArch(right) && isArch(left)) {
+                    pState = pState.setValue(FACING, pFacing.getClockWise());
+                }
+            }
+        }
+
+        // Handling water logging
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
         }
 
         return pState;
     }
 
-    private ArchTrim getTrim(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+    private IntersectionShape getArchShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
         Direction facing = pState.getValue(FACING);
-        Direction opposite = facing.getOpposite();
-        boolean airInFront = pLevel.getBlockState(pPos.relative(facing)).isAir();
-        boolean airInBack = pLevel.getBlockState(pPos.relative(opposite)).isAir();
+        BlockState front = pLevel.getBlockState(pPos.relative(facing));
+        BlockState back = pLevel.getBlockState(pPos.relative(facing.getOpposite()));
+        BlockState left = pLevel.getBlockState(pPos.relative(facing.getCounterClockWise()));
+        BlockState right = pLevel.getBlockState(pPos.relative(facing.getClockWise()));
 
-        // Check for blocks on both sides (front and back)
-        if (!airInFront && !airInBack) {
-            return ArchTrim.NONE;
-        }
-        // Check for no blocks on either side (front and back)
-        if (airInFront && airInBack) {
-            return ArchTrim.BOTH;
-        }
-        // Check for block only in back
-        if (!airInFront && airInBack) {
-            return ArchTrim.FRONT;
-        }
+        int connections = (isArch(front) ? 1 : 0) + (isArch(back) ? 1 : 0) + (isArch(left) ? 1 : 0) + (isArch(right) ? 1 : 0);
 
-        return ArchTrim.BOTH;
+        switch (connections) {
+            case 0:
+                return IntersectionShape.SINGLE;
+            case 1:
+                return IntersectionShape.END;
+            case 2:
+                if (isArch(front) && isArch(back)) {
+                    return IntersectionShape.CONNECTED;
+                }
+                if (isArch(left) && isArch(right)) {
+                    return IntersectionShape.CONNECTED;
+                }
+                if (isArch(front) && isArch(left)) {
+                    return IntersectionShape.OUTER_LEFT;
+                }
+                if (isArch(front) && isArch(right)) {
+                    return IntersectionShape.OUTER_RIGHT;
+                }
+                if (isArch(back) && isArch(left)) {
+                    return IntersectionShape.INNER_LEFT;
+                }
+                if (isArch(back) && isArch(right)) {
+                    return IntersectionShape.INNER_RIGHT;
+                }
+                break;
+            case 3:
+                if (!isArch(front)) {
+                    return IntersectionShape.T;
+                } else if (!isArch(back)) {
+                    return IntersectionShape.T_OPPOSITE;
+                } else if (!isArch(left)) {
+                    return IntersectionShape.T_RIGHT;
+                } else {
+                    return IntersectionShape.T_LEFT;
+                }
+            case 4:
+                return IntersectionShape.CROSS;
+            default:
+                return IntersectionShape.END;
+        }
+        return IntersectionShape.END;
+    }
+
+    public static boolean isArch(BlockState pState) {
+        return pState.getBlock() instanceof ArchBlock;
     }
 
     @Override

@@ -1,21 +1,16 @@
 package com.calibermc.caliberlib.block.custom;
 
 
-import com.calibermc.caliberlib.block.shapes.BalustradeShape;
-import com.calibermc.caliberlib.data.ModBlockFamily;
+import com.calibermc.caliberlib.block.shapes.IntersectionShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -26,73 +21,24 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.Nullable;
-import java.util.Map;
-import java.util.stream.Stream;
 
 import static net.minecraft.core.Direction.*;
 
 public class BalustradeBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final EnumProperty<BalustradeShape> TYPE = ModBlockStateProperties.BALUSTRADE_SHAPE;
+    public static final EnumProperty<IntersectionShape> TYPE = ModBlockStateProperties.INTERSECTION_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final Map<Direction, VoxelShape> SINGLE_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(Block.box(1.5, 10, 1.5, 14.5, 16, 14.5),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3, 13, 4, 13),
-                    Block.box(4, 4, 4, 12, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(Block.box(1.5, 10, 1.5, 14.5, 16, 14.5),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3, 13, 4, 13),
-                    Block.box(4, 4, 4, 12, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(Block.box(1.5, 10, 1.5, 14.5, 16, 14.5),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3, 13, 4, 13),
-                    Block.box(4, 4, 4, 12, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(Block.box(1.5, 10, 1.5, 14.5, 16, 14.5),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3, 13, 4, 13),
-                    Block.box(4, 4, 4, 12, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-    public static final Map<Direction, VoxelShape> CONNECTED_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(3, 10, 0, 13, 16, 16),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3.5, 3, 3, 12.5, 4, 13),
-                    Block.box(5.5, 4, 4, 10.5, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(3, 10, 0, 13, 16, 16),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3.5, 3, 3, 12.5, 4, 13),
-                    Block.box(5.5, 4, 4, 10.5, 10, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 10, 3, 16, 16, 13),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3.5, 13, 4, 12.5),
-                    Block.box(4, 4, 5.5, 12, 10, 10.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(0, 10, 3, 16, 16, 13),
-                    Block.box(1.5, 0, 1.5, 14.5, 3, 14.5),
-                    Block.box(3, 3, 3.5, 13, 4, 12.5),
-                    Block.box(4, 4, 5.5, 12, 10, 10.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
+
     public BalustradeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, NORTH)
-                .setValue(TYPE, BalustradeShape.SINGLE)
+                .setValue(TYPE, IntersectionShape.SINGLE)
                 .setValue(WATERLOGGED, Boolean.FALSE));
     }
 
@@ -108,30 +54,152 @@ public class BalustradeBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        BalustradeShape balustradeShape = pState.getValue(TYPE);
-        if (balustradeShape == BalustradeShape.CONNECTED) {
-            return CONNECTED_SHAPE.get(pState.getValue(FACING));
+        IntersectionShape type = pState.getValue(TYPE);
+        Direction facing = pState.getValue(FACING);
+        switch (type) {
+            case CONNECTED -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CONNECTED_SHAPE.get(facing);
+            }
+            case END -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.END_SHAPE.get(facing);
+            }
+            case INNER_LEFT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CORNER_SHAPE.get(facing);
+            }
+            case INNER_RIGHT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CORNER_SHAPE.get(facing.getCounterClockWise());
+            }
+            case OUTER_LEFT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CORNER_SHAPE.get(facing.getClockWise());
+            }
+            case OUTER_RIGHT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CORNER_SHAPE.get(facing.getOpposite());
+            }
+            case CROSS -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.CROSS_SHAPE;
+            }
+            case T -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.T_SHAPE.get(facing);
+            }
+            case T_LEFT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.T_SHAPE.get(facing.getClockWise());
+            }
+            case T_RIGHT -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.T_SHAPE.get(facing.getCounterClockWise());
+            }
+            case T_OPPOSITE -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.T_SHAPE.get(facing.getOpposite());
+            }
+            default -> {
+                return VoxelShapeHelper.BalustradeBlockShapes.SINGLE_SHAPE;
+            }
         }
-        return SINGLE_SHAPE.get(pState.getValue(FACING));
     }
 
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         BlockPos blockpos = pContext.getClickedPos();
-        Direction direction = pContext.getClickedFace();
-        if (direction.getAxis().isHorizontal()) {
-            FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
-            BlockState blockstate = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
-                    .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
+        BlockState blockstate = this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection())
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-            return blockstate.setValue(TYPE, BalustradeShape.CONNECTED);
-        } else {
-            return defaultBlockState();
-        }
+        return blockstate.setValue(TYPE, getBalustradeShape(blockstate, pContext.getLevel(), blockpos));
     }
 
-    // TODO: ADD UPDATE SHAPE METHOD FOR CONNECTED BLOCKS & CORNERS
+    @Override
+    public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+
+        // Update the shape first
+        if (pFacing.getAxis().isHorizontal()) {
+            BlockState front = pLevel.getBlockState(pCurrentPos.relative(pFacing));
+            BlockState back = pLevel.getBlockState(pCurrentPos.relative(pFacing.getOpposite()));
+            BlockState left = pLevel.getBlockState(pCurrentPos.relative(pFacing.getCounterClockWise()));
+            BlockState right = pLevel.getBlockState(pCurrentPos.relative(pFacing.getClockWise()));
+
+            // Get the capital shape
+            pState = pState.setValue(TYPE, getBalustradeShape(pState, pLevel, pCurrentPos));
+
+            // Handle END FACING direction
+            if (pState.getValue(TYPE) == IntersectionShape.END) {
+                if (!isBalustrade(back) && isBalustrade(front)) {
+                    pState = pState.setValue(FACING, pFacing.getOpposite());
+                } else if (!isBalustrade(front) && isBalustrade(back)) {
+                    pState = pState.setValue(FACING, pFacing);
+                } else if (!isBalustrade(left) && isBalustrade(right)) {
+                    pState = pState.setValue(FACING, pFacing.getCounterClockWise());
+                } else if (!isBalustrade(right) && isBalustrade(left)) {
+                    pState = pState.setValue(FACING, pFacing.getClockWise());
+                }
+            }
+        }
+
+        // Handling water logging
+        if (pState.getValue(WATERLOGGED)) {
+            pLevel.scheduleTick(pCurrentPos, Fluids.WATER, Fluids.WATER.getTickDelay(pLevel));
+        }
+
+        return pState;
+    }
+
+    private IntersectionShape getBalustradeShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        Direction facing = pState.getValue(FACING);
+        BlockState front = pLevel.getBlockState(pPos.relative(facing));
+        BlockState back = pLevel.getBlockState(pPos.relative(facing.getOpposite()));
+        BlockState left = pLevel.getBlockState(pPos.relative(facing.getCounterClockWise()));
+        BlockState right = pLevel.getBlockState(pPos.relative(facing.getClockWise()));
+
+        int connections = (isBalustrade(front) ? 1 : 0) + (isBalustrade(back) ? 1 : 0) + (isBalustrade(left) ? 1 : 0) + (isBalustrade(right) ? 1 : 0);
+
+        switch (connections) {
+            case 0:
+                return IntersectionShape.SINGLE;
+            case 1:
+                return IntersectionShape.END;
+            case 2:
+                if (isBalustrade(front) && isBalustrade(back)) {
+                    return IntersectionShape.CONNECTED;
+                }
+                if (isBalustrade(left) && isBalustrade(right)) {
+                    return IntersectionShape.CONNECTED;
+                }
+                if (isBalustrade(front) && isBalustrade(left)) {
+                    return IntersectionShape.OUTER_LEFT;
+                }
+                if (isBalustrade(front) && isBalustrade(right)) {
+                    return IntersectionShape.OUTER_RIGHT;
+                }
+                if (isBalustrade(back) && isBalustrade(left)) {
+                    return IntersectionShape.INNER_LEFT;
+                }
+                if (isBalustrade(back) && isBalustrade(right)) {
+                    return IntersectionShape.INNER_RIGHT;
+                }
+                break;
+            case 3:
+                if (!isBalustrade(front)) {
+                    return IntersectionShape.T;
+                } else if (!isBalustrade(back)) {
+                    return IntersectionShape.T_OPPOSITE;
+                } else if (!isBalustrade(left)) {
+                    return IntersectionShape.T_RIGHT;
+                } else {
+                    return IntersectionShape.T_LEFT;
+                }
+            case 4:
+                return IntersectionShape.CROSS;
+            default:
+                return IntersectionShape.END;
+        }
+        return IntersectionShape.END;
+    }
+
+
+    public static boolean isBalustrade(BlockState pState) {
+        return pState.getBlock() instanceof BalustradeBlock;
+    }
+
 
     @Override
     public FluidState getFluidState(BlockState pState) {

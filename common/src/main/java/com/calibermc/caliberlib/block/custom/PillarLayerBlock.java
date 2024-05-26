@@ -37,7 +37,6 @@ import static com.calibermc.caliberlib.util.ModBlockStateProperties.isSide;
 
 public class PillarLayerBlock extends Block implements SimpleWaterloggedBlock {
 
-    public static final EnumProperty<TopBottomShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;

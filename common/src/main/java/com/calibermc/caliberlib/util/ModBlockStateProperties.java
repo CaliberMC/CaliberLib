@@ -14,8 +14,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 public class ModBlockStateProperties {
     public static final EnumProperty<TopBottomShape> TOP_BOTTOM_SHAPE = EnumProperty.create("half", TopBottomShape.class);
 
-    public static final EnumProperty<ArchShape> ARCH_SHAPE = EnumProperty.create("type", ArchShape.class);
-    public static final EnumProperty<BalustradeShape> BALUSTRADE_SHAPE = EnumProperty.create("type", BalustradeShape.class);
     public static final EnumProperty<LargeArchShape> LARGE_ARCH_SHAPE = EnumProperty.create("type", LargeArchShape.class);
     public static final EnumProperty<LeftRightShape> LEFT_RIGHT_SHAPE = EnumProperty.create("type", LeftRightShape.class);
     public static final EnumProperty<LeftRightDoubleShape> LEFT_RIGHT_DOUBLE_SHAPE = EnumProperty.create("type", LeftRightDoubleShape.class);
@@ -40,6 +38,7 @@ public class ModBlockStateProperties {
     public static final EnumProperty<BeamConnection> BEAM_CONNECTION = EnumProperty.create("connect", BeamConnection.class);
 
     public static final BooleanProperty ARCH = BooleanProperty.create("arch");
+    public static final BooleanProperty GLAZED = BooleanProperty.create("glazed");
 
     public static boolean isVertical(Direction direction) {
         return direction == Direction.UP || direction == Direction.DOWN;

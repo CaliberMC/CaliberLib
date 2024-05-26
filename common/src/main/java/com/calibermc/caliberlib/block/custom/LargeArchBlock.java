@@ -66,6 +66,7 @@ public class LargeArchBlock extends Block implements SimpleWaterloggedBlock {
                     Block.box(0, 4.98438, 14, 16, 13.00001, 16),
                     Block.box(0, 4.98438, 0, 2, 13.00001, 16)
             ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
+
     public static final Map<Direction, VoxelShape> CORNER_RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
             NORTH, Stream.of(
                     Block.box(0, 13.00001, 0, 16, 16, 16),
@@ -87,11 +88,13 @@ public class LargeArchBlock extends Block implements SimpleWaterloggedBlock {
                     Block.box(0, 4.98438, 0, 2, 13.00001, 16),
                     Block.box(0, 4.98438, 0, 16, 13.00001, 2)
             ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
+
     public static final Map<Direction, VoxelShape> STRAIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
             NORTH, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 0, 16, 13.00001, 2), BooleanOp.OR),
             SOUTH, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 14, 16, 13.00001, 16), BooleanOp.OR),
             EAST, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(14, 4.98438, 0, 16, 13.00001, 16), BooleanOp.OR),
             WEST, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 0, 2, 13.00001, 16), BooleanOp.OR)));
+
     public static final VoxelShape SHAPE = Block.box(0, 13, 0, 16, 16, 16);
 
     public LargeArchBlock(Properties properties) {
