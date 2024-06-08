@@ -22,8 +22,8 @@ public class CaliberLibForge {
         // Submit our event bus to let architectury register our content at the right time
         FMLJavaModLoadingContext.get().getModEventBus().register(this);
         CaliberLib.init();
-        CaliberLibForge.genData();
     }
+
 
     public static void genData() {
         for (List<BlockManager> value : BlockManager.BLOCK_MANAGERS.values()) {
@@ -106,7 +106,7 @@ public class CaliberLibForge {
                                     addVariant(e.getKey(), (b) -> b.stateGen(ModBlockHelperForge.HANGING_SIGN));
                             case SLAB ->
                                     addVariant(e.getKey(), (b) -> b.stateGen(ModBlockHelperForge.SLAB.apply(blockSupplier)));
-                             case SLAB_VERTICAL ->
+                            case SLAB_VERTICAL ->
                                     addVariant(e.getKey(), (b) -> b.stateGen(ModBlockHelperForge.SLAB_VERTICAL.apply(blockSupplier)));
                             case TALL_DOOR ->
                                     addVariant(e.getKey(), (b) -> b.stateGen(ModBlockHelperForge.TALL_DOOR.apply(blockSupplier)));
@@ -131,8 +131,8 @@ public class CaliberLibForge {
             }
         }
     }
-    
-    
+
+
     public static void addVariant(BlockManager.BlockAdditional key, Consumer<AdditionalDataGenForge> forge) {
         BlockManager.DATA_GEN_MAP.put(key, (b) -> {
             if (b instanceof AdditionalDataGenForge f) {

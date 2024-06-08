@@ -35,12 +35,12 @@ dependencies {
     annotationProcessor 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
 
     //include(modImplementation("net.mehvahdjukaar:moonlight-forge:${rootProject.moonlight_version}"))
-    include(modImplementation("curse.maven:selene-499980:5310094"))
+    include(modImplementation("curse.maven:selene-499980:5370702"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    implementation 'org.jetbrains:annotations:22.0.0'
+    implementation 'org.jetbrains:annotations:24.1.0'
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']

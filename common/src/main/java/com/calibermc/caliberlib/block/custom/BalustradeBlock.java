@@ -1,6 +1,5 @@
 package com.calibermc.caliberlib.block.custom;
 
-
 import com.calibermc.caliberlib.block.shapes.IntersectionShape;
 import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
