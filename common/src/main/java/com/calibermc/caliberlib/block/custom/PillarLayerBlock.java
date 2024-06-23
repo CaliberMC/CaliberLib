@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,12 +33,7 @@ public class PillarLayerBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;
 
-    public static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{Shapes.empty(),
-            Block.box(7, 0, 7, 9, 16, 9),
-            Block.box(6, 0, 6, 10, 16, 10),
-            Block.box(4, 0, 4, 12, 16, 12),
-            Block.box(2, 0, 2, 14, 16, 14),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
+
 
     public PillarLayerBlock(Properties properties) {
         super(properties);
@@ -57,19 +53,19 @@ public class PillarLayerBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE_BY_LAYER[pState.getValue(LAYERS)];
+        return VoxelShapeHelper.PillarLayerBlockShapes.PILLAR_SHAPE[pState.getValue(LAYERS)];
     }
 
     public VoxelShape getCollisionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE_BY_LAYER[pState.getValue(LAYERS) - 1];
+        return VoxelShapeHelper.PillarLayerBlockShapes.PILLAR_SHAPE[pState.getValue(LAYERS) - 1];
     }
 
     public VoxelShape getBlockSupportShape(BlockState pState, BlockGetter pReader, BlockPos pPos) {
-        return SHAPE_BY_LAYER[pState.getValue(LAYERS)];
+        return VoxelShapeHelper.PillarLayerBlockShapes.PILLAR_SHAPE[pState.getValue(LAYERS)];
     }
 
     public VoxelShape getVisualShape(BlockState pState, BlockGetter pReader, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE_BY_LAYER[pState.getValue(LAYERS)];
+        return VoxelShapeHelper.PillarLayerBlockShapes.PILLAR_SHAPE[pState.getValue(LAYERS)];
     }
 
     @Nullable

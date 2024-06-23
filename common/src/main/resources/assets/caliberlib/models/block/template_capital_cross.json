@@ -1,5 +1,5 @@
 {
-  "parent": "caliberlib:block/templates/arch_trim_2",
+  "parent": "caliberlib:block/templates/capital_cross",
   "textures": {
     "bottom": "$texture",
     "side": "$texture",

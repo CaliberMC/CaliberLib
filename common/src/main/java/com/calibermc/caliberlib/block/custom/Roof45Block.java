@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.RoofShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -40,63 +41,6 @@ public class Roof45Block extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<RoofShape> TYPE = ModBlockStateProperties.ROOF_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final Map<Direction, VoxelShape> STRAIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 16, 16, 16), Block.box(0, 0, 0, 16, 8, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 16, 16, 8), Block.box(0, 0, 8, 16, 8, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 8, 16, 16), Block.box(8, 0, 0, 16, 8, 16), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 8, 8, 16), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> OUTER_LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR),
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> OUTER_RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 0, 16, 8, 16), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> INNER_LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 0, 8, 16, 16),
-                    Block.box(8, 8, 0, 16, 16, 8)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.NORTH, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(8, 8, 0, 16, 16, 16),
-                    Block.box(0, 8, 8, 8, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.WEST, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 0, 16, 16, 8),
-                    Block.box(8, 8, 8, 16, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.EAST, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 8, 16, 16, 16),
-                    Block.box(0, 8, 0, 8, 16, 8)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-    public static final Map<Direction, VoxelShape> INNER_RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.EAST, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 0, 8, 16, 16),
-                    Block.box(8, 8, 0, 16, 16, 8)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.WEST, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(8, 8, 0, 16, 16, 16),
-                    Block.box(0, 8, 8, 8, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 0, 16, 16, 8),
-                    Block.box(8, 8, 8, 16, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Direction.NORTH, Stream.of(
-                    Block.box(0, 0, 0, 16, 8, 16),
-                    Block.box(0, 8, 8, 16, 16, 16),
-                    Block.box(0, 8, 0, 8, 16, 8)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
 
     public Roof45Block(Properties properties) {
         super(properties);
@@ -104,6 +48,19 @@ public class Roof45Block extends Block implements SimpleWaterloggedBlock {
                 .setValue(FACING, Direction.NORTH)
                 .setValue(TYPE, RoofShape.STRAIGHT)
                 .setValue(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        Direction direction = pState.getValue(FACING);
+        RoofShape type = pState.getValue(TYPE);
+        return switch (type) {
+            case OUTER_LEFT -> VoxelShapeHelper.Roof45BlockShapes.OUTER_LEFT_SHAPE.get(direction);
+            case OUTER_RIGHT -> VoxelShapeHelper.Roof45BlockShapes.OUTER_RIGHT_SHAPE.get(direction);
+            case INNER_LEFT -> VoxelShapeHelper.Roof45BlockShapes.INNER_LEFT_SHAPE.get(direction);
+            case INNER_RIGHT -> VoxelShapeHelper.Roof45BlockShapes.INNER_RIGHT_SHAPE.get(direction);
+            case STRAIGHT -> VoxelShapeHelper.Roof45BlockShapes.STRAIGHT_SHAPE.get(direction);
+        };
     }
 
     private static RoofShape getRoofShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
@@ -138,19 +95,6 @@ public class Roof45Block extends Block implements SimpleWaterloggedBlock {
     private static boolean canTakeShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pFace) {
         BlockState blockstate = pLevel.getBlockState(pPos.relative(pFace));
         return !isRoof(blockstate) || blockstate.getValue(FACING) != pState.getValue(FACING);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Direction direction = pState.getValue(FACING);
-        RoofShape type = pState.getValue(TYPE);
-        return switch (type) {
-            case OUTER_LEFT -> OUTER_LEFT_SHAPE.get(direction);
-            case OUTER_RIGHT -> OUTER_RIGHT_SHAPE.get(direction);
-            case INNER_LEFT -> INNER_LEFT_SHAPE.get(direction);
-            case INNER_RIGHT -> INNER_RIGHT_SHAPE.get(direction);
-            case STRAIGHT -> STRAIGHT_SHAPE.get(direction);
-        };
     }
 
     @Override

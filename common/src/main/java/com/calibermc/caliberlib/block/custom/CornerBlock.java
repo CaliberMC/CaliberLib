@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.LeftRightShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -37,17 +38,6 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<LeftRightShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_SHAPE;
 
-    public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 16, 16, 16), Block.box(8, 0, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 16, 16, 8), Block.box(0, 0, 8, 8, 16, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 8, 16, 16), Block.box(8, 0, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 8, 16, 8), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 16, 16, 16), Block.box(0, 0, 0, 8, 16, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 16, 16, 8), Block.box(8, 0, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 8, 16, 16), Block.box(8, 0, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 0, 16, 16, 16), Block.box(0, 0, 8, 8, 16, 16), BooleanOp.OR)));
-
     public CornerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -70,9 +60,9 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         LeftRightShape cornerShape = pState.getValue(TYPE);
         if (cornerShape == LeftRightShape.LEFT) {
-            return LEFT_SHAPE.get(pState.getValue(FACING));
+            return VoxelShapeHelper.CornerBlockShapes.LEFT_SHAPE.get(pState.getValue(FACING));
         }
-        return RIGHT_SHAPE.get(pState.getValue(FACING));
+        return VoxelShapeHelper.CornerBlockShapes.RIGHT_SHAPE.get(pState.getValue(FACING));
     }
 
     @Override
@@ -86,13 +76,13 @@ public class CornerBlock extends Block implements SimpleWaterloggedBlock {
         BlockState blockstate = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                 .setValue(TYPE, LeftRightShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-        if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
+        if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
             return blockstate.setValue(TYPE, LeftRightShape.RIGHT);
-        } else if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
+        } else if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
             return blockstate.setValue(TYPE, LeftRightShape.LEFT);
-        } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
-            return blockstate.setValue(TYPE, LeftRightShape.RIGHT);
         } else if (direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) {
+            return blockstate.setValue(TYPE, LeftRightShape.RIGHT);
+        } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
             return blockstate.setValue(TYPE, LeftRightShape.LEFT);
         } else {
             return blockstate.setValue(TYPE, LeftRightShape.RIGHT);

@@ -1,409 +1,409 @@
 {
   "variants": {
-    "connect=connected,facing=east,type=bottom": {
+    "type=connected,facing=east,half=bottom": {
       "model": "$block_capital_connected",
       "uvlock": true,
       "y": 90
     },
-    "connect=connected,facing=east,type=top": {
+    "type=connected,facing=east,half=top": {
       "model": "$block_capital_top_connected",
       "uvlock": true,
       "y": 90
     },
-    "connect=connected,facing=north,type=bottom": {
+    "type=connected,facing=north,half=bottom": {
       "model": "$block_capital_connected"
     },
-    "connect=connected,facing=north,type=top": {
+    "type=connected,facing=north,half=top": {
       "model": "$block_capital_top_connected"
     },
-    "connect=connected,facing=south,type=bottom": {
+    "type=connected,facing=south,half=bottom": {
       "model": "$block_capital_connected",
       "uvlock": true,
       "y": 180
     },
-    "connect=connected,facing=south,type=top": {
+    "type=connected,facing=south,half=top": {
       "model": "$block_capital_top_connected",
       "uvlock": true,
       "y": 180
     },
-    "connect=connected,facing=west,type=bottom": {
+    "type=connected,facing=west,half=bottom": {
       "model": "$block_capital_connected",
       "uvlock": true,
       "y": 270
     },
-    "connect=connected,facing=west,type=top": {
+    "type=connected,facing=west,half=top": {
       "model": "$block_capital_top_connected",
       "uvlock": true,
       "y": 270
     },
-    "connect=cross,facing=east,type=bottom": {
+    "type=cross,facing=east,half=bottom": {
       "model": "$block_capital_cross"
     },
-    "connect=cross,facing=east,type=top": {
+    "type=cross,facing=east,half=top": {
       "model": "$block_capital_top_cross"
     },
-    "connect=cross,facing=north,type=bottom": {
+    "type=cross,facing=north,half=bottom": {
       "model": "$block_capital_cross"
     },
-    "connect=cross,facing=north,type=top": {
+    "type=cross,facing=north,half=top": {
       "model": "$block_capital_top_cross"
     },
-    "connect=cross,facing=south,type=bottom": {
+    "type=cross,facing=south,half=bottom": {
       "model": "$block_capital_cross"
     },
-    "connect=cross,facing=south,type=top": {
+    "type=cross,facing=south,half=top": {
       "model": "$block_capital_top_cross"
     },
-    "connect=cross,facing=west,type=bottom": {
+    "type=cross,facing=west,half=bottom": {
       "model": "$block_capital_cross"
     },
-    "connect=cross,facing=west,type=top": {
+    "type=cross,facing=west,half=top": {
       "model": "$block_capital_top_cross"
     },
-    "connect=end,facing=east,type=bottom": {
+    "type=end,facing=east,half=bottom": {
       "model": "$block_capital_end",
       "uvlock": true,
       "y": 90
     },
-    "connect=end,facing=east,type=top": {
+    "type=end,facing=east,half=top": {
       "model": "$block_capital_top_end",
       "uvlock": true,
       "y": 90
     },
-    "connect=end,facing=north,type=bottom": {
+    "type=end,facing=north,half=bottom": {
       "model": "$block_capital_end"
     },
-    "connect=end,facing=north,type=top": {
+    "type=end,facing=north,half=top": {
       "model": "$block_capital_top_end"
     },
-    "connect=end,facing=south,type=bottom": {
+    "type=end,facing=south,half=bottom": {
       "model": "$block_capital_end",
       "uvlock": true,
       "y": 180
     },
-    "connect=end,facing=south,type=top": {
+    "type=end,facing=south,half=top": {
       "model": "$block_capital_top_end",
       "uvlock": true,
       "y": 180
     },
-    "connect=end,facing=west,type=bottom": {
+    "type=end,facing=west,half=bottom": {
       "model": "$block_capital_end",
       "uvlock": true,
       "y": 270
     },
-    "connect=end,facing=west,type=top": {
+    "type=end,facing=west,half=top": {
       "model": "$block_capital_top_end",
       "uvlock": true,
       "y": 270
     },
-    "connect=inner_left,facing=east,type=bottom": {
+    "type=inner_left,facing=east,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=inner_left,facing=east,type=top": {
+    "type=inner_left,facing=east,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=inner_left,facing=north,type=bottom": {
+    "type=inner_left,facing=north,half=bottom": {
       "model": "$block_capital_corner"
     },
-    "connect=inner_left,facing=north,type=top": {
+    "type=inner_left,facing=north,half=top": {
       "model": "$block_capital_top_corner"
     },
-    "connect=inner_left,facing=south,type=bottom": {
+    "type=inner_left,facing=south,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=inner_left,facing=south,type=top": {
+    "type=inner_left,facing=south,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=inner_left,facing=west,type=bottom": {
+    "type=inner_left,facing=west,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=inner_left,facing=west,type=top": {
+    "type=inner_left,facing=west,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=inner_right,facing=east,type=bottom": {
+    "type=inner_right,facing=east,half=bottom": {
       "model": "$block_capital_corner"
     },
-    "connect=inner_right,facing=east,type=top": {
+    "type=inner_right,facing=east,half=top": {
       "model": "$block_capital_top_corner"
     },
-    "connect=inner_right,facing=north,type=bottom": {
+    "type=inner_right,facing=north,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=inner_right,facing=north,type=top": {
+    "type=inner_right,facing=north,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=inner_right,facing=south,type=bottom": {
+    "type=inner_right,facing=south,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=inner_right,facing=south,type=top": {
+    "type=inner_right,facing=south,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=inner_right,facing=west,type=bottom": {
+    "type=inner_right,facing=west,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=inner_right,facing=west,type=top": {
+    "type=inner_right,facing=west,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=outer_left,facing=east,type=bottom": {
+    "type=outer_left,facing=east,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=outer_left,facing=east,type=top": {
+    "type=outer_left,facing=east,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=outer_left,facing=north,type=bottom": {
+    "type=outer_left,facing=north,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=outer_left,facing=north,type=top": {
+    "type=outer_left,facing=north,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=outer_left,facing=south,type=bottom": {
+    "type=outer_left,facing=south,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=outer_left,facing=south,type=top": {
+    "type=outer_left,facing=south,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=outer_left,facing=west,type=bottom": {
+    "type=outer_left,facing=west,half=bottom": {
       "model": "$block_capital_corner"
     },
-    "connect=outer_left,facing=west,type=top": {
+    "type=outer_left,facing=west,half=top": {
       "model": "$block_capital_top_corner"
     },
-    "connect=outer_right,facing=east,type=bottom": {
+    "type=outer_right,facing=east,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=outer_right,facing=east,type=top": {
+    "type=outer_right,facing=east,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 270
     },
-    "connect=outer_right,facing=north,type=bottom": {
+    "type=outer_right,facing=north,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=outer_right,facing=north,type=top": {
+    "type=outer_right,facing=north,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 180
     },
-    "connect=outer_right,facing=south,type=bottom": {
+    "type=outer_right,facing=south,half=bottom": {
       "model": "$block_capital_corner"
     },
-    "connect=outer_right,facing=south,type=top": {
+    "type=outer_right,facing=south,half=top": {
       "model": "$block_capital_top_corner"
     },
-    "connect=outer_right,facing=west,type=bottom": {
+    "type=outer_right,facing=west,half=bottom": {
       "model": "$block_capital_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=outer_right,facing=west,type=top": {
+    "type=outer_right,facing=west,half=top": {
       "model": "$block_capital_top_corner",
       "uvlock": true,
       "y": 90
     },
-    "connect=single,facing=east,type=bottom": {
+    "type=single,facing=east,half=bottom": {
       "model": "$block_capital"
     },
-    "connect=single,facing=east,type=top": {
+    "type=single,facing=east,half=top": {
       "model": "$block_capital_top"
     },
-    "connect=single,facing=north,type=bottom": {
+    "type=single,facing=north,half=bottom": {
       "model": "$block_capital"
     },
-    "connect=single,facing=north,type=top": {
+    "type=single,facing=north,half=top": {
       "model": "$block_capital_top"
     },
-    "connect=single,facing=south,type=bottom": {
+    "type=single,facing=south,half=bottom": {
       "model": "$block_capital"
     },
-    "connect=single,facing=south,type=top": {
+    "type=single,facing=south,half=top": {
       "model": "$block_capital_top"
     },
-    "connect=single,facing=west,type=bottom": {
+    "type=single,facing=west,half=bottom": {
       "model": "$block_capital"
     },
-    "connect=single,facing=west,type=top": {
+    "type=single,facing=west,half=top": {
       "model": "$block_capital_top"
     },
-    "connect=t,facing=east,type=bottom": {
+    "type=t,facing=east,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t,facing=east,type=top": {
+    "type=t,facing=east,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t,facing=north,type=bottom": {
+    "type=t,facing=north,half=bottom": {
       "model": "$block_capital_t"
     },
-    "connect=t,facing=north,type=top": {
+    "type=t,facing=north,half=top": {
       "model": "$block_capital_top_t"
     },
-    "connect=t,facing=south,type=bottom": {
+    "type=t,facing=south,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t,facing=south,type=top": {
+    "type=t,facing=south,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t,facing=west,type=bottom": {
+    "type=t,facing=west,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t,facing=west,type=top": {
+    "type=t,facing=west,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_left,facing=east,type=bottom": {
+    "type=t_left,facing=east,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t_left,facing=east,type=top": {
+    "type=t_left,facing=east,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t_left,facing=north,type=bottom": {
+    "type=t_left,facing=north,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_left,facing=north,type=top": {
+    "type=t_left,facing=north,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_left,facing=south,type=bottom": {
+    "type=t_left,facing=south,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_left,facing=south,type=top": {
+    "type=t_left,facing=south,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_left,facing=west,type=bottom": {
+    "type=t_left,facing=west,half=bottom": {
       "model": "$block_capital_t"
     },
-    "connect=t_left,facing=west,type=top": {
+    "type=t_left,facing=west,half=top": {
       "model": "$block_capital_top_t"
     },
-    "connect=t_opposite,facing=east,type=bottom": {
+    "type=t_opposite,facing=east,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_opposite,facing=east,type=top": {
+    "type=t_opposite,facing=east,half=top": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_opposite,facing=north,type=bottom": {
+    "type=t_opposite,facing=north,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t_opposite,facing=north,type=top": {
+    "type=t_opposite,facing=north,half=top": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t_opposite,facing=south,type=bottom": {
+    "type=t_opposite,facing=south,half=bottom": {
       "model": "$block_capital_t"
     },
-    "connect=t_opposite,facing=south,type=top": {
+    "type=t_opposite,facing=south,half=top": {
       "model": "$block_capital_t"
     },
-    "connect=t_opposite,facing=west,type=bottom": {
+    "type=t_opposite,facing=west,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_opposite,facing=west,type=top": {
+    "type=t_opposite,facing=west,half=top": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_right,facing=east,type=bottom": {
+    "type=t_right,facing=east,half=bottom": {
       "model": "$block_capital_t"
     },
-    "connect=t_right,facing=east,type=top": {
+    "type=t_right,facing=east,half=top": {
       "model": "$block_capital_top_t"
     },
-    "connect=t_right,facing=north,type=bottom": {
+    "type=t_right,facing=north,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_right,facing=north,type=top": {
+    "type=t_right,facing=north,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 270
     },
-    "connect=t_right,facing=south,type=bottom": {
+    "type=t_right,facing=south,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_right,facing=south,type=top": {
+    "type=t_right,facing=south,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 90
     },
-    "connect=t_right,facing=west,type=bottom": {
+    "type=t_right,facing=west,half=bottom": {
       "model": "$block_capital_t",
       "uvlock": true,
       "y": 180
     },
-    "connect=t_right,facing=west,type=top": {
+    "type=t_right,facing=west,half=top": {
       "model": "$block_capital_top_t",
       "uvlock": true,
       "y": 180

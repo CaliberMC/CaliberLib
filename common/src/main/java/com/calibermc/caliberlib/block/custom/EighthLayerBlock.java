@@ -1,7 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
-
 import com.calibermc.caliberlib.block.shapes.QuadShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,55 +32,6 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<QuadShape> TYPE = ModBlockStateProperties.QUAD_SHAPE;
     public final int layerCount = 5;
-
-    public static final VoxelShape[] LEFT_NORTH_RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 14, 16, 2, 16),
-            Block.box(12, 0, 12, 16, 4, 16),
-            Block.box(8, 0, 8, 16, 8, 16),
-            Block.box(4, 0, 4, 16, 12, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_EAST_RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 14, 2, 2, 16),
-            Block.box(0, 0, 12, 4, 4, 16),
-            Block.box(0, 0, 8, 8, 8, 16),
-            Block.box(0, 0, 4, 12, 12, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_SOUTH_RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 2, 2, 2),
-            Block.box(0, 0, 0, 4, 4, 4),
-            Block.box(0, 0, 0, 8, 8, 8),
-            Block.box(0, 0, 0, 12, 12, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_WEST_RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 0, 16, 2, 2),
-            Block.box(12, 0, 0, 16, 4, 4),
-            Block.box(8, 0, 0, 16, 8, 8),
-            Block.box(4, 0, 0, 16, 12, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_NORTH_RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 14, 14, 16, 16, 16),
-            Block.box(12, 12, 12, 16, 16, 16),
-            Block.box(8, 8, 8, 16, 16, 16),
-            Block.box(4, 4, 4, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_EAST_RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 14, 2, 16, 16),
-            Block.box(0, 12, 12, 4, 16, 16),
-            Block.box(0, 8, 8, 8, 16, 16),
-            Block.box(0, 4, 4, 12, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_SOUTH_RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 0, 2, 16, 2),
-            Block.box(0, 12, 0, 4, 16, 4),
-            Block.box(0, 8, 0, 8, 16, 8),
-            Block.box(0, 4, 0, 12, 16, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_WEST_RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 14, 0, 16, 16, 2),
-            Block.box(12, 12, 0, 16, 16, 4),
-            Block.box(8, 8, 0, 16, 16, 8),
-            Block.box(4, 4, 0, 16, 16, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
 
     public EighthLayerBlock(Properties properties) {
         super(properties);
@@ -108,34 +58,34 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
         switch (cornerSlabShape) {
             case TOP_LEFT -> {
                 return switch (direction) {
-                    case EAST -> TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
                 };
             }
             case TOP_RIGHT -> {
                 return switch (direction) {
-                    case EAST -> TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.EightLayerBlockShapes.TOP_LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
             case LEFT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
                 };
             }
             default -> {
                 return switch (direction) {
-                    case EAST -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.EightLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
         }
@@ -153,7 +103,7 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
         double hitX = pContext.getClickLocation().x - (double) blockpos.getX();
         double hitZ = pContext.getClickLocation().z - (double) blockpos.getZ();
 
-        if (blockstate.is(this) && clickedFace != Direction.UP && clickedFace != Direction.DOWN) {
+        if (blockstate.is(this)) {
             int i = blockstate.getValue(LAYERS);
             int newCount = Math.min(layerCount, i + 1);
 
@@ -163,22 +113,22 @@ public class EighthLayerBlock extends Block implements SimpleWaterloggedBlock {
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                     .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
-            if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
+            if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
-            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
-            } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
             } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY > 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
+            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
+            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT).setValue(LAYERS, 1);
 
-            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
-            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
             } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY < 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
+                return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
             } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY > 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
+            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
+            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT).setValue(LAYERS, 1);
 
             } else {

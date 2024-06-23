@@ -1,0 +1,9 @@
+{
+  "variants": {
+    "type=single,facing=north": { "model": "$block_slab_vertical", "y": 0, "uvlock": true },
+    "type=single,facing=south": { "model": "$block_slab_vertical", "y": 180, "uvlock": true },
+    "type=single,facing=east": { "model": "$block_slab_vertical", "y": 90, "uvlock": true },
+    "type=single,facing=west": { "model": "$block_slab_vertical", "y": 270, "uvlock": true },
+    "type=double": { "model": "$block_base" }
+  }
+}

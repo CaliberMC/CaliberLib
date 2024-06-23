@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.LeftRightShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,31 +37,6 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;
 
-    public static final VoxelShape[] LEFT_NORTH_RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 0, 16, 16, 16), Block.box(0, 0, 14, 14, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 0, 16, 16, 16), Block.box(0, 0, 12, 12, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 0, 16, 16, 16), Block.box(0, 0, 8, 8, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 0, 16, 16, 16), Block.box(0, 0, 4, 4, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_EAST_RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 14, 16, 16, 16), Block.box(0, 0, 0, 2, 16, 14), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 12, 16, 16, 16), Block.box(0, 0, 0, 4, 16, 12), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 8, 16, 16, 16), Block.box(0, 0, 0, 8, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 4, 16, 16, 16), Block.box(0, 0, 0, 12, 16, 4), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_SOUTH_RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 2, 16, 16), Block.box(2, 0, 0, 16, 16, 2), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 4, 16, 16), Block.box(4, 0, 0, 16, 16, 4), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 8, 16, 16), Block.box(8, 0, 0, 16, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 12, 16, 16), Block.box(12, 0, 0, 16, 16, 12), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_WEST_RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 16, 16, 2), Block.box(14, 0, 2, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 16, 16, 4), Block.box(12, 0, 4, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 16, 16, 8), Block.box(8, 0, 8, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 16, 16, 12), Block.box(4, 0, 12, 16, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-
     public CornerLayerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -88,18 +64,18 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
         switch (cornerShape) {
             case LEFT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
                 };
             }
             case RIGHT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.CornerLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
         }
@@ -126,13 +102,13 @@ public class CornerLayerBlock extends Block implements SimpleWaterloggedBlock {
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                     .setValue(TYPE, LeftRightShape.RIGHT).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-            if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
+            if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
-            } else if (direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) {
+            } else if (direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.LEFT).setValue(LAYERS, 1);
-            } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
-                return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
             } else if (direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) {
+                return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
+            } else if (direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.LEFT).setValue(LAYERS, 1);
             } else {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);

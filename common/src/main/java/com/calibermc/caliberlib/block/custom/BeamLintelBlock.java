@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jetbrains.annotations.Nullable;
@@ -30,48 +30,6 @@ public class BeamLintelBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty BEAM = ModBlockStateProperties.LINTEL_SHAPE;
     public final int beamShape = 4;
 
-    public static final VoxelShape[] BOTTOM_SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(-5, 12, 14, 21, 16, 16),
-            Block.box(0, 12, 14, 21, 16, 16),
-            Block.box(-5, 12, 14, 16, 16, 16),
-            Block.box(0, 12, 14, 16, 16, 16)};
-    public static final VoxelShape[] BOTTOM_SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 12, -5, 2, 16, 21),
-            Block.box(0, 12, 0, 2, 16, 21),
-            Block.box(0, 12, -5, 2, 16, 16),
-            Block.box(0, 12, 0, 2, 16, 16)};
-    public static final VoxelShape[] BOTTOM_SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(-5, 12, 0, 21, 16, 2),
-            Block.box(-5, 12, 0, 16, 16, 2),
-            Block.box(0, 12, 0, 21, 16, 2),
-            Block.box(0, 12, 0, 16, 16, 2)};
-    public static final VoxelShape[] BOTTOM_SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 12, -5, 16, 16, 21),
-            Block.box(14, 12, -5, 16, 16, 16),
-            Block.box(14, 12, 0, 16, 16, 21),
-            Block.box(14, 12, 0, 16, 16, 16)};
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(-5, 0, 14, 21, 4, 16),
-            Block.box(-5, 0, 14, 16, 4, 16),
-            Block.box(0, 0, 14, 21, 4, 16),
-            Block.box(0, 0, 14, 16, 4, 16)};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, -5, 2, 4, 21),
-            Block.box(0, 0, -5, 2, 4, 16),
-            Block.box(0, 0, 0, 2, 4, 21),
-            Block.box(0, 0, 0, 2, 4, 16)};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(-5, 0, 0, 21, 4, 2),
-            Block.box(0, 0, 0, 21, 4, 2),
-            Block.box(-5, 0, 0, 16, 4, 2),
-            Block.box(0, 0, 0, 16, 4, 2)};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, -5, 16, 4, 21),
-            Block.box(14, 0, 0, 16, 4, 21),
-            Block.box(14, 0, -5, 16, 4, 16),
-            Block.box(14, 0, 0, 16, 4, 16)};
-
-
     public BeamLintelBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -79,7 +37,6 @@ public class BeamLintelBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(HALF, TopBottomShape.BOTTOM)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, Boolean.FALSE));
-
     }
 
     @Override
@@ -100,18 +57,18 @@ public class BeamLintelBlock extends Block implements SimpleWaterloggedBlock {
         switch (topBottomShape) {
             case TOP -> {
                 return switch (direction) {
-                    case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.BeamLintelBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.BeamLintelBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.BeamLintelBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.BeamLintelBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
             case BOTTOM -> {
                 return switch (direction) {
-                    case EAST -> BOTTOM_SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> BOTTOM_SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> BOTTOM_SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> BOTTOM_SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.BeamLintelBlockShapes.BOTTOM_SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.BeamLintelBlockShapes.BOTTOM_SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.BeamLintelBlockShapes.BOTTOM_SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.BeamLintelBlockShapes.BOTTOM_SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
         }

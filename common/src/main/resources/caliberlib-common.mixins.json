@@ -4,6 +4,7 @@
   "package": "com.calibermc.caliberlib.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ResourceLocationMixin",
     "WoodTypeMixin"
   ],
   "client": [

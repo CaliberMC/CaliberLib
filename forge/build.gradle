@@ -17,6 +17,14 @@ loom {
         mixinConfig "caliberlib-common.mixins.json"
         mixinConfig "caliberlib.mixins.json"
     }
+    runs {
+        create("data") {
+            data()
+            programArgs("--all", "--mod", "caliberlib")
+            programArgs("--output", project(":common").file("src/main/generated/resources").absolutePath)
+            programArgs("--existing", project(":common").file("src/main/resources").absolutePath)
+        }
+    }
 }
 
 configurations {
@@ -39,8 +47,6 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
-
-    implementation 'org.jetbrains:annotations:24.1.0'
 }
 
 def resourceTargets = ['META-INF/mods.toml', 'pack.mcmeta']

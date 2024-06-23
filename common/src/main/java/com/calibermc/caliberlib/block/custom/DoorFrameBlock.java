@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,31 +37,12 @@ public class DoorFrameBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty BEAM = ModBlockStateProperties.FRAME_SHAPE;
     public final int beamShape = 3;
 
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(16, 0, 14, 19, 16, 16), Block.box(-3, 0, 14, 0, 16, 16), BooleanOp.OR),
-            Block.box(-3, 0, 14, 0, 16, 16),
-            Block.box(16, 0, 14, 19, 16, 16)};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 16, 2, 16, 19), Block.box(0, 0, -3, 2, 16, 0), BooleanOp.OR),
-            Block.box(0, 0, -3, 2, 16, 0),
-            Block.box(0, 0, 16, 2, 16, 19)};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(-3, 0, 0, 0, 16, 2), Block.box(16, 0, 0, 19, 16, 2), BooleanOp.OR),
-            Block.box(16, 0, 0, 19, 16, 2),
-            Block.box(-3, 0, 0, 0, 16, 2)};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, -3, 16, 16, 0), Block.box(14, 0, 16, 16, 16, 19), BooleanOp.OR),
-            Block.box(14, 0, 16, 16, 16, 19),
-            Block.box(14, 0, -3, 16, 16, 0)};
-
-
     public DoorFrameBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(BEAM, 1)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, Boolean.FALSE));
-
     }
 
     @Override
@@ -78,13 +60,13 @@ public class DoorFrameBlock extends Block implements SimpleWaterloggedBlock {
         Direction direction = pState.getValue(FACING);
         switch (direction) {
             case EAST:
-                return SHAPE_EAST[pState.getValue(BEAM)];
+                return VoxelShapeHelper.DoorFrameBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
             case SOUTH:
-                return SHAPE_SOUTH[pState.getValue(BEAM)];
+                return VoxelShapeHelper.DoorFrameBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
             case WEST:
-                return SHAPE_WEST[pState.getValue(BEAM)];
+                return VoxelShapeHelper.DoorFrameBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
             default:
-                return SHAPE_NORTH[pState.getValue(BEAM)];
+                return VoxelShapeHelper.DoorFrameBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
         }
     }
 

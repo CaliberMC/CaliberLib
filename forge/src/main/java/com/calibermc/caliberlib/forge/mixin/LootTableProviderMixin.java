@@ -1,7 +1,7 @@
 package com.calibermc.caliberlib.forge.mixin;
 
-import com.calibermc.caliberlib.forge.util.DataGenUtil;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraftforge.data.loading.DatagenModLoader;
 import org.joml.Random;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ public class LootTableProviderMixin {
 
     @Inject(at = @At("TAIL"), method = "getName", cancellable = true)
     private void patch$getName(CallbackInfoReturnable<String> cir) {
-        if (DataGenUtil.isDataGen) {
+        if (DatagenModLoader.isRunningDataGen()) {
             cir.setReturnValue(cir.getReturnValue() + " " + Random.newSeed());
         }
     }

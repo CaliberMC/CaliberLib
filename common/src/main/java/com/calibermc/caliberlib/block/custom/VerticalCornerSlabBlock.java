@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.QuadShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -39,28 +40,6 @@ public class VerticalCornerSlabBlock extends Block implements SimpleWaterloggedB
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<QuadShape> TYPE = ModBlockStateProperties.QUAD_SHAPE;
-    
-    public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(8, 0, 0, 16, 8, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(0, 0, 8, 8, 8, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(8, 0, 8, 16, 8, 16), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(0, 0, 0, 8, 8, 8), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(0, 0, 0, 8, 8, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(8, 0, 8, 16, 8, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(8, 0, 0, 16, 8, 8), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(0, 0, 8, 8, 8, 16), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> TOP_LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR)));
-    public static final Map<Direction, VoxelShape> TOP_RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR),
-            Direction.SOUTH, Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Direction.EAST, Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Direction.WEST, Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR)));
-
 
     public VerticalCornerSlabBlock(Properties properties) {
         super(properties);
@@ -85,16 +64,16 @@ public class VerticalCornerSlabBlock extends Block implements SimpleWaterloggedB
         QuadShape verticalCornerSlabShape = pState.getValue(TYPE);
         switch (verticalCornerSlabShape) {
             case TOP_LEFT -> {
-                return TOP_LEFT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalCornerSlabBlockShapes.TOP_LEFT_SHAPE.get(pState.getValue(FACING));
             }
             case TOP_RIGHT -> {
-                return TOP_RIGHT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalCornerSlabBlockShapes.TOP_RIGHT_SHAPE.get(pState.getValue(FACING));
             }
             case LEFT -> {
-                return LEFT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalCornerSlabBlockShapes.LEFT_SHAPE.get(pState.getValue(FACING));
             }
             default -> {
-                return RIGHT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalCornerSlabBlockShapes.RIGHT_SHAPE.get(pState.getValue(FACING));
             }
         }
     }
@@ -113,21 +92,21 @@ public class VerticalCornerSlabBlock extends Block implements SimpleWaterloggedB
         BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 
-        if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
+        if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
             return blockstate1.setValue(TYPE, QuadShape.RIGHT);
-        } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
+        } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
             return blockstate1.setValue(TYPE, QuadShape.LEFT);
-        } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
-            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY < 0.5) {
+            return blockstate1.setValue(TYPE, QuadShape.RIGHT);
+        } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
             return blockstate1.setValue(TYPE, QuadShape.LEFT);
-        } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
         } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY > 0.5) {
-            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
-        } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
             return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
+        } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
+            return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
         } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY > 0.5) {
+            return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT);
+        } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
             return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT);
         } else {
             return blockstate1.setValue(TYPE, QuadShape.RIGHT);

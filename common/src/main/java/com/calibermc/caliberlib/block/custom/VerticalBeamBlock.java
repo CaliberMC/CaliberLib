@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,47 +37,12 @@ public class VerticalBeamBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty BEAM = ModBlockStateProperties.VERTICAL_BEAM_SHAPE;
     public final int beamShape = 7;
 
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 0, 12, 11, 16, 16),
-            Shapes.join(Block.box(5, 0, 12, 11, 16, 16), Block.box(5, 12, 0, 11, 16, 12), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 12, 11, 16, 16), Block.box(5, 12, 0, 11, 16, 12), BooleanOp.OR),
-            Block.box(5, 0, 12, 11, 16, 16),
-            Block.box(5, 0, 12, 11, 16, 16),
-            Shapes.join(Block.box(5, 0, 12, 11, 16, 16), Block.box(5, 0, 0, 11, 4, 12), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 12, 11, 16, 16), Block.box(5, 0, 0, 11, 4, 12), BooleanOp.OR)};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 5, 4, 16, 11),
-            Shapes.join(Block.box(0, 0, 5, 4, 16, 11), Block.box(4, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 4, 16, 11), Block.box(4, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Block.box(0, 0, 5, 4, 16, 11),
-            Block.box(0, 0, 5, 4, 16, 11),
-            Shapes.join(Block.box(0, 0, 5, 4, 16, 11), Block.box(4, 0, 5, 16, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 4, 16, 11), Block.box(4, 0, 5, 16, 4, 11), BooleanOp.OR)};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 0, 0, 11, 16, 4),
-            Shapes.join(Block.box(5, 0, 0, 11, 16, 4), Block.box(5, 12, 4, 11, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 16, 4), Block.box(5, 12, 4, 11, 16, 16), BooleanOp.OR),
-            Block.box(5, 0, 0, 11, 16, 4),
-            Block.box(5, 0, 0, 11, 16, 4),
-            Shapes.join(Block.box(5, 0, 0, 11, 16, 4), Block.box(5, 0, 4, 11, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 16, 4), Block.box(5, 0, 4, 11, 4, 16), BooleanOp.OR)};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(12, 0, 5, 16, 16, 11),
-            Shapes.join(Block.box(12, 0, 5, 16, 16, 11), Block.box(0, 12, 5, 12, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 5, 16, 16, 11), Block.box(0, 12, 5, 12, 16, 11), BooleanOp.OR),
-            Block.box(12, 0, 5, 16, 16, 11),
-            Block.box(12, 0, 5, 16, 16, 11),
-            Shapes.join(Block.box(12, 0, 5, 16, 16, 11), Block.box(0, 0, 5, 12, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 5, 16, 16, 11), Block.box(0, 0, 5, 12, 4, 11), BooleanOp.OR)};
-
-
     public VerticalBeamBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(BEAM, 1)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, Boolean.FALSE));
-
     }
 
     @Override
@@ -93,10 +59,10 @@ public class VerticalBeamBlock extends Block implements SimpleWaterloggedBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return switch (direction) {
-            case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-            case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-            case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-            default -> SHAPE_NORTH[pState.getValue(BEAM)];
+            case EAST -> VoxelShapeHelper.VerticalBeamBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
+            case SOUTH -> VoxelShapeHelper.VerticalBeamBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
+            case WEST -> VoxelShapeHelper.VerticalBeamBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
+            default -> VoxelShapeHelper.VerticalBeamBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
         };
     }
 

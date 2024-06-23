@@ -1,167 +1,214 @@
 {
   "variants": {
-    "facing=east,trim=both,type=straight": {
-      "model": "$block_arch_trim_2",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=east,trim=front,type=straight": {
-      "model": "$block_arch_trim",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=east,trim=none,type=straight": {
-      "model": "$block_arch",
-      "uvlock": true,
-      "y": 90
-    },
-    "facing=east,type=corner_left": {
-      "model": "$block_arch_corner"
-    },
-    "facing=east,type=corner_right": {
-      "model": "$block_arch_corner",
+    "facing=east,type=connected": {
+      "model": "$block_arch_connected",
       "uvlock": true,
       "y": 90
     },
     "facing=east,type=cross": {
-      "model": "$block_arch_cross",
+      "model": "$block_arch_cross"
+    },
+    "facing=east,type=end": {
+      "model": "$block_arch_end",
       "uvlock": true,
       "y": 90
     },
-    "facing=east,type=left_t": {
-      "model": "$block_arch_t",
+    "facing=east,type=inner_left": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=east,type=inner_right": {
+      "model": "$block_arch_corner"
+    },
+    "facing=east,type=outer_left": {
+      "model": "$block_arch_corner",
       "uvlock": true,
       "y": 180
     },
-    "facing=east,type=right_t": {
-      "model": "$block_arch_t"
+    "facing=east,type=outer_right": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=east,type=single": {
+      "model": "$block_arch",
+      "uvlock": true,
+      "y": 90
     },
     "facing=east,type=t": {
       "model": "$block_arch_t",
       "uvlock": true,
       "y": 90
     },
-    "facing=north,trim=both,type=straight": {
-      "model": "$block_arch_trim_2"
+    "facing=east,type=t_left": {
+      "model": "$block_arch_t",
+      "uvlock": true,
+      "y": 180
     },
-    "facing=north,trim=front,type=straight": {
-      "model": "$block_arch_trim"
-    },
-    "facing=north,trim=none,type=straight": {
-      "model": "$block_arch"
-    },
-    "facing=north,type=corner_left": {
-      "model": "$block_arch_corner",
+    "facing=east,type=t_opposite": {
+      "model": "$block_arch_t",
       "uvlock": true,
       "y": 270
     },
-    "facing=north,type=corner_right": {
-      "model": "$block_arch_corner",
-      "uvlock": true
+    "facing=east,type=t_right": {
+      "model": "$block_arch_t"
+    },
+    "facing=north,type=connected": {
+      "model": "$block_arch_connected"
     },
     "facing=north,type=cross": {
       "model": "$block_arch_cross"
     },
-    "facing=north,type=left_t": {
-      "model": "$block_arch_t",
+    "facing=north,type=end": {
+      "model": "$block_arch_end"
+    },
+    "facing=north,type=inner_left": {
+      "model": "$block_arch_corner"
+    },
+    "facing=north,type=inner_right": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=north,type=outer_left": {
+      "model": "$block_arch_corner",
       "uvlock": true,
       "y": 90
     },
-    "facing=north,type=right_t": {
-      "model": "$block_arch_t",
+    "facing=north,type=outer_right": {
+      "model": "$block_arch_corner",
       "uvlock": true,
-      "y": 270
+      "y": 180
+    },
+    "facing=north,type=single": {
+      "model": "$block_arch"
     },
     "facing=north,type=t": {
       "model": "$block_arch_t"
     },
-    "facing=south,trim=both,type=straight": {
-      "model": "$block_arch_trim_2",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=south,trim=front,type=straight": {
-      "model": "$block_arch_trim",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=south,trim=none,type=straight": {
-      "model": "$block_arch",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=south,type=corner_left": {
-      "model": "$block_arch_corner",
+    "facing=north,type=t_left": {
+      "model": "$block_arch_t",
       "uvlock": true,
       "y": 90
     },
-    "facing=south,type=corner_right": {
-      "model": "$block_arch_corner",
+    "facing=north,type=t_opposite": {
+      "model": "$block_arch_t",
       "uvlock": true,
       "y": 180
     },
-    "facing=south,type=cross": {
-      "model": "$block_arch_cross",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=south,type=left_t": {
+    "facing=north,type=t_right": {
       "model": "$block_arch_t",
       "uvlock": true,
       "y": 270
     },
-    "facing=south,type=right_t": {
-      "model": "$block_arch_t",
+    "facing=south,type=connected": {
+      "model": "$block_arch_connected",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,type=cross": {
+      "model": "$block_arch_cross"
+    },
+    "facing=south,type=end": {
+      "model": "$block_arch_end",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,type=inner_left": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 180
+    },
+    "facing=south,type=inner_right": {
+      "model": "$block_arch_corner",
       "uvlock": true,
       "y": 90
+    },
+    "facing=south,type=outer_left": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "facing=south,type=outer_right": {
+      "model": "$block_arch_corner"
+    },
+    "facing=south,type=single": {
+      "model": "$block_arch",
+      "uvlock": true,
+      "y": 180
     },
     "facing=south,type=t": {
       "model": "$block_arch_t",
       "uvlock": true,
       "y": 180
     },
-    "facing=west,trim=both,type=straight": {
-      "model": "$block_arch_trim_2",
+    "facing=south,type=t_left": {
+      "model": "$block_arch_t",
       "uvlock": true,
       "y": 270
     },
-    "facing=west,trim=front,type=straight": {
-      "model": "$block_arch_trim",
-      "uvlock": true,
-      "y": 270
+    "facing=south,type=t_opposite": {
+      "model": "$block_arch_t"
     },
-    "facing=west,trim=none,type=straight": {
-      "model": "$block_arch",
+    "facing=south,type=t_right": {
+      "model": "$block_arch_t",
       "uvlock": true,
-      "y": 270
+      "y": 90
     },
-    "facing=west,type=corner_left": {
-      "model": "$block_arch_corner",
-      "uvlock": true,
-      "y": 180
-    },
-    "facing=west,type=corner_right": {
-      "model": "$block_arch_corner",
+    "facing=west,type=connected": {
+      "model": "$block_arch_connected",
       "uvlock": true,
       "y": 270
     },
     "facing=west,type=cross": {
-      "model": "$block_arch_cross",
+      "model": "$block_arch_cross"
+    },
+    "facing=west,type=end": {
+      "model": "$block_arch_end",
       "uvlock": true,
       "y": 270
     },
-    "facing=west,type=left_t": {
-      "model": "$block_arch_t"
+    "facing=west,type=inner_left": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 270
     },
-    "facing=west,type=right_t": {
-      "model": "$block_arch_t",
+    "facing=west,type=inner_right": {
+      "model": "$block_arch_corner",
       "uvlock": true,
       "y": 180
+    },
+    "facing=west,type=outer_left": {
+      "model": "$block_arch_corner"
+    },
+    "facing=west,type=outer_right": {
+      "model": "$block_arch_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,type=single": {
+      "model": "$block_arch",
+      "uvlock": true,
+      "y": 270
     },
     "facing=west,type=t": {
       "model": "$block_arch_t",
       "uvlock": true,
       "y": 270
+    },
+    "facing=west,type=t_left": {
+      "model": "$block_arch_t"
+    },
+    "facing=west,type=t_opposite": {
+      "model": "$block_arch_t",
+      "uvlock": true,
+      "y": 90
+    },
+    "facing=west,type=t_right": {
+      "model": "$block_arch_t",
+      "uvlock": true,
+      "y": 180
     }
   }
 }

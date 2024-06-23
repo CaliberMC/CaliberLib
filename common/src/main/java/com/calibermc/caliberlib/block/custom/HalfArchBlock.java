@@ -1,6 +1,8 @@
 package com.calibermc.caliberlib.block.custom;
 
 
+import com.calibermc.caliberlib.block.shapes.WindowShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
@@ -35,12 +37,6 @@ public class HalfArchBlock extends Block implements SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Block.box(0, 8, 8, 16, 16, 16),
-            SOUTH, Block.box(0, 8, 0, 16, 16, 8),
-            EAST, Block.box(0, 8, 0, 8, 16, 16),
-            WEST, Block.box(8, 8, 0, 16, 16, 16)));
-
     public HalfArchBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -60,27 +56,17 @@ public class HalfArchBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE.get(pState.getValue(FACING));
+        return VoxelShapeHelper.HalfArchBlockShapes.HALF_ARCH_SHAPE.get(pState.getValue(FACING));
     }
 
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        BlockState blockstate = this.defaultBlockState();
-        FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
-        LevelReader levelreader = pContext.getLevel();
         BlockPos blockpos = pContext.getClickedPos();
-        Direction[] adirection = pContext.getNearestLookingDirections();
-
-        for (Direction direction : adirection) {
-            if (direction.getAxis().isHorizontal()) {
-                blockstate = blockstate.setValue(FACING, direction);
-                if (blockstate.canSurvive(levelreader, blockpos)) {
-                    return blockstate.setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
-                }
-            }
-        }
-        return null;
+        FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
+        return this.defaultBlockState()
+                .setValue(FACING, pContext.getHorizontalDirection())
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
     @Override

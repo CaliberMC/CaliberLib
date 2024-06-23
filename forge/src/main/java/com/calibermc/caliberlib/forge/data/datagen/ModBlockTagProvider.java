@@ -88,7 +88,6 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                 }
 
                 if (variant.equals(ModBlockFamily.Variant.ARCH)) {
-                    this.tag(ModTags.Blocks.ARCHES).addOptional(new ResourceLocation(modid, e.getValue().getFirst().getPath()));
                     if (namespace != null && namespace.getNamespace().equals("caliber")) {
                         this.tag(ModTags.Blocks.ARCHES).add(e.getValue().getSecond().get());
                     } else {
@@ -550,103 +549,101 @@ public class ModBlockTagProvider extends BlockTagsProvider {
                         }
                     }
                 }
-
-
             }
         }
 
-        // BLOCKS NOT REGISTERED WITH BLOCK MANAGER
-        ForgeRegistries.BLOCKS.getValues().stream()
-                .filter(block -> {
-                    ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
-                    return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
-                            && registryName != null && registryName.getNamespace().equals(this.modId);
-                })
-                .forEach(block -> {
-                    String blockName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
-
-                    if (blockName.contains("andesite") || blockName.contains("basalt") || blockName.contains("blackstone")
-                            || blockName.contains("brick") || blockName.contains("calcite") || blockName.contains("diorite")
-                            || blockName.contains("dripstone") || blockName.contains("end_stone") || blockName.contains("granite")
-                            || blockName.contains("limestone") || blockName.contains("marble") || blockName.contains("netherite")
-                            || blockName.contains("obsidian") || blockName.contains("prismarine") || blockName.contains("purpur")
-                            || blockName.contains("quartz") || blockName.contains("sandstone") || blockName.contains("stone")
-                            || blockName.contains("tuff") || blockName.contains("terracotta") || blockName.contains("warped")) {
-                        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
-                    }
-
-                    if (blockName.contains("acacia") || blockName.contains("bamboo") || blockName.contains("birch")
-                            || blockName.contains("cedar") || blockName.contains("cherry") || blockName.contains("crimson")
-                            || blockName.contains("dark_oak") || blockName.contains("fir") || blockName.contains("jungle")
-                            || blockName.contains("mangrove") || blockName.contains("maple") || blockName.contains("oak")
-                            || blockName.contains("pine") || blockName.contains("spruce") || blockName.contains("warped")
-                            || blockName.contains("willow") || blockName.contains("wool")) {
-                        this.tag(BlockTags.MINEABLE_WITH_AXE).add(block);
-                    }
-
-                    if (blockName.contains("clay") || blockName.contains("dirt") || blockName.contains("gravel")
-                            || blockName.contains("mycelium") || blockName.contains("nylium") || blockName.contains("podzol")
-                            || blockName.contains("sand") || blockName.contains("soil")) {
-                        this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block);
-                    }
-
-                    if (blockName.contains("leaves") || blockName.contains("thatch")) {
-                        this.tag(BlockTags.MINEABLE_WITH_HOE).add(block);
-                    }
-
-                    if (blockName.contains("block")) {
-                        if (blockName.contains("bronze") || blockName.contains("silver") || blockName.contains("tin")) {
-                            this.tag(Tags.Blocks.STORAGE_BLOCKS).add(block);
-                        }
-                    }
-
-                    if (blockName.contains("cobbled")) {
-                        this.tag(Tags.Blocks.COBBLESTONE).add(block);
-                        if (blockName.contains("mossy")) {
-                            this.tag(Tags.Blocks.COBBLESTONE_MOSSY).add(block);
-                        } else if (blockName.contains("deeplslate")) {
-                            this.tag(Tags.Blocks.COBBLESTONE_DEEPSLATE).add(block);
-                        } else if (blockName.contains("infested")) {
-                            this.tag(Tags.Blocks.COBBLESTONE_INFESTED).add(block);
-                        } else {
-                            this.tag(Tags.Blocks.COBBLESTONE_NORMAL).add(block);
-                        }
-                    }
-
-                    if (blockName.contains("leaves")) {
-                        this.tag(BlockTags.LEAVES).add(block);
-                    }
-
-                    if (blockName.contains("log") || (blockName.contains("wood") && !blockName.contains("woodcutter"))) {
-                        this.tag(BlockTags.LOGS_THAT_BURN).add(block);
-                        if (!blockName.contains("stripped") && !blockName.contains("wood")) {
-                            this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(block);
-                        }
-                    }
-
-                    if (blockName.contains("sapling")) {
-                        this.tag(BlockTags.SAPLINGS)
-                                .add(block);
-                    }
-
-                    if (blockName.contains("sand") && !blockName.contains("stone")) {
-                        this.tag(BlockTags.SAND).add(block);
-                        this.tag(BlockTags.SMELTS_TO_GLASS).add(block);
-                        this.tag(Tags.Blocks.SAND).add(block);
-                    }
-
-                    if (blockName.contains("ore")) {
-                        this.tag(Tags.Blocks.ORES).add(block);
-                        if (blockName.contains("deepslate")) {
-                            this.tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
-                        } else if (blockName.contains("nether")) {
-                            this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
-                        } else {
-                            this.tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
-                        }
-                        this.tag(BlockTags.SNAPS_GOAT_HORN).add(block);
-                    }
-                });
+//        // BLOCKS NOT REGISTERED WITH BLOCK MANAGER
+//        ForgeRegistries.BLOCKS.getValues().stream()
+//                .filter(block -> {
+//                    ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
+//                    return BlockManager.ALL_BLOCKS.stream().map(Supplier::get).noneMatch(b -> b.equals(block))
+//                            && registryName != null && registryName.getNamespace().equals(this.modId);
+//                })
+//                .forEach(block -> {
+//                    String blockName = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
+//
+//                    if (blockName.contains("andesite") || blockName.contains("basalt") || blockName.contains("blackstone")
+//                            || blockName.contains("brick") || blockName.contains("calcite") || blockName.contains("diorite")
+//                            || blockName.contains("dripstone") || blockName.contains("end_stone") || blockName.contains("granite")
+//                            || blockName.contains("limestone") || blockName.contains("marble") || blockName.contains("netherite")
+//                            || blockName.contains("obsidian") || blockName.contains("prismarine") || blockName.contains("purpur")
+//                            || blockName.contains("quartz") || blockName.contains("sandstone") || blockName.contains("stone")
+//                            || blockName.contains("tuff") || blockName.contains("terracotta") || blockName.contains("warped")) {
+//                        this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block);
+//                    }
+//
+//                    if (blockName.contains("acacia") || blockName.contains("bamboo") || blockName.contains("birch")
+//                            || blockName.contains("cedar") || blockName.contains("cherry") || blockName.contains("crimson")
+//                            || blockName.contains("dark_oak") || blockName.contains("fir") || blockName.contains("jungle")
+//                            || blockName.contains("mangrove") || blockName.contains("maple") || blockName.contains("oak")
+//                            || blockName.contains("pine") || blockName.contains("spruce") || blockName.contains("warped")
+//                            || blockName.contains("willow") || blockName.contains("wool")) {
+//                        this.tag(BlockTags.MINEABLE_WITH_AXE).add(block);
+//                    }
+//
+//                    if (blockName.contains("clay") || blockName.contains("dirt") || blockName.contains("gravel")
+//                            || blockName.contains("mycelium") || blockName.contains("nylium") || blockName.contains("podzol")
+//                            || blockName.contains("sand") || blockName.contains("soil")) {
+//                        this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block);
+//                    }
+//
+//                    if (blockName.contains("leaves") || blockName.contains("thatch")) {
+//                        this.tag(BlockTags.MINEABLE_WITH_HOE).add(block);
+//                    }
+//
+//                    if (blockName.contains("block")) {
+//                        if (blockName.contains("bronze") || blockName.contains("silver") || blockName.contains("tin")) {
+//                            this.tag(Tags.Blocks.STORAGE_BLOCKS).add(block);
+//                        }
+//                    }
+//
+//                    if (blockName.contains("cobbled")) {
+//                        this.tag(Tags.Blocks.COBBLESTONE).add(block);
+//                        if (blockName.contains("mossy")) {
+//                            this.tag(Tags.Blocks.COBBLESTONE_MOSSY).add(block);
+//                        } else if (blockName.contains("deeplslate")) {
+//                            this.tag(Tags.Blocks.COBBLESTONE_DEEPSLATE).add(block);
+//                        } else if (blockName.contains("infested")) {
+//                            this.tag(Tags.Blocks.COBBLESTONE_INFESTED).add(block);
+//                        } else {
+//                            this.tag(Tags.Blocks.COBBLESTONE_NORMAL).add(block);
+//                        }
+//                    }
+//
+//                    if (blockName.contains("leaves")) {
+//                        this.tag(BlockTags.LEAVES).add(block);
+//                    }
+//
+//                    if (blockName.contains("log") || (blockName.contains("wood") && !blockName.contains("woodcutter"))) {
+//                        this.tag(BlockTags.LOGS_THAT_BURN).add(block);
+//                        if (!blockName.contains("stripped") && !blockName.contains("wood")) {
+//                            this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(block);
+//                        }
+//                    }
+//
+//                    if (blockName.contains("sapling")) {
+//                        this.tag(BlockTags.SAPLINGS)
+//                                .add(block);
+//                    }
+//
+//                    if (blockName.contains("sand") && !blockName.contains("stone")) {
+//                        this.tag(BlockTags.SAND).add(block);
+//                        this.tag(BlockTags.SMELTS_TO_GLASS).add(block);
+//                        this.tag(Tags.Blocks.SAND).add(block);
+//                    }
+//
+//                    if (blockName.contains("ore")) {
+//                        this.tag(Tags.Blocks.ORES).add(block);
+//                        if (blockName.contains("deepslate")) {
+//                            this.tag(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE).add(block);
+//                        } else if (blockName.contains("nether")) {
+//                            this.tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(block);
+//                        } else {
+//                            this.tag(Tags.Blocks.ORES_IN_GROUND_STONE).add(block);
+//                        }
+//                        this.tag(BlockTags.SNAPS_GOAT_HORN).add(block);
+//                    }
+//                });
 
     }
 }

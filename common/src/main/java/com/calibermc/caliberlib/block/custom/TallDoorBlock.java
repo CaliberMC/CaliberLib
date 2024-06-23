@@ -38,6 +38,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper.TallDoorBlockShapes.*;
+
 public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
 
     public static final EnumProperty<TallDoorPart> THIRD = ModBlockStateProperties.TALL_DOOR_PART;
@@ -46,11 +48,6 @@ public class TallDoorBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<DoorHingeSide> HINGE = BlockStateProperties.DOOR_HINGE;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-
-    protected static final VoxelShape SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
-    protected static final VoxelShape NORTH_AABB = Block.box(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
-    protected static final VoxelShape WEST_AABB = Block.box(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    protected static final VoxelShape EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 
     private final BlockSetType type;
 

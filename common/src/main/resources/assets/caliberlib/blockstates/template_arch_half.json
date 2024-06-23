@@ -7,10 +7,10 @@
     },
     "facing=north": {
       "model": "$block_arch_half"
+
     },
     "facing=south": {
       "model": "$block_arch_half",
-      "uvlock": true,
       "y": 180
     },
     "facing=west": {

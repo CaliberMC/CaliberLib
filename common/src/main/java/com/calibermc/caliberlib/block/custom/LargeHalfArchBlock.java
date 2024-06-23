@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.LeftRightShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -40,11 +41,7 @@ public class LargeHalfArchBlock extends Block implements SimpleWaterloggedBlock 
     public static final EnumProperty<LeftRightShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     
-    public static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Block.box(0, 13, 8, 16, 16, 16),
-            SOUTH, Block.box(0, 13, 0, 16, 16, 8),
-            EAST, Block.box(0, 13, 0, 8, 16, 16),
-            WEST, Block.box(8, 13, 0, 16, 16, 16)));
+
 
     public LargeHalfArchBlock(Properties properties) {
         super(properties);
@@ -66,7 +63,7 @@ public class LargeHalfArchBlock extends Block implements SimpleWaterloggedBlock 
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE.get(pState.getValue(FACING));
+        return VoxelShapeHelper.LargeHalfArchBlockShapes.LARGE_HALF_ARCH_SHAPE.get(pState.getValue(FACING));
     }
 
     @Override
@@ -80,13 +77,13 @@ public class LargeHalfArchBlock extends Block implements SimpleWaterloggedBlock 
         BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                 .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
-        if (direction == Direction.NORTH && hitX < 0.5) {
+        if (direction == Direction.NORTH && hitX > 0.5) {
             return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
-        } else if (direction == Direction.SOUTH && hitX > 0.5) {
+        } else if (direction == Direction.SOUTH && hitX < 0.5) {
             return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
-        } else if (direction == Direction.EAST && hitZ < 0.5) {
+        } else if (direction == Direction.EAST && hitZ > 0.5) {
             return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
-        } else if (direction == Direction.WEST && hitZ > 0.5) {
+        } else if (direction == Direction.WEST && hitZ < 0.5) {
             return blockstate1.setValue(TYPE, LeftRightShape.RIGHT);
         } else {
             return blockstate1.setValue(TYPE, LEFT);

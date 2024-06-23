@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.WindowShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.calibermc.caliberlib.util.ModTags;
 import com.google.common.collect.ImmutableMap;
@@ -49,86 +50,6 @@ public class HalfWindowBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<WindowShape> TYPE = ModBlockStateProperties.WINDOW_SHAPE;
 
-    public static final Map<Direction, VoxelShape> TOP_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(4, 14, 12, 12, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(4, 14, 0, 12, 16, 4)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(0, 14, 4, 4, 16, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(12, 14, 4, 16, 16, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
-    public static final Map<Direction, VoxelShape> MIDDLE_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Shapes.join(Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(0, 0, 12, 4, 16, 16), BooleanOp.OR),
-            SOUTH, Shapes.join(Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(12, 0, 0, 16, 16, 4), BooleanOp.OR),
-            EAST, Shapes.join(Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(0, 0, 0, 4, 16, 4), BooleanOp.OR),
-            WEST, Shapes.join(Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(12, 0, 12, 16, 16, 16), BooleanOp.OR)));
-
-    public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(4, 0, 12, 12, 2, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(4, 0, 0, 12, 2, 4)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(0, 0, 4, 4, 2, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(12, 0, 4, 16, 2, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
-    public static final Map<Direction, VoxelShape> FULL_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(4, 0, 12, 12, 2, 16),
-                    Block.box(4, 14, 12, 12, 16, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(4, 0, 0, 12, 2, 4),
-                    Block.box(4, 14, 0, 12, 16, 4)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 0, 12, 4, 16, 16),
-                    Block.box(0, 0, 0, 4, 16, 4),
-                    Block.box(0, 0, 4, 4, 2, 12),
-                    Block.box(0, 14, 4, 4, 16, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(12, 0, 0, 16, 16, 4),
-                    Block.box(12, 0, 12, 16, 16, 16),
-                    Block.box(12, 0, 4, 16, 2, 12),
-                    Block.box(12, 14, 4, 16, 16, 12)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
     public HalfWindowBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -153,16 +74,16 @@ public class HalfWindowBlock extends Block implements SimpleWaterloggedBlock {
         WindowShape windowShape = pState.getValue(TYPE);
         switch (windowShape) {
             case TOP -> {
-                return TOP_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.HalfWindowBlockShapes.TOP_SHAPE.get(pState.getValue(FACING));
             }
             case MIDDLE -> {
-                return MIDDLE_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.HalfWindowBlockShapes.MIDDLE_SHAPE.get(pState.getValue(FACING));
             }
             case BOTTOM -> {
-                return BOTTOM_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.HalfWindowBlockShapes.BOTTOM_SHAPE.get(pState.getValue(FACING));
             }
             default -> {
-                return FULL_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.HalfWindowBlockShapes. FULL_SHAPE.get(pState.getValue(FACING));
 
             }
         }

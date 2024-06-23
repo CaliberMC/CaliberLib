@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.TopBottomDoubleShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -37,17 +38,6 @@ public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<TopBottomDoubleShape> TYPE = ModBlockStateProperties.TOP_BOTTOM_DOUBLE_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     
-    public static final Map<Direction, VoxelShape> TOP_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Block.box(0, 8, 8, 16, 16, 16),
-            Direction.SOUTH, Block.box(0, 8, 0, 16, 16, 8),
-            Direction.EAST, Block.box(0, 8, 0, 8, 16, 16),
-            Direction.WEST, Block.box(8, 8, 0, 16, 16, 16)));
-    public static final Map<Direction, VoxelShape> BOTTOM_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Block.box(0, 0, 8, 16, 8, 16),
-            Direction.SOUTH, Block.box(0, 0, 0, 16, 8, 8),
-            Direction.EAST, Block.box(0, 0, 0, 8, 8, 16),
-            Direction.WEST, Block.box(8, 0, 0, 16, 8, 16)));
-    
     public QuarterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any() // ? this.defaultBlockState()
@@ -71,13 +61,13 @@ public class QuarterBlock extends Block implements SimpleWaterloggedBlock {
         TopBottomDoubleShape quarterShape = pState.getValue(TYPE);
         switch (quarterShape) {
             case DOUBLE -> {
-                return VerticalSlabBlock.SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalSlabBlockShapes.SHAPE.get(pState.getValue(FACING));
             }
             case TOP -> {
-                return TOP_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.QuarterBlockShapes.TOP_SHAPE.get(pState.getValue(FACING));
             }
             default -> {
-                return BOTTOM_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.QuarterBlockShapes.BOTTOM_SHAPE.get(pState.getValue(FACING));
             }
         }
     }

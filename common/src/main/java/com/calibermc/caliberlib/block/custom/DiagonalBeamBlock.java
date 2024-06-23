@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
 import com.calibermc.caliberlib.block.shapes.misc.BeamConnection;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,75 +39,6 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty BEAM = ModBlockStateProperties.DIAGONAL_BEAM_SHAPE;
     public final int beamShape = 2;
 
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Stream.of(
-                    Block.box(5.10938, 2, 11.25, 10.92188, 4, 14.75),
-                    Block.box(5.10938, 4, 9.25, 10.92188, 6, 12.75),
-                    Block.box(5.10938, 6, 7.25, 10.92188, 8, 10.75),
-                    Block.box(5.10938, 8, 5.25, 10.92188, 10, 8.75),
-                    Block.box(5.10938, 10, 3.25, 10.92188, 12, 6.75),
-                    Block.box(5.10938, 12, 1.25, 10.92188, 14, 4.75)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Stream.of(
-                    Block.box(5.10938, 2, 11.25, 10.92188, 4, 14.75),
-                    Block.box(5.10938, 4, 9.25, 10.92188, 6, 12.75),
-                    Block.box(5.07812, 2, 1.25, 10.89062, 4, 4.75),
-                    Block.box(5.07812, 4, 3.25, 10.89062, 6, 6.75),
-                    Block.box(5.10938, 6, 5.25, 10.92188, 8, 10.75),
-                    Block.box(5.10938, 8, 7.25, 10.92188, 10, 8.75)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Stream.of(
-                    Block.box(1.25, 2, 5.10938, 4.75, 4, 10.92188),
-                    Block.box(3.25, 4, 5.10938, 6.75, 6, 10.92188),
-                    Block.box(5.25, 6, 5.10938, 8.75, 8, 10.92188),
-                    Block.box(7.25, 8, 5.10938, 10.75, 10, 10.92188),
-                    Block.box(9.25, 10, 5.10938, 12.75, 12, 10.92188),
-                    Block.box(11.25, 12, 5.10938, 14.75, 14, 10.92188)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Stream.of(
-                    Block.box(1.25, 2, 5.10938, 4.75, 4, 10.92188),
-                    Block.box(3.25, 4, 5.10938, 6.75, 6, 10.92188),
-                    Block.box(11.25, 2, 5.07812, 14.75, 4, 10.89062),
-                    Block.box(9.25, 4, 5.07812, 12.75, 6, 10.89062),
-                    Block.box(5.25, 6, 5.10938, 10.75, 8, 10.92188),
-                    Block.box(7.25, 8, 5.10938, 8.75, 10, 10.92188)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Stream.of(
-                    Block.box(5.07812, 2, 1.25, 10.89062, 4, 4.75),
-                    Block.box(5.07812, 4, 3.25, 10.89062, 6, 6.75),
-                    Block.box(5.07812, 6, 5.25, 10.89062, 8, 8.75),
-                    Block.box(5.07812, 8, 7.25, 10.89062, 10, 10.75),
-                    Block.box(5.07812, 10, 9.25, 10.89062, 12, 12.75),
-                    Block.box(5.07812, 12, 11.25, 10.89062, 14, 14.75)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Stream.of(
-                    Block.box(5.07812, 2, 1.25, 10.89062, 4, 4.75),
-                    Block.box(5.07812, 4, 3.25, 10.89062, 6, 6.75),
-                    Block.box(5.10938, 2, 11.25, 10.92188, 4, 14.75),
-                    Block.box(5.10938, 4, 9.25, 10.92188, 6, 12.75),
-                    Block.box(5.07812, 6, 5.25, 10.89062, 8, 10.75),
-                    Block.box(5.07812, 8, 7.25, 10.89062, 10, 8.75)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Stream.of(
-                    Block.box(11.25, 2, 5.07812, 14.75, 4, 10.89062),
-                    Block.box(9.25, 4, 5.07812, 12.75, 6, 10.89062),
-                    Block.box(7.25, 6, 5.07812, 10.75, 8, 10.89062),
-                    Block.box(5.25, 8, 5.07812, 8.75, 10, 10.89062),
-                    Block.box(3.25, 10, 5.07812, 6.75, 12, 10.89062),
-                    Block.box(1.25, 12, 5.07812, 4.75, 14, 10.89062)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            Stream.of(
-                    Block.box(11.25, 2, 5.07812, 14.75, 4, 10.89062),
-                    Block.box(9.25, 4, 5.07812, 12.75, 6, 10.89062),
-                    Block.box(1.25, 2, 5.10938, 4.75, 4, 10.92188),
-                    Block.box(3.25, 4, 5.10938, 6.75, 6, 10.92188),
-                    Block.box(5.25, 6, 5.07812, 10.75, 8, 10.89062),
-                    Block.box(7.25, 8, 5.07812, 8.75, 10, 10.89062)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-
     public DiagonalBeamBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -114,7 +46,6 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(CONNECT, BeamConnection.NONE)
                 .setValue(FACING, Direction.NORTH)
                 .setValue(WATERLOGGED, Boolean.FALSE));
-
     }
 
     @Override
@@ -131,10 +62,10 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(FACING);
         return switch (direction) {
-            case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-            case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-            case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-            default -> SHAPE_NORTH[pState.getValue(BEAM)];
+            case EAST -> VoxelShapeHelper.DiagonalBeamBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
+            case SOUTH -> VoxelShapeHelper.DiagonalBeamBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
+            case WEST -> VoxelShapeHelper.DiagonalBeamBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
+            default -> VoxelShapeHelper.DiagonalBeamBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
         };
     }
 
@@ -194,12 +125,12 @@ public class DiagonalBeamBlock extends Block implements SimpleWaterloggedBlock {
     @NotNull
     public BlockState getConnectionState(BlockState blockstate, BlockPos pCurrentPos, LevelAccessor pLevel, Direction placedBlockFacing, Direction placedBlockOppositeFacing) {// BlockState upState, BlockState downState, BlockState forwardState, BlockState backwardState, BlockState forwardUpState, BlockState backwardUpState, Direction placedBlockFacing, Direction placedBlockOppositeFacing
 
-        BlockPos backwardPos = pCurrentPos.relative(placedBlockFacing);
-        BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
-        BlockPos backwardUpPos = pCurrentPos.relative(placedBlockFacing).above();
-        BlockPos forwardUpPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).above();
-        BlockPos backwardDownPos = pCurrentPos.relative(placedBlockFacing).below();
-        BlockPos forwardDownPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).below();
+        BlockPos forwardPos = pCurrentPos.relative(placedBlockFacing);
+        BlockPos backwardPos = pCurrentPos.relative(placedBlockFacing.getOpposite());
+        BlockPos forwardUpPos = pCurrentPos.relative(placedBlockFacing).above();
+        BlockPos backwardUpPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).above();
+        BlockPos forwardDownPos = pCurrentPos.relative(placedBlockFacing).below();
+        BlockPos backwardDownPos = pCurrentPos.relative(placedBlockFacing.getOpposite()).below();
         BlockPos upPos = pCurrentPos.above();
         BlockPos downPos = pCurrentPos.below();
 

@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.QuadShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,103 +37,6 @@ public class VerticalCornerSlabLayerBlock extends Block implements SimpleWaterlo
     public static final EnumProperty<QuadShape> TYPE = ModBlockStateProperties.QUAD_SHAPE;
     public final int layerCount = 5;
     
-    public static final VoxelShape[] RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 14, 16, 16, 16), Block.box(0, 0, 14, 14, 2, 16), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 12, 16, 16, 16), Block.box(0, 0, 12, 12, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(0, 0, 8, 8, 8, 16), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 4, 16, 16, 16), Block.box(0, 0, 4, 4, 12, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 14, 2, 16, 16), Block.box(0, 0, 0, 2, 2, 14), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 12, 4, 16, 16), Block.box(0, 0, 0, 4, 4, 12), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(0, 0, 0, 8, 8, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 4, 12, 16, 16), Block.box(0, 0, 0, 12, 12, 4), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 2, 16, 2), Block.box(2, 0, 0, 16, 2, 2), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 4, 16, 4), Block.box(4, 0, 0, 16, 4, 4), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(8, 0, 0, 16, 8, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 12, 16, 12), Block.box(12, 0, 0, 16, 12, 12), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 0, 16, 16, 2), Block.box(14, 0, 2, 16, 2, 16), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 0, 16, 16, 4), Block.box(12, 0, 4, 16, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(8, 0, 8, 16, 8, 16), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 0, 16, 16, 12), Block.box(4, 0, 12, 16, 12, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 14, 16, 16, 16), Block.box(0, 14, 14, 14, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 12, 16, 16, 16), Block.box(0, 12, 12, 12, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 4, 16, 16, 16), Block.box(0, 4, 4, 4, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 14, 2, 16, 16), Block.box(0, 14, 0, 2, 16, 14), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 12, 4, 16, 16), Block.box(0, 12, 0, 4, 16, 12), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 4, 12, 16, 16), Block.box(0, 4, 0, 12, 16, 4), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 2, 16, 2), Block.box(2, 14, 0, 16, 16, 2), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 4, 16, 4), Block.box(4, 12, 0, 16, 16, 4), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 12, 16, 12), Block.box(12, 4, 0, 16, 16, 12), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 0, 16, 16, 2), Block.box(14, 14, 2, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 0, 16, 16, 4), Block.box(12, 12, 4, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 0, 16, 16, 12), Block.box(4, 4, 12, 16, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 0, 16, 16, 2), Block.box(0, 0, 0, 14, 2, 2), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 0, 16, 16, 4), Block.box(0, 0, 0, 12, 4, 4), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(0, 0, 0, 8, 8, 8), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 0, 16, 16, 12), Block.box(0, 0, 0, 4, 12, 12), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 14, 16, 16, 16), Block.box(14, 0, 0, 16, 2, 14), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 12, 16, 16, 16), Block.box(12, 0, 0, 16, 4, 12), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(8, 0, 0, 16, 8, 8), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 4, 16, 16, 16), Block.box(4, 0, 0, 16, 12, 4), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 14, 2, 16, 16), Block.box(2, 0, 14, 16, 2, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 12, 4, 16, 16), Block.box(4, 0, 12, 16, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(8, 0, 8, 16, 8, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 4, 12, 16, 16), Block.box(12, 0, 4, 16, 12, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 2, 16, 2), Block.box(0, 0, 2, 2, 2, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 4, 16, 4), Block.box(0, 0, 4, 4, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(0, 0, 8, 8, 8, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 12, 16, 12), Block.box(0, 0, 12, 12, 12, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_WEST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 0, 16, 16, 2), Block.box(0, 14, 0, 14, 16, 2), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 0, 16, 16, 4), Block.box(0, 12, 0, 12, 16, 4), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 0, 16, 16, 8), Block.box(0, 8, 0, 8, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 0, 16, 16, 12), Block.box(0, 4, 0, 4, 16, 12), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(14, 0, 14, 16, 16, 16), Block.box(14, 14, 0, 16, 16, 14), BooleanOp.OR),
-            Shapes.join(Block.box(12, 0, 12, 16, 16, 16), Block.box(12, 12, 0, 16, 16, 12), BooleanOp.OR),
-            Shapes.join(Block.box(8, 0, 8, 16, 16, 16), Block.box(8, 8, 0, 16, 16, 8), BooleanOp.OR),
-            Shapes.join(Block.box(4, 0, 4, 16, 16, 16), Block.box(4, 4, 0, 16, 16, 4), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_EAST = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 14, 2, 16, 16), Block.box(2, 14, 14, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 12, 4, 16, 16), Block.box(4, 12, 12, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 8, 8, 16, 16), Block.box(8, 8, 8, 16, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 4, 12, 16, 16), Block.box(12, 4, 4, 16, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] TOP_LEFT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Shapes.join(Block.box(0, 0, 0, 2, 16, 2), Block.box(0, 14, 2, 2, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 4, 16, 4), Block.box(0, 12, 4, 4, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 8, 16, 8), Block.box(0, 8, 8, 8, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 0, 12, 16, 12), Block.box(0, 4, 12, 12, 16, 16), BooleanOp.OR),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    
     public VerticalCornerSlabLayerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -159,34 +63,34 @@ public class VerticalCornerSlabLayerBlock extends Block implements SimpleWaterlo
         switch (cornerSlabShape) {
             case TOP_LEFT -> {
                 return switch (direction) {
-                    case EAST -> TOP_LEFT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_LEFT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> TOP_LEFT_WEST[pState.getValue(LAYERS)];
-                    default -> TOP_LEFT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_LEFT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_LEFT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_LEFT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_LEFT_NORTH[pState.getValue(LAYERS)];
                 };
             }
             case TOP_RIGHT -> {
                 return switch (direction) {
-                    case EAST -> TOP_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> TOP_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> TOP_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> TOP_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.TOP_RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
             case LEFT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_WEST[pState.getValue(LAYERS)];
-                    default -> LEFT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.LEFT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.LEFT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.LEFT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.LEFT_NORTH[pState.getValue(LAYERS)];
                 };
             }
             default -> {
                 return switch (direction) {
-                    case EAST -> RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalCornerSlabLayerBlockShapes.RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
         }
@@ -204,7 +108,7 @@ public class VerticalCornerSlabLayerBlock extends Block implements SimpleWaterlo
         double hitX = pContext.getClickLocation().x - (double) blockpos.getX();
         double hitZ = pContext.getClickLocation().z - (double) blockpos.getZ();
 
-        if (blockstate.is(this) && clickedFace != Direction.UP && clickedFace != Direction.DOWN) {
+        if (blockstate.is(this)) {
             int i = blockstate.getValue(LAYERS);
             int newCount = Math.min(layerCount, i + 1);
 
@@ -214,21 +118,21 @@ public class VerticalCornerSlabLayerBlock extends Block implements SimpleWaterlo
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                     .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
-            if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
+            if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
-            } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY < 0.5) {
+            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY < 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
-            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
             } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY < 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);
+            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY < 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.LEFT).setValue(LAYERS, 1);
-            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
             } else if ((direction == NORTH && hitX > 0.5 || direction == EAST && hitZ > 0.5) && hitY > 0.5) {
-                return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT).setValue(LAYERS, 1);
-            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
+            } else if ((direction == NORTH && hitX < 0.5 || direction == EAST && hitZ < 0.5) && hitY > 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT).setValue(LAYERS, 1);
             } else if ((direction == SOUTH && hitX < 0.5 || direction == WEST && hitZ < 0.5) && hitY > 0.5) {
+                return blockstate1.setValue(TYPE, QuadShape.TOP_RIGHT).setValue(LAYERS, 1);
+            } else if ((direction == SOUTH && hitX > 0.5 || direction == WEST && hitZ > 0.5) && hitY > 0.5) {
                 return blockstate1.setValue(TYPE, QuadShape.TOP_LEFT).setValue(LAYERS, 1);
             } else {
                 return blockstate1.setValue(TYPE, QuadShape.RIGHT).setValue(LAYERS, 1);

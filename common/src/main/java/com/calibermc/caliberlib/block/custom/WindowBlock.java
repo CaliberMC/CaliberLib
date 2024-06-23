@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.WindowShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.calibermc.caliberlib.util.ModTags;
 import net.minecraft.core.BlockPos;
@@ -46,15 +47,6 @@ public class WindowBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<WindowShape> TYPE = ModBlockStateProperties.WINDOW_SHAPE;
 
-    public static final VoxelShape NORTH_SOUTH_TOP_SHAPE = Stream.of(Block.box(12, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 4, 16, 16), Block.box(4, 14, 0, 12, 16, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape EAST_WEST_TOP_SHAPE = Stream.of(Block.box(0, 0, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 16, 4), Block.box(0, 14, 4, 16, 16, 12)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape NORTH_SOUTH_MIDDLE_SHAPE = Shapes.join(Block.box(12, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 4, 16, 16), BooleanOp.OR);
-    public static final VoxelShape EAST_WEST_MIDDLE_SHAPE = Shapes.join(Block.box(0, 0, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 16, 4), BooleanOp.OR);
-    public static final VoxelShape NORTH_SOUTH_BOTTOM_SHAPE = Stream.of(Block.box(12, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 4, 16, 16), Block.box(4, 0, 0, 12, 2, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape EAST_WEST_BOTTOM_SHAPE = Stream.of(Block.box(0, 0, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 16, 4), Block.box(0, 0, 4, 16, 2, 12)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape NORTH_SOUTH_FULL_SHAPE = Stream.of(Block.box(12, 0, 0, 16, 16, 16), Block.box(0, 0, 0, 4, 16, 16), Block.box(4, 14, 0, 12, 16, 16), Block.box(4, 0, 0, 12, 2, 16)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-    public static final VoxelShape EAST_WEST_FULL_SHAPE = Stream.of(Block.box(0, 0, 12, 16, 16, 16), Block.box(0, 0, 0, 16, 16, 4), Block.box(0, 14, 4, 16, 16, 12), Block.box(0, 0, 4, 16, 2, 12)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-
     public WindowBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -79,13 +71,13 @@ public class WindowBlock extends Block implements SimpleWaterloggedBlock {
         Direction.Axis axis = pState.getValue(FACING).getAxis();
         WindowShape windowShape = pState.getValue(TYPE);
         if (windowShape == WindowShape.TOP) {
-            return axis == Direction.Axis.Z ? NORTH_SOUTH_TOP_SHAPE : EAST_WEST_TOP_SHAPE;
+            return axis == Direction.Axis.Z ? VoxelShapeHelper.WindowBlockShapes.NORTH_SOUTH_TOP_SHAPE : VoxelShapeHelper.WindowBlockShapes.EAST_WEST_TOP_SHAPE;
         } else if (windowShape == WindowShape.MIDDLE) {
-            return axis == Direction.Axis.Z ? NORTH_SOUTH_MIDDLE_SHAPE : EAST_WEST_MIDDLE_SHAPE;
+            return axis == Direction.Axis.Z ? VoxelShapeHelper.WindowBlockShapes.NORTH_SOUTH_MIDDLE_SHAPE : VoxelShapeHelper.WindowBlockShapes.EAST_WEST_MIDDLE_SHAPE;
         } else if (windowShape == WindowShape.BOTTOM ){
-            return axis == Direction.Axis.Z ? NORTH_SOUTH_BOTTOM_SHAPE : EAST_WEST_BOTTOM_SHAPE;
+            return axis == Direction.Axis.Z ? VoxelShapeHelper.WindowBlockShapes.NORTH_SOUTH_BOTTOM_SHAPE : VoxelShapeHelper.WindowBlockShapes.EAST_WEST_BOTTOM_SHAPE;
         } else {
-            return axis == Direction.Axis.Z ? NORTH_SOUTH_FULL_SHAPE : EAST_WEST_FULL_SHAPE;
+            return axis == Direction.Axis.Z ? VoxelShapeHelper.WindowBlockShapes.NORTH_SOUTH_FULL_SHAPE : VoxelShapeHelper.WindowBlockShapes.EAST_WEST_FULL_SHAPE;
         }
     }
 

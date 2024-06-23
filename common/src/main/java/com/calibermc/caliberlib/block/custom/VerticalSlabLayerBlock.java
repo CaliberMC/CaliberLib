@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
@@ -32,43 +33,6 @@ public class VerticalSlabLayerBlock extends Block implements SimpleWaterloggedBl
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     public final int layerCount = 8;
 
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 14, 16, 16, 16),
-            Block.box(0, 0, 12, 16, 16, 16),
-            Block.box(0, 0, 10, 16, 16, 16),
-            Block.box(0, 0, 8, 16, 16, 16),
-            Block.box(0, 0, 6, 16, 16, 16),
-            Block.box(0, 0, 4, 16, 16, 16),
-            Block.box(0, 0, 2, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 2, 16, 16),
-            Block.box(0, 0, 0, 4, 16, 16),
-            Block.box(0, 0, 0, 6, 16, 16),
-            Block.box(0, 0, 0, 8, 16, 16),
-            Block.box(0, 0, 0, 10, 16, 16),
-            Block.box(0, 0, 0, 12, 16, 16),
-            Block.box(0, 0, 0, 14, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 16, 16, 2),
-            Block.box(0, 0, 0, 16, 16, 4),
-            Block.box(0, 0, 0, 16, 16, 6),
-            Block.box(0, 0, 0, 16, 16, 8),
-            Block.box(0, 0, 0, 16, 16, 10),
-            Block.box(0, 0, 0, 16, 16, 12),
-            Block.box(0, 0, 0, 16, 16, 14),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 0, 16, 16, 16),
-            Block.box(12, 0, 0, 16, 16, 16),
-            Block.box(10, 0, 0, 16, 16, 16),
-            Block.box(8, 0, 0, 16, 16, 16),
-            Block.box(6, 0, 0, 16, 16, 16),
-            Block.box(4, 0, 0, 16, 16, 16),
-            Block.box(2, 0, 0, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-
     public VerticalSlabLayerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -93,13 +57,13 @@ public class VerticalSlabLayerBlock extends Block implements SimpleWaterloggedBl
         Direction direction = pState.getValue(FACING);
         switch (direction) {
             case EAST:
-                return SHAPE_EAST[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.VerticalSlabLayerBlockShapes.SHAPE_EAST[pState.getValue(LAYERS)];
             case SOUTH:
-                return SHAPE_SOUTH[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.VerticalSlabLayerBlockShapes.SHAPE_SOUTH[pState.getValue(LAYERS)];
             case WEST:
-                return SHAPE_WEST[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.VerticalSlabLayerBlockShapes.SHAPE_WEST[pState.getValue(LAYERS)];
             default:
-                return SHAPE_NORTH[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.VerticalSlabLayerBlockShapes.SHAPE_NORTH[pState.getValue(LAYERS)];
         }
     }
 
@@ -116,7 +80,7 @@ public class VerticalSlabLayerBlock extends Block implements SimpleWaterloggedBl
                     setValue(WATERLOGGED, Boolean.valueOf((newCount < layerCount) && fluidstate.is(FluidTags.WATER)));
         } else {
             return this.defaultBlockState().setValue(LAYERS, 1).setValue(FACING, pContext.getHorizontalDirection()
-                    .getOpposite()).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
+                    ).setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
         }
     }
 
@@ -126,7 +90,7 @@ public class VerticalSlabLayerBlock extends Block implements SimpleWaterloggedBl
         int currentLayers = state.getValue(LAYERS);
         if (pContext.getItemInHand().getItem() == this.asItem()) {
             Direction clickedFace = pContext.getClickedFace();
-            Direction currentFacing = state.getValue(FACING);
+            Direction currentFacing = state.getValue(FACING).getOpposite();
             // Allow replacement if it's the same face that block is facing and not at max layers
             return clickedFace == currentFacing && currentLayers < layerCount;
         }

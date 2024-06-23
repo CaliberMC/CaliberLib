@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,55 +33,6 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LAYERS = ModBlockStateProperties.FIVE_LAYERS;
     public final int layerCount = 5;
     
-    public static final VoxelShape[] NORTH_BOTTOM = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 14, 16, 2, 16),
-            Block.box(0, 0, 12, 16, 4, 16),
-            Block.box(0, 0, 8, 16, 8, 16),
-            Block.box(0, 0, 4, 16, 12, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] EAST_BOTTOM = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 2, 2, 16),
-            Block.box(0, 0, 0, 4, 4, 16),
-            Block.box(0, 0, 0, 8, 8, 16),
-            Block.box(0, 0, 0, 12, 12, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SOUTH_BOTTOM = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 16, 2, 2),
-            Block.box(0, 0, 0, 16, 4, 4),
-            Block.box(0, 0, 0, 16, 8, 8),
-            Block.box(0, 0, 0, 16, 12, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] WEST_BOTTOM = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 0, 16, 2, 16),
-            Block.box(12, 0, 0, 16, 4, 16),
-            Block.box(8, 0, 0, 16, 8, 16),
-            Block.box(4, 0, 0, 16, 12, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] NORTH_TOP = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 14, 16, 16, 16),
-            Block.box(0, 12, 12, 16, 16, 16),
-            Block.box(0, 8, 8, 16, 16, 16),
-            Block.box(0, 4, 4, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] EAST_TOP = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 0, 2, 16, 16),
-            Block.box(0, 12, 0, 4, 16, 16),
-            Block.box(0, 8, 0, 8, 16, 16),
-            Block.box(0, 4, 0, 12, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SOUTH_TOP = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 0, 16, 16, 2),
-            Block.box(0, 12, 0, 16, 16, 4),
-            Block.box(0, 8, 0, 16, 16, 8),
-            Block.box(0, 4, 0, 16, 16, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] WEST_TOP = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 14, 0, 16, 16, 16),
-            Block.box(12, 12, 0, 16, 16, 16),
-            Block.box(8, 8, 0, 16, 16, 16),
-            Block.box(4, 4, 0, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    
     public QuarterLayerBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -103,18 +55,18 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
         switch (quarterLayerShape) {
             case TOP -> {
                 return switch (direction) {
-                    case EAST -> EAST_TOP[pState.getValue(LAYERS)];
-                    case SOUTH -> SOUTH_TOP[pState.getValue(LAYERS)];
-                    case WEST -> WEST_TOP[pState.getValue(LAYERS)];
-                    default -> NORTH_TOP[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.QuarterLayerBlockShapes.EAST_TOP[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.QuarterLayerBlockShapes.SOUTH_TOP[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.QuarterLayerBlockShapes.WEST_TOP[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.QuarterLayerBlockShapes.NORTH_TOP[pState.getValue(LAYERS)];
                 };
             }
             case BOTTOM -> {
                 return switch (direction) {
-                    case EAST -> EAST_BOTTOM[pState.getValue(LAYERS)];
-                    case SOUTH -> SOUTH_BOTTOM[pState.getValue(LAYERS)];
-                    case WEST -> WEST_BOTTOM[pState.getValue(LAYERS)];
-                    default -> NORTH_BOTTOM[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.QuarterLayerBlockShapes.EAST_BOTTOM[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.QuarterLayerBlockShapes.SOUTH_BOTTOM[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.QuarterLayerBlockShapes.WEST_BOTTOM[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.QuarterLayerBlockShapes.NORTH_BOTTOM[pState.getValue(LAYERS)];
                 };
             }
         }
@@ -128,7 +80,7 @@ public class QuarterLayerBlock extends Block implements SimpleWaterloggedBlock {
         FluidState fluidstate = pContext.getLevel().getFluidState(blockpos);
         BlockState blockstate = pContext.getLevel().getBlockState(blockpos);
         Direction clickedFace = pContext.getClickedFace();
-        if (blockstate.is(this) && clickedFace != Direction.UP && clickedFace != Direction.DOWN) {
+        if (blockstate.is(this)) {
             int i = blockstate.getValue(LAYERS);
             int newCount = Math.min(layerCount, i + 1);
             return blockstate.setValue(LAYERS, Integer.valueOf(newCount)).

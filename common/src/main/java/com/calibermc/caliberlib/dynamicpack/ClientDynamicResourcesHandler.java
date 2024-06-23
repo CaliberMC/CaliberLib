@@ -76,10 +76,6 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
                                     text -> text.replace("$texture", textureId),
                                     name -> id.getPath() + ".json");
                         } else {
-                            if (variant.equals(ModBlockFamily.Variant.ARCH)) {
-                                modelId += "_trim_2";
-                            }
-
                             if (variant.equals(ModBlockFamily.Variant.CORNER)
                                     || variant.equals(ModBlockFamily.Variant.CORNER_SLAB)
                                     || variant.equals(ModBlockFamily.Variant.CORNER_SLAB_VERTICAL)
@@ -164,8 +160,7 @@ public class ClientDynamicResourcesHandler extends DynClientResourcesGenerator {
         } catch (Throwable e) {
             e.fillInStackTrace();
         }
-        String t = text.replace("$block", modelId.replace("_" + variant, ""));
-        return t;
+        return text.replace("$block", modelId.replace("_" + variant, ""));
     }
 
 

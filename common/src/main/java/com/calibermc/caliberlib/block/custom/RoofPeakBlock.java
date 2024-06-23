@@ -3,6 +3,7 @@ package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.RoofPeakShape;
 import com.calibermc.caliberlib.block.shapes.RoofShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,9 +35,6 @@ public class RoofPeakBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<RoofPeakShape> TYPE = ModBlockStateProperties.ROOF_PEAK_SHAPE;
 
-    protected static final VoxelShape BOTTOM_SHAPE = Block.box(0, 0, 0, 16, 8, 16);
-    protected static final VoxelShape TOP_SHAPE = Block.box(0, .01, 0, 16, 16, 16);
-
     public RoofPeakBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -45,6 +43,19 @@ public class RoofPeakBlock extends Block implements SimpleWaterloggedBlock {
                 .setValue(TYPE, RoofPeakShape.STRAIGHT)
                 .setValue(HALF, Half.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        Half Half = pState.getValue(HALF);
+        switch (Half) {
+            case TOP -> {
+                return VoxelShapeHelper.RoofPeakBlockShapes.TOP_SHAPE;
+            }
+            default -> {
+                return VoxelShapeHelper.RoofPeakBlockShapes.BOTTOM_SHAPE;
+            }
+        }
     }
 
     private static RoofPeakShape getRoofShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
@@ -120,19 +131,6 @@ public class RoofPeakBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING, TYPE, HALF, WATERLOGGED);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Half Half = pState.getValue(HALF);
-        switch (Half) {
-            case TOP -> {
-                return TOP_SHAPE;
-            }
-            default -> {
-                return BOTTOM_SHAPE;
-            }
-        }
     }
 
     @Override

@@ -1,65 +1,65 @@
 {
   "variants": {
-    "layers=1,type=bottom": {
+    "layers=1,half=bottom": {
       "model": "$block_layer_1"
     },
-    "layers=1,type=top": {
+    "layers=1,half=top": {
       "model": "$block_layer_1",
       "uvlock": true,
       "x": 180
     },
-    "layers=2,type=bottom": {
+    "layers=2,half=bottom": {
       "model": "$block_layer_2"
     },
-    "layers=2,type=top": {
+    "layers=2,half=top": {
       "model": "$block_layer_2",
       "uvlock": true,
       "x": 180
     },
-    "layers=3,type=bottom": {
+    "layers=3,half=bottom": {
       "model": "$block_layer_3"
     },
-    "layers=3,type=top": {
+    "layers=3,half=top": {
       "model": "$block_layer_3",
       "uvlock": true,
       "x": 180
     },
-    "layers=4,type=bottom": {
+    "layers=4,half=bottom": {
       "model": "$block_layer_4"
     },
-    "layers=4,type=top": {
+    "layers=4,half=top": {
       "model": "$block_layer_4",
       "uvlock": true,
       "x": 180
     },
-    "layers=5,type=bottom": {
+    "layers=5,half=bottom": {
       "model": "$block_layer_5"
     },
-    "layers=5,type=top": {
+    "layers=5,half=top": {
       "model": "$block_layer_5",
       "uvlock": true,
       "x": 180
     },
-    "layers=6,type=bottom": {
+    "layers=6,half=bottom": {
       "model": "$block_layer_6"
     },
-    "layers=6,type=top": {
+    "layers=6,half=top": {
       "model": "$block_layer_6",
       "uvlock": true,
       "x": 180
     },
-    "layers=7,type=bottom": {
+    "layers=7,half=bottom": {
       "model": "$block_layer_7"
     },
-    "layers=7,type=top": {
+    "layers=7,half=top": {
       "model": "$block_layer_7",
       "uvlock": true,
       "x": 180
     },
-    "layers=8,type=bottom": {
+    "layers=8,half=bottom": {
       "model": "$block_base"
     },
-    "layers=8,type=top": {
+    "layers=8,half=top": {
       "model": "$block_base"
     }
   }

@@ -1,138 +1,138 @@
 {
   "variants": {
-    "beam=1,facing=east,type=bottom": {
+    "beam=1,facing=east,half=bottom": {
       "model": "$block_beam_lintel_1",
       "x": 180,
       "y": 270
     },
-    "beam=1,facing=east,type=top": {
+    "beam=1,facing=east,half=top": {
       "model": "$block_beam_lintel_1",
       "y": 90
     },
-    "beam=1,facing=north,type=bottom": {
+    "beam=1,facing=north,half=bottom": {
       "model": "$block_beam_lintel_1",
       "x": 180,
       "y": 180
     },
-    "beam=1,facing=north,type=top": {
+    "beam=1,facing=north,half=top": {
       "model": "$block_beam_lintel_1"
     },
-    "beam=1,facing=south,type=bottom": {
+    "beam=1,facing=south,half=bottom": {
       "model": "$block_beam_lintel_1",
       "x": 180
     },
-    "beam=1,facing=south,type=top": {
+    "beam=1,facing=south,half=top": {
       "model": "$block_beam_lintel_1",
       "y": 180
     },
-    "beam=1,facing=west,type=bottom": {
+    "beam=1,facing=west,half=bottom": {
       "model": "$block_beam_lintel_1",
       "x": 180,
       "y": 90
     },
-    "beam=1,facing=west,type=top": {
+    "beam=1,facing=west,half=top": {
       "model": "$block_beam_lintel_1",
       "y": 270
     },
-    "beam=2,facing=east,type=bottom": {
+    "beam=2,facing=east,half=bottom": {
       "model": "$block_beam_lintel_2",
       "x": 180,
       "y": 270
     },
-    "beam=2,facing=east,type=top": {
+    "beam=2,facing=east,half=top": {
       "model": "$block_beam_lintel_2",
       "y": 90
     },
-    "beam=2,facing=north,type=bottom": {
+    "beam=2,facing=north,half=bottom": {
       "model": "$block_beam_lintel_2",
       "x": 180,
       "y": 180
     },
-    "beam=2,facing=north,type=top": {
+    "beam=2,facing=north,half=top": {
       "model": "$block_beam_lintel_2"
     },
-    "beam=2,facing=south,type=bottom": {
+    "beam=2,facing=south,half=bottom": {
       "model": "$block_beam_lintel_2",
       "x": 180
     },
-    "beam=2,facing=south,type=top": {
+    "beam=2,facing=south,half=top": {
       "model": "$block_beam_lintel_2",
       "y": 180
     },
-    "beam=2,facing=west,type=bottom": {
+    "beam=2,facing=west,half=bottom": {
       "model": "$block_beam_lintel_2",
       "x": 180,
       "y": 90
     },
-    "beam=2,facing=west,type=top": {
+    "beam=2,facing=west,half=top": {
       "model": "$block_beam_lintel_2",
       "y": 270
     },
-    "beam=3,facing=east,type=bottom": {
+    "beam=3,facing=east,half=bottom": {
       "model": "$block_beam_lintel_3",
       "x": 180,
       "y": 270
     },
-    "beam=3,facing=east,type=top": {
+    "beam=3,facing=east,half=top": {
       "model": "$block_beam_lintel_3",
       "y": 90
     },
-    "beam=3,facing=north,type=bottom": {
+    "beam=3,facing=north,half=bottom": {
       "model": "$block_beam_lintel_3",
       "x": 180,
       "y": 180
     },
-    "beam=3,facing=north,type=top": {
+    "beam=3,facing=north,half=top": {
       "model": "$block_beam_lintel_3"
     },
-    "beam=3,facing=south,type=bottom": {
+    "beam=3,facing=south,half=bottom": {
       "model": "$block_beam_lintel_3",
       "x": 180
     },
-    "beam=3,facing=south,type=top": {
+    "beam=3,facing=south,half=top": {
       "model": "$block_beam_lintel_3",
       "y": 180
     },
-    "beam=3,facing=west,type=bottom": {
+    "beam=3,facing=west,half=bottom": {
       "model": "$block_beam_lintel_3",
       "x": 180,
       "y": 90
     },
-    "beam=3,facing=west,type=top": {
+    "beam=3,facing=west,half=top": {
       "model": "$block_beam_lintel_3",
       "y": 270
     },
-    "beam=4,facing=east,type=bottom": {
+    "beam=4,facing=east,half=bottom": {
       "model": "$block_beam_lintel_4",
       "x": 180,
       "y": 270
     },
-    "beam=4,facing=east,type=top": {
+    "beam=4,facing=east,half=top": {
       "model": "$block_beam_lintel_4",
       "y": 90
     },
-    "beam=4,facing=north,type=bottom": {
+    "beam=4,facing=north,half=bottom": {
       "model": "$block_beam_lintel_4",
       "x": 180,
       "y": 180
     },
-    "beam=4,facing=north,type=top": {
+    "beam=4,facing=north,half=top": {
       "model": "$block_beam_lintel_4"
     },
-    "beam=4,facing=south,type=bottom": {
+    "beam=4,facing=south,half=bottom": {
       "model": "$block_beam_lintel_4",
       "x": 180
     },
-    "beam=4,facing=south,type=top": {
+    "beam=4,facing=south,half=top": {
       "model": "$block_beam_lintel_4",
       "y": 180
     },
-    "beam=4,facing=west,type=bottom": {
+    "beam=4,facing=west,half=bottom": {
       "model": "$block_beam_lintel_4",
       "x": 180,
       "y": 90
     },
-    "beam=4,facing=west,type=top": {
+    "beam=4,facing=west,half=top": {
       "model": "$block_beam_lintel_4",
       "y": 270
     }

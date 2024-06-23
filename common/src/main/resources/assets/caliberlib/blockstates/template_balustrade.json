@@ -1,25 +1,208 @@
 {
   "variants": {
-    "facing=east,type=connected": {
+    "type=connected,facing=east": {
       "model": "$block_balustrade_connected",
       "uvlock": true,
       "y": 90
     },
-    "facing=north,type=connected": {
+    "type=connected,facing=north": {
       "model": "$block_balustrade_connected"
     },
-    "facing=south,type=connected": {
+    "type=connected,facing=south": {
       "model": "$block_balustrade_connected",
       "uvlock": true,
       "y": 180
     },
-    "facing=west,type=connected": {
+    "type=connected,facing=west": {
       "model": "$block_balustrade_connected",
       "uvlock": true,
       "y": 270
     },
-    "type=single": {
+    "type=cross,facing=east": {
+      "model": "$block_balustrade_cross"
+    },
+    "type=cross,facing=north": {
+      "model": "$block_balustrade_cross"
+    },
+    "type=cross,facing=south": {
+      "model": "$block_balustrade_cross"
+    },
+    "type=cross,facing=west": {
+      "model": "$block_balustrade_cross"
+    },
+    "type=end,facing=east": {
+      "model": "$block_balustrade_end",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=end,facing=north": {
+      "model": "$block_balustrade_end"
+    },
+    "type=end,facing=south": {
+      "model": "$block_balustrade_end",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=end,facing=west": {
+      "model": "$block_balustrade_end",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=inner_left,facing=east": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=inner_left,facing=north": {
+      "model": "$block_balustrade_corner"
+    },
+    "type=inner_left,facing=south": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=inner_left,facing=west": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=inner_right,facing=east": {
+      "model": "$block_balustrade_corner"
+    },
+    "type=inner_right,facing=north": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=inner_right,facing=south": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=inner_right,facing=west": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=outer_left,facing=east": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=outer_left,facing=north": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=outer_left,facing=south": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=outer_left,facing=west": {
+      "model": "$block_balustrade_corner"
+    },
+    "type=outer_right,facing=east": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=outer_right,facing=north": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=outer_right,facing=south": {
+      "model": "$block_balustrade_corner"
+    },
+    "type=outer_right,facing=west": {
+      "model": "$block_balustrade_corner",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=single,facing=east": {
       "model": "$block_balustrade"
+    },
+    "type=single,facing=north": {
+      "model": "$block_balustrade"
+    },
+    "type=single,facing=south": {
+      "model": "$block_balustrade"
+    },
+    "type=single,facing=west": {
+      "model": "$block_balustrade"
+    },
+    "type=t,facing=east": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=t,facing=north": {
+      "model": "$block_balustrade_t"
+    },
+    "type=t,facing=south": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=t,facing=west": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=t_left,facing=east": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=t_left,facing=north": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=t_left,facing=south": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=t_left,facing=west": {
+      "model": "$block_balustrade_t"
+    },
+    "type=t_opposite,facing=east": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=t_opposite,facing=north": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 180
+    },
+    "type=t_opposite,facing=south": {
+      "model": "$block_balustrade_t"
+    },
+    "type=t_opposite,facing=west": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=t_right,facing=east": {
+      "model": "$block_balustrade_t"
+    },
+    "type=t_right,facing=north": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 270
+    },
+    "type=t_right,facing=south": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 90
+    },
+    "type=t_right,facing=west": {
+      "model": "$block_balustrade_t",
+      "uvlock": true,
+      "y": 180
     }
   }
 }

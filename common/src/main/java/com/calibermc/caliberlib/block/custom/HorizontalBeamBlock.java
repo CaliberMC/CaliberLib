@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,96 +38,6 @@ public class HorizontalBeamBlock extends Block implements SimpleWaterloggedBlock
     public static final IntegerProperty BEAM = ModBlockStateProperties.HORIZONTAL_BEAM_SHAPE;
     public final int beamShape = 6;
 
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 0, 0, 11, 4, 16),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 11), Block.box(0, 0, 5, 5, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 11), Block.box(11, 0, 5, 16, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 16), Block.box(0, 0, 5, 5, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 16), Block.box(11, 0, 5, 16, 4, 11), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 0, 0, 11, 4, 16),
-                    Block.box(11, 0, 5, 16, 4, 11),
-                    Block.box(0, 0, 5, 5, 4, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 5, 16, 4, 11),
-            Shapes.join(Block.box(5, 0, 5, 16, 4, 11), Block.box(5, 0, 0, 11, 4, 5), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 5, 16, 4, 11), Block.box(5, 0, 11, 11, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 16, 4, 11), Block.box(5, 0, 0, 11, 4, 5), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 16, 4, 11), Block.box(5, 0, 11, 11, 4, 16), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 0, 0, 11, 4, 16),
-                    Block.box(11, 0, 5, 16, 4, 11),
-                    Block.box(0, 0, 5, 5, 4, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 0, 0, 11, 4, 16),
-            Shapes.join(Block.box(5, 0, 5, 11, 4, 16), Block.box(11, 0, 5, 16, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 5, 11, 4, 16), Block.box(0, 0, 5, 5, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 16), Block.box(11, 0, 5, 16, 4, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 0, 0, 11, 4, 16), Block.box(0, 0, 5, 5, 4, 11), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 0, 0, 11, 4, 16),
-                    Block.box(11, 0, 5, 16, 4, 11),
-                    Block.box(0, 0, 5, 5, 4, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 5, 16, 4, 11),
-            Shapes.join(Block.box(0, 0, 5, 11, 4, 11), Block.box(5, 0, 11, 11, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 11, 4, 11), Block.box(5, 0, 0, 11, 4, 5), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 16, 4, 11), Block.box(5, 0, 11, 11, 4, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 0, 5, 16, 4, 11), Block.box(5, 0, 0, 11, 4, 5), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 0, 0, 11, 4, 16),
-                    Block.box(11, 0, 5, 16, 4, 11),
-                    Block.box(0, 0, 5, 5, 4, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] TOP_SHAPE_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 12, 0, 11, 16, 16),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 11), Block.box(0, 12, 5, 5, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 11), Block.box(11, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 16), Block.box(0, 12, 5, 5, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 16), Block.box(11, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 12, 0, 11, 16, 16),
-                    Block.box(11, 12, 5, 16, 16, 11),
-                    Block.box(0, 12, 5, 5, 16, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] TOP_SHAPE_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 12, 5, 16, 16, 11),
-            Shapes.join(Block.box(5, 12, 5, 16, 16, 11), Block.box(5, 12, 0, 11, 16, 5), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 5, 16, 16, 11), Block.box(5, 12, 11, 11, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 12, 5, 16, 16, 11), Block.box(5, 12, 0, 11, 16, 5), BooleanOp.OR),
-            Shapes.join(Block.box(0, 12, 5, 16, 16, 11), Block.box(5, 12, 11, 11, 16, 16), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 12, 0, 11, 16, 16),
-                    Block.box(11, 12, 5, 16, 16, 11),
-                    Block.box(0, 12, 5, 5, 16, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] TOP_SHAPE_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(5, 12, 0, 11, 16, 16),
-            Shapes.join(Block.box(5, 12, 5, 11, 16, 16), Block.box(11, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 5, 11, 16, 16), Block.box(0, 12, 5, 5, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 16), Block.box(11, 12, 5, 16, 16, 11), BooleanOp.OR),
-            Shapes.join(Block.box(5, 12, 0, 11, 16, 16), Block.box(0, 12, 5, 5, 16, 11), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 12, 0, 11, 16, 16),
-                    Block.box(11, 12, 5, 16, 16, 11),
-                    Block.box(0, 12, 5, 5, 16, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-    public static final VoxelShape[] TOP_SHAPE_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 12, 5, 16, 16, 11),
-            Shapes.join(Block.box(0, 12, 5, 11, 16, 11), Block.box(5, 12, 11, 11, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 12, 5, 11, 16, 11), Block.box(5, 12, 0, 11, 16, 5), BooleanOp.OR),
-            Shapes.join(Block.box(0, 12, 5, 16, 16, 11), Block.box(5, 12, 11, 11, 16, 16), BooleanOp.OR),
-            Shapes.join(Block.box(0, 12, 5, 16, 16, 11), Block.box(5, 12, 0, 11, 16, 5), BooleanOp.OR),
-            Stream.of(
-                    Block.box(5, 12, 0, 11, 16, 16),
-                    Block.box(11, 12, 5, 16, 16, 11),
-                    Block.box(0, 12, 5, 5, 16, 11)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()};
-
-
     public HorizontalBeamBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -155,18 +66,18 @@ public class HorizontalBeamBlock extends Block implements SimpleWaterloggedBlock
         switch (topBottomShape) {
             case BOTTOM -> {
                 return switch (direction) {
-                    case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.HorizontalBeamBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.HorizontalBeamBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.HorizontalBeamBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.HorizontalBeamBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
             case TOP -> {
                 return switch (direction) {
-                    case EAST -> TOP_SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> TOP_SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> TOP_SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> TOP_SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.HorizontalBeamBlockShapes.TOP_SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.HorizontalBeamBlockShapes.TOP_SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.HorizontalBeamBlockShapes.TOP_SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.HorizontalBeamBlockShapes.TOP_SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
         }

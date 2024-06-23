@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.LeftRightDoubleShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -40,17 +41,6 @@ public class VerticalQuarterBlock extends Block implements SimpleWaterloggedBloc
     public static final EnumProperty<LeftRightDoubleShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_DOUBLE_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     
-    public static final Map<Direction, VoxelShape> LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Block.box(8, 0, 8, 16, 16, 16),
-            SOUTH, Block.box(0, 0, 0, 8, 16, 8),
-            EAST, Block.box(0, 0, 8, 8, 16, 16),
-            WEST, Block.box(8, 0, 0, 16, 16, 8)));
-    public static final Map<Direction, VoxelShape> RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Block.box(0, 0, 8, 8, 16, 16),
-            SOUTH, Block.box(8, 0, 0, 16, 16, 8),
-            EAST, Block.box(0, 0, 0, 8, 16, 8),
-            WEST, Block.box(8, 0, 8, 16, 16, 16)));
-    
     public VerticalQuarterBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -74,13 +64,13 @@ public class VerticalQuarterBlock extends Block implements SimpleWaterloggedBloc
         LeftRightDoubleShape verticalQuarterShape = pState.getValue(TYPE);
         switch (verticalQuarterShape) {
             case DOUBLE -> {
-                return VerticalSlabBlock.SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalSlabBlockShapes.SHAPE.get(pState.getValue(FACING));
             }
             case LEFT -> {
-                return LEFT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalQuarterBlockShapes.LEFT_SHAPE.get(pState.getValue(FACING));
             }
             default -> {
-                return RIGHT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.VerticalQuarterBlockShapes.RIGHT_SHAPE.get(pState.getValue(FACING));
             }
         }
     }
@@ -109,13 +99,13 @@ public class VerticalQuarterBlock extends Block implements SimpleWaterloggedBloc
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                     .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
-            if (direction == Direction.NORTH && hitX < 0.5) {
+            if (direction == Direction.NORTH && hitX > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightDoubleShape.RIGHT);
-            } else if (direction == Direction.SOUTH && hitX > 0.5) {
+            } else if (direction == Direction.SOUTH && hitX < 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightDoubleShape.RIGHT);
-            } else if (direction == Direction.EAST && hitZ < 0.5) {
+            } else if (direction == Direction.EAST && hitZ > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightDoubleShape.RIGHT);
-            } else if (direction == Direction.WEST && hitZ > 0.5) {
+            } else if (direction == Direction.WEST && hitZ < 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightDoubleShape.RIGHT);
             } else {
                 return blockstate1.setValue(TYPE, LeftRightDoubleShape.LEFT);

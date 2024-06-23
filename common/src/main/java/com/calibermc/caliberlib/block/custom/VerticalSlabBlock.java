@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.SingleDoubleShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -37,12 +38,6 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<SingleDoubleShape> TYPE = ModBlockStateProperties.SINGLE_DOUBLE_SHAPE;
 
-    public static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            Direction.NORTH, Block.box(0, 0, 8, 16, 16, 16),
-            Direction.SOUTH, Block.box(0, 0, 0, 16, 16, 8),
-            Direction.EAST, Block.box(0, 0, 0, 8, 16, 16),
-            Direction.WEST, Block.box(8, 0, 0, 16, 16, 16)));
-    public static final VoxelShape DOUBLE = Block.box(0, 0, 0, 16, 16, 16);
     public VerticalSlabBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -65,8 +60,8 @@ public class VerticalSlabBlock extends Block implements SimpleWaterloggedBlock {
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         SingleDoubleShape verticalSlabShape = pState.getValue(TYPE);
         return switch (verticalSlabShape) {
-            case DOUBLE -> DOUBLE;
-            default -> SHAPE.get(pState.getValue(FACING));
+            case DOUBLE -> VoxelShapeHelper.VerticalSlabBlockShapes.DOUBLE;
+            default -> VoxelShapeHelper.VerticalSlabBlockShapes.SHAPE.get(pState.getValue(FACING));
         };
     }
 

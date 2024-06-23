@@ -1,6 +1,7 @@
 package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.IntersectionShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,8 +33,6 @@ public class ArchBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<IntersectionShape> TYPE = ModBlockStateProperties.INTERSECTION_SHAPE;
 
-    public static final VoxelShape SHAPE = Block.box(0, 10, 0, 16, 16, 16);
-
     public ArchBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -54,7 +53,7 @@ public class ArchBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE;
+        return VoxelShapeHelper.ArchBlockShapes.ARCH_SHAPE;
     }
 
     @Override

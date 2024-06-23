@@ -3,6 +3,7 @@ package com.calibermc.caliberlib.block.custom;
 
 import com.calibermc.caliberlib.block.shapes.LargeArchShape;
 import com.calibermc.caliberlib.block.shapes.trim.LargeArchTrim;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -43,58 +44,6 @@ public class LargeArchBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final EnumProperty<LargeArchTrim> TRIM = ModBlockStateProperties.LARGE_ARCH_TRIM;
 
-    public static final Map<Direction, VoxelShape> CORNER_LEFT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 0, 2, 13.00001, 16),
-                    Block.box(0, 4.98438, 0, 16, 13.00001, 2)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(14, 4.98438, 0, 16, 13.00001, 16),
-                    Block.box(0, 4.98438, 14, 16, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 0, 16, 13.00001, 2),
-                    Block.box(14, 4.98438, 0, 16, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 14, 16, 13.00001, 16),
-                    Block.box(0, 4.98438, 0, 2, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
-    public static final Map<Direction, VoxelShape> CORNER_RIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 0, 16, 13.00001, 2),
-                    Block.box(14, 4.98438, 0, 16, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 14, 16, 13.00001, 16),
-                    Block.box(0, 4.98438, 0, 2, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(14, 4.98438, 0, 16, 13.00001, 16),
-                    Block.box(0, 4.98438, 14, 16, 13.00001, 16)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(0, 13.00001, 0, 16, 16, 16),
-                    Block.box(0, 4.98438, 0, 2, 13.00001, 16),
-                    Block.box(0, 4.98438, 0, 16, 13.00001, 2)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
-    public static final Map<Direction, VoxelShape> STRAIGHT_SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 0, 16, 13.00001, 2), BooleanOp.OR),
-            SOUTH, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 14, 16, 13.00001, 16), BooleanOp.OR),
-            EAST, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(14, 4.98438, 0, 16, 13.00001, 16), BooleanOp.OR),
-            WEST, Shapes.join(Block.box(0, 13.00001, 0, 16, 16, 16), Block.box(0, 4.98438, 0, 2, 13.00001, 16), BooleanOp.OR)));
-
-    public static final VoxelShape SHAPE = Block.box(0, 13, 0, 16, 16, 16);
-
     public LargeArchBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState() //this.stateDefinition.any()
@@ -124,16 +73,16 @@ public class LargeArchBlock extends Block implements SimpleWaterloggedBlock {
 
         switch (archShape) {
             case CORNER_LEFT -> {
-                return CORNER_LEFT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.LargeArchBlockShapes.CORNER_LEFT_SHAPE.get(pState.getValue(FACING));
             }
             case CORNER_RIGHT -> {
-                return CORNER_RIGHT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.LargeArchBlockShapes.CORNER_RIGHT_SHAPE.get(pState.getValue(FACING));
             }
             case CORNER_OUTER_LEFT, CORNER_OUTER_RIGHT -> {
-                return SHAPE;
+                return VoxelShapeHelper.LargeArchBlockShapes.SHAPE;
             }
             case STRAIGHT -> {
-                return STRAIGHT_SHAPE.get(pState.getValue(FACING));
+                return VoxelShapeHelper.LargeArchBlockShapes.STRAIGHT_SHAPE.get(pState.getValue(FACING));
             }
         }
         return null;

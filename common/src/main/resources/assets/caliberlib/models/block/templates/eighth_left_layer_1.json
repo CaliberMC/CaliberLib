@@ -3,17 +3,16 @@
 	"parent": "caliberlib:block/templates/caliber_block",
 	"elements": [
 		{
-			"from": [14, 0, 14],
-			"to": [16, 2, 16],
+			"from": [0, 0, 0],
+			"to": [2, 2, 2],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
-			"color": 0,
 			"faces": {
-				"north": {"uv": [0, 14, 2, 16], "texture": "#side"},
-				"east": {"uv": [0, 14, 2, 16], "texture": "#side", "cullface": "east"},
-				"south": {"uv": [14, 14, 16, 16], "texture": "#side", "cullface": "south"},
-				"west": {"uv": [14, 14, 16, 16], "texture": "#side"},
-				"up": {"uv": [14, 14, 16, 16], "texture": "#top"},
-				"down": {"uv": [14, 0, 16, 2], "texture": "#bottom", "cullface": "down"}
+				"north": {"uv": [14, 14, 16, 16], "texture": "#side", "cullface": "north"},
+				"east": {"uv": [14, 14, 16, 16], "texture": "#side"},
+				"south": {"uv": [0, 14, 2, 16], "texture": "#side"},
+				"west": {"uv": [0, 14, 2, 16], "texture": "#side", "cullface": "west"},
+				"up": {"uv": [2, 2, 0, 0], "rotation": 180, "texture": "#top"},
+				"down": {"uv": [2, 16, 0, 14], "rotation": 180, "texture": "#bottom", "cullface": "down"}
 			}
 		}
 	],

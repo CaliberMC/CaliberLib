@@ -1,5 +1,6 @@
 package com.calibermc.caliberlib.block.custom;
 
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import net.minecraft.core.BlockPos;
@@ -34,40 +35,6 @@ public class ArrowSlitBlock extends Block implements SimpleWaterloggedBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final Map<Direction, VoxelShape> SHAPE = Maps.newEnumMap(ImmutableMap.of(
-            NORTH, Stream.of(
-                    Block.box(9, 0, 14.5, 16, 16, 16),
-                    Block.box(0, 0, 14.5, 7, 16, 16),
-                    Block.box(0, 0, 8, 2.5, 16, 14.5),
-                    Block.box(13.5, 0, 8, 16, 16, 14.5),
-                    Block.box(2.5, 0, 12.5, 4.5, 16, 14.5),
-                    Block.box(11.5, 0, 12.5, 13.5, 16, 14.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            SOUTH, Stream.of(
-                    Block.box(0, 0, 0, 7, 16, 1.5),
-                    Block.box(9, 0, 0, 16, 16, 1.5),
-                    Block.box(13.5, 0, 1.5, 16, 16, 8),
-                    Block.box(0, 0, 1.5, 2.5, 16, 8),
-                    Block.box(11.5, 0, 1.5, 13.5, 16, 3.5),
-                    Block.box(2.5, 0, 1.5, 4.5, 16, 3.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            EAST, Stream.of(
-                    Block.box(0, 0, 9, 1.5, 16, 16),
-                    Block.box(0, 0, 0, 1.5, 16, 7),
-                    Block.box(1.5, 0, 0, 8, 16, 2.5),
-                    Block.box(1.5, 0, 13.5, 8, 16, 16),
-                    Block.box(1.5, 0, 2.5, 3.5, 16, 4.5),
-                    Block.box(1.5, 0, 11.5, 3.5, 16, 13.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get(),
-            WEST, Stream.of(
-                    Block.box(14.5, 0, 0, 16, 16, 7),
-                    Block.box(14.5, 0, 9, 16, 16, 16),
-                    Block.box(8, 0, 13.5, 14.5, 16, 16),
-                    Block.box(8, 0, 0, 14.5, 16, 2.5),
-                    Block.box(12.5, 0, 11.5, 14.5, 16, 13.5),
-                    Block.box(12.5, 0, 2.5, 14.5, 16, 4.5)
-            ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get()));
-
     public ArrowSlitBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -87,7 +54,8 @@ public class ArrowSlitBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE.get(pState.getValue(FACING));
+        Direction facing = pState.getValue(FACING);
+        return VoxelShapeHelper.ArrowslitShapes.ARROWSLIT_SHAPE.get(facing);
     }
 
     @Override

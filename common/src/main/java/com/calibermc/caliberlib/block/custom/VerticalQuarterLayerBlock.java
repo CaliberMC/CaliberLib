@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.LeftRightShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,31 +34,7 @@ public class VerticalQuarterLayerBlock extends Block implements SimpleWaterlogge
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<LeftRightShape> TYPE = ModBlockStateProperties.LEFT_RIGHT_SHAPE;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    
-    public static final VoxelShape[] LEFT_NORTH_RIGHT_WEST = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 14, 16, 16, 16),
-            Block.box(12, 0, 12, 16, 16, 16),
-            Block.box(8, 0, 8, 16, 16, 16),
-            Block.box(4, 0, 4, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_EAST_RIGHT_NORTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 14, 2, 16, 16),
-            Block.box(0, 0, 12, 4, 16, 16),
-            Block.box(0, 0, 8, 8, 16, 16),
-            Block.box(0, 0, 4, 12, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_SOUTH_RIGHT_EAST = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 2, 16, 2),
-            Block.box(0, 0, 0, 4, 16, 4),
-            Block.box(0, 0, 0, 8, 16, 8),
-            Block.box(0, 0, 0, 12, 16, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] LEFT_WEST_RIGHT_SOUTH = new VoxelShape[]{Shapes.empty(),
-            Block.box(14, 0, 0, 16, 16, 2),
-            Block.box(12, 0, 0, 16, 16, 4),
-            Block.box(8, 0, 0, 16, 16, 8),
-            Block.box(4, 0, 0, 16, 16, 12),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
+
     public final int layerCount = 5;
     public VerticalQuarterLayerBlock(Properties properties) {
         super(properties);
@@ -86,18 +63,18 @@ public class VerticalQuarterLayerBlock extends Block implements SimpleWaterlogge
         switch (verticalQuarterShape) {
             case LEFT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    default -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
                 };
             }
             case RIGHT -> {
                 return switch (direction) {
-                    case EAST -> LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
-                    case SOUTH -> LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
-                    case WEST -> LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
-                    default -> LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
+                    case EAST -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_SOUTH_RIGHT_EAST[pState.getValue(LAYERS)];
+                    case SOUTH -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_WEST_RIGHT_SOUTH[pState.getValue(LAYERS)];
+                    case WEST -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_NORTH_RIGHT_WEST[pState.getValue(LAYERS)];
+                    default -> VoxelShapeHelper.VerticalQuarterLayerBlockShapes.LEFT_EAST_RIGHT_NORTH[pState.getValue(LAYERS)];
                 };
             }
         }
@@ -124,13 +101,13 @@ public class VerticalQuarterLayerBlock extends Block implements SimpleWaterlogge
             BlockState blockstate1 = this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection())
                     .setValue(WATERLOGGED, Boolean.valueOf(fluidstate.getType() == Fluids.WATER));
 
-            if (direction == Direction.NORTH && hitX < 0.5) {
+            if (direction == Direction.NORTH && hitX > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
-            } else if (direction == Direction.SOUTH && hitX > 0.5) {
+            } else if (direction == Direction.SOUTH && hitX < 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
-            } else if (direction == Direction.EAST && hitZ < 0.5) {
+            } else if (direction == Direction.EAST && hitZ > 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
-            } else if (direction == Direction.WEST && hitZ > 0.5) {
+            } else if (direction == Direction.WEST && hitZ < 0.5) {
                 return blockstate1.setValue(TYPE, LeftRightShape.RIGHT).setValue(LAYERS, 1);
             } else {
                 return blockstate1.setValue(TYPE, LeftRightShape.LEFT).setValue(LAYERS, 1);

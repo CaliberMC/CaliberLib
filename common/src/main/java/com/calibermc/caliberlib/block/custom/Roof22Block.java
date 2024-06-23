@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.RoofShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,9 +33,6 @@ public class Roof22Block extends Block implements SimpleWaterloggedBlock {
     public static final EnumProperty<Half> HALF = BlockStateProperties.HALF;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    protected static final VoxelShape BOTTOM_SHAPE = Block.box(0, 0.01, 0, 16, 8, 16);
-    protected static final VoxelShape TOP_SHAPE = Block.box(0, 0.01, 0, 16, 16, 16);
-
     public Roof22Block(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -42,6 +40,19 @@ public class Roof22Block extends Block implements SimpleWaterloggedBlock {
                 .setValue(TYPE, RoofShape.STRAIGHT)
                 .setValue(HALF, Half.BOTTOM)
                 .setValue(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        Half Half = pState.getValue(HALF);
+        switch (Half) {
+            case TOP -> {
+                return VoxelShapeHelper.Roof22BlockShapes.TOP_SHAPE;
+            }
+            default -> {
+                return VoxelShapeHelper.Roof22BlockShapes.BOTTOM_SHAPE;
+            }
+        }
     }
 
     private static RoofShape getRoofShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
@@ -90,19 +101,6 @@ public class Roof22Block extends Block implements SimpleWaterloggedBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(FACING, TYPE, HALF, WATERLOGGED);
-    }
-
-    @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Half Half = pState.getValue(HALF);
-        switch (Half) {
-            case TOP -> {
-                return TOP_SHAPE;
-            }
-            default -> {
-                return BOTTOM_SHAPE;
-            }
-        }
     }
 
     @Override

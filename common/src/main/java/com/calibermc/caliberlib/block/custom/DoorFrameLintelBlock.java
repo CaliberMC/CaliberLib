@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,59 +33,6 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
     public static final IntegerProperty BEAM = ModBlockStateProperties.LINTEL_SHAPE;
     public final int beamShape = 4;
 
-    public static final VoxelShape[] BOTTOM_SHAPE_NORTH = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(-3, 13, 14, 19, 16, 16),
-            Block.box(0, 13, 14, 19, 16, 16),
-            Block.box(-3, 13, 14, 16, 16, 16),
-            Block.box(0, 13, 14, 16, 16, 16)
-    };
-    public static final VoxelShape[] BOTTOM_SHAPE_EAST = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(0, 13, -3, 2, 16, 19),
-            Block.box(0, 13, 0, 2, 16, 19),
-            Block.box(0, 13, -3, 2, 16, 16),
-            Block.box(0, 13, 0, 2, 16, 16)
-    };
-    public static final VoxelShape[] BOTTOM_SHAPE_SOUTH = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(-3, 13, 0, 19, 16, 2),
-            Block.box(-3, 13, 0, 16, 16, 2),
-            Block.box(0, 13, 0, 19, 16, 2),
-            Block.box(0, 13, 0, 16, 16, 2)
-    };
-    public static final VoxelShape[] BOTTOM_SHAPE_WEST = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(14, 13, -3, 16, 16, 19),
-            Block.box(14, 13, -3, 16, 16, 16),
-            Block.box(14, 13, 0, 16, 16, 19),
-            Block.box(14, 13, 0, 16, 16, 16)
-    };
-    public static final VoxelShape[] SHAPE_NORTH = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(-3, 0, 14, 19, 3, 16),
-            Block.box(-3, 0, 14, 16, 3, 16),
-            Block.box(0, 0, 14, 19, 3, 16),
-            Block.box(0, 0, 14, 16, 3, 16)};
-    public static final VoxelShape[] SHAPE_EAST = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(0, 0, -3, 2, 3, 19),
-            Block.box(0, 0, -3, 2, 3, 16),
-            Block.box(0, 0, 0, 2, 3, 19),
-            Block.box(0, 0, 0, 2, 3, 16)};
-    public static final VoxelShape[] SHAPE_SOUTH = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(-3, 0, 0, 19, 3, 2),
-            Block.box(0, 0, 0, 19, 3, 2),
-            Block.box(-3, 0, 0, 16, 3, 2),
-            Block.box(0, 0, 0, 16, 3, 2)};
-    public static final VoxelShape[] SHAPE_WEST = new VoxelShape[]{
-            Shapes.empty(),
-            Block.box(14, 0, -3, 16, 3, 19),
-            Block.box(14, 0, 0, 16, 3, 19),
-            Block.box(14, 0, -3, 16, 3, 16),
-            Block.box(14, 0, 0, 16, 3, 16)};
-
     public DoorFrameLintelBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -112,18 +60,18 @@ public class DoorFrameLintelBlock extends Block implements SimpleWaterloggedBloc
         switch (topBottomShape) {
             case TOP -> {
                 return switch (direction) {
-                    case EAST -> SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.DoorFrameLintelBlockShapes.SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.DoorFrameLintelBlockShapes.SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.DoorFrameLintelBlockShapes.SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.DoorFrameLintelBlockShapes.SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
             case BOTTOM -> {
                 return switch (direction) {
-                    case EAST -> BOTTOM_SHAPE_EAST[pState.getValue(BEAM)];
-                    case SOUTH -> BOTTOM_SHAPE_SOUTH[pState.getValue(BEAM)];
-                    case WEST -> BOTTOM_SHAPE_WEST[pState.getValue(BEAM)];
-                    default -> BOTTOM_SHAPE_NORTH[pState.getValue(BEAM)];
+                    case EAST -> VoxelShapeHelper.DoorFrameLintelBlockShapes.BOTTOM_SHAPE_EAST[pState.getValue(BEAM)];
+                    case SOUTH -> VoxelShapeHelper.DoorFrameLintelBlockShapes.BOTTOM_SHAPE_SOUTH[pState.getValue(BEAM)];
+                    case WEST -> VoxelShapeHelper.DoorFrameLintelBlockShapes.BOTTOM_SHAPE_WEST[pState.getValue(BEAM)];
+                    default -> VoxelShapeHelper.DoorFrameLintelBlockShapes.BOTTOM_SHAPE_NORTH[pState.getValue(BEAM)];
                 };
             }
         }

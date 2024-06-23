@@ -2,6 +2,7 @@ package com.calibermc.caliberlib.block.custom;
 
 
 import com.calibermc.caliberlib.block.shapes.TopBottomShape;
+import com.calibermc.caliberlib.block.shapes.voxels.VoxelShapeHelper;
 import com.calibermc.caliberlib.util.ModBlockStateProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,26 +34,6 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
     public final int layerCount = 8;
 
-    public static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 0, 0, 16, 2, 16),
-            Block.box(0, 0, 0, 16, 4, 16),
-            Block.box(0, 0, 0, 16, 6, 16),
-            Block.box(0, 0, 0, 16, 8, 16),
-            Block.box(0, 0, 0, 16, 10, 16),
-            Block.box(0, 0, 0, 16, 12, 16),
-            Block.box(0, 0, 0, 16, 14, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-    public static final VoxelShape[] SHAPE_BY_LAYER_TOP = new VoxelShape[]{Shapes.empty(),
-            Block.box(0, 14, 0, 16, 16, 16),
-            Block.box(0, 12, 0, 16, 16, 16),
-            Block.box(0, 10, 0, 16, 16, 16),
-            Block.box(0, 8, 0, 16, 16, 16),
-            Block.box(0, 6, 0, 16, 16, 16),
-            Block.box(0, 4, 0, 16, 16, 16),
-            Block.box(0, 2, 0, 16, 16, 16),
-            Block.box(0, 0.1, 0, 16, 16, 16)};
-
-
     public SlabLayerBlock(Properties properties, int layerCount) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any()
@@ -76,9 +57,9 @@ public class SlabLayerBlock extends Block implements SimpleWaterloggedBlock {
         TopBottomShape slabLayerShape = pState.getValue(HALF);
         switch (slabLayerShape) {
             case TOP:
-                return SHAPE_BY_LAYER_TOP[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.SlabLayerBlockShapes.SHAPE_BY_LAYER_TOP[pState.getValue(LAYERS)];
             default:
-                return SHAPE_BY_LAYER[pState.getValue(LAYERS)];
+                return VoxelShapeHelper.SlabLayerBlockShapes.SHAPE_BY_LAYER[pState.getValue(LAYERS)];
         }
     }
 
