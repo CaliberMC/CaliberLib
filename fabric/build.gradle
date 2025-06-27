@@ -24,7 +24,7 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}+${rootProject.minecraft_version}"
 
     //include(modImplementation ("net.mehvahdjukaar:moonlight-fabric:${rootProject.moonlight_version}"))
-    include(modImplementation("curse.maven:moonlightlib-499980:5370700"))
+    include(modImplementation("curse.maven:moonlightlib-499980:6693290"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }

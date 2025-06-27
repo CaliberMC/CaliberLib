@@ -43,7 +43,7 @@ dependencies {
     implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
 
     //include(modImplementation("net.mehvahdjukaar:moonlight-forge:${rootProject.moonlight_version}"))
-    include(modImplementation("curse.maven:selene-499980:5370702"))
+    include(modImplementation("curse.maven:selene-499980:6693290"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
