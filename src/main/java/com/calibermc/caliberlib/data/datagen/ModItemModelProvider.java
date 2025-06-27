@@ -49,9 +49,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                     parentName += "_layer_3";
                 }
 
-//                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
-//                    parentName += "_layer_4";
-//                }
+                if (variant.equals(ModBlockFamily.Variant.SLAB) || variant.equals(ModBlockFamily.Variant.SLAB_VERTICAL)) {
+                    parentName += "_layer_4";
+                }
 
                 if (variant.equals(ModBlockFamily.Variant.LAYER)
                         || variant.equals(ModBlockFamily.Variant.LAYER_VERTICAL)
