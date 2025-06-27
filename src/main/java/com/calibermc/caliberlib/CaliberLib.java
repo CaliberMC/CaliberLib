@@ -1,8 +1,5 @@
 package com.calibermc.caliberlib;
 
-import net.minecraft.world.inventory.RecipeBookType;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -15,8 +12,8 @@ public class CaliberLib {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public CaliberLib() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+    public CaliberLib(FMLJavaModLoadingContext context) {
+        context.getModEventBus().addListener(this::setup);
     }
 
     private void setup(final FMLCommonSetupEvent event) {

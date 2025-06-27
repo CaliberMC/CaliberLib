@@ -401,7 +401,7 @@ public class ModBlockFamily {
         }
 
         public ResourceLocation getRegistryName(ModBlockStateProvider block) {
-            return new ResourceLocation("caliber", this.name);
+            return ResourceLocation.fromNamespaceAndPath("caliber", this.name);
         }
 
         private ImmutableList<Variant> vanillaVariants() {

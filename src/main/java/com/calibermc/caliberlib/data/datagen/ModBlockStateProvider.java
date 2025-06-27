@@ -64,7 +64,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     public ResourceLocation modLoc(String name) {
         String n = super.modLoc(name).getPath();
         if (n.startsWith("block/templates/")) {
-            return new ResourceLocation("caliberlib", n);
+            return ResourceLocation.fromNamespaceAndPath("caliberlib", n);
         }
         return super.modLoc(name);
     }
