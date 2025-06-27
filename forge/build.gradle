@@ -38,9 +38,9 @@ configurations {
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
 
+    annotationProcessor 'org.spongepowered:mixin:0.8.5'
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}"))
     implementation(include("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}"))
-    annotationProcessor 'net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5'
 
     //include(modImplementation("net.mehvahdjukaar:moonlight-forge:${rootProject.moonlight_version}"))
     include(modImplementation("curse.maven:selene-499980:5370702"))
