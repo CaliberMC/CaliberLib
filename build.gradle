@@ -87,7 +87,7 @@ subprojects {
                 id = rootProject.project_id
                 changelog = changelogText
                 changelogType = 'markdown'
-                releaseType = 'release_type'
+                releaseType = 'release'
                 addGameVersion rootProject.minecraft_version
 
                 mainArtifact(tasks.remapJar) {
