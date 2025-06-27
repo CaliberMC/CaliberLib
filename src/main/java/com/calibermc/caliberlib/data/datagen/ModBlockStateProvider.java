@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
+import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -2825,7 +2826,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     public void leavesBlock(RegistryObject<Block> blockRegistryObject) {
         simpleBlockWithItem(blockRegistryObject.get(),
-                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), new ResourceLocation("minecraft:block/leaves"),
+                models().singleTexture(ForgeRegistries.BLOCKS.getKey(blockRegistryObject.get()).getPath(), ResourceLocation.parse("minecraft:block/leaves"),
                         "all", blockTexture(blockRegistryObject.get())).renderType("cutout"));
     }
 
@@ -3308,21 +3309,25 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
         getVariantBuilder(block)
                 .partialState().with(VerticalSlabBlock.FACING, Direction.NORTH)
-                .modelForState().modelFile(slab_vertical).addModel()
-                .partialState().with(VerticalSlabBlock.FACING, Direction.NORTH)
-                .modelForState().modelFile(full_block).addModel()
+                .setModels(new ConfiguredModel[] {
+                        new ConfiguredModel(slab_vertical),
+                        new ConfiguredModel(full_block)
+                })
                 .partialState().with(VerticalSlabBlock.FACING, Direction.EAST)
-                .modelForState().modelFile(slab_vertical).addModel()
-                .partialState().with(VerticalSlabBlock.FACING, Direction.EAST)
-                .modelForState().modelFile(full_block).addModel()
+                .setModels(new ConfiguredModel[] {
+                        new ConfiguredModel(slab_vertical),
+                        new ConfiguredModel(full_block)
+                })
                 .partialState().with(VerticalSlabBlock.FACING, Direction.SOUTH)
-                .modelForState().modelFile(slab_vertical).addModel()
-                .partialState().with(VerticalSlabBlock.FACING, Direction.SOUTH)
-                .modelForState().modelFile(full_block).addModel()
+                .setModels(new ConfiguredModel[] {
+                        new ConfiguredModel(slab_vertical),
+                        new ConfiguredModel(full_block)
+                })
                 .partialState().with(VerticalSlabBlock.FACING, Direction.WEST)
-                .modelForState().modelFile(slab_vertical).addModel()
-                .partialState().with(VerticalSlabBlock.FACING, Direction.WEST)
-                .modelForState().modelFile(full_block).addModel();
+                .setModels(new ConfiguredModel[] {
+                        new ConfiguredModel(slab_vertical),
+                        new ConfiguredModel(full_block)
+                });
     }
 
     public void tallDoorBlock(TallDoorBlock block) {
